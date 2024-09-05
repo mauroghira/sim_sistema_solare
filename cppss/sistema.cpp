@@ -133,32 +133,45 @@ void sistema::evodt(uint32_t mode, uint64_t j){
 	}
 
 	//*dati in file v2, così più veloce perché apre solo 1 file, inoltre velocizza campionando ogni 1000
-	//if(j%10000==0){
+	if(j%10000==0){
 		vettore dS=m_corpi[0]->P();
 		std::ofstream out;
-		out.open("val_err_"+m_inc, std::ofstream::app);
-		//out<<float(j*m_dT/(365*24*3600));
+		out.open("dist_sole_"+m_inc, std::ofstream::app);
+		out<<float(j)*m_dT/(365*24*3600);
 		for(auto c: m_corpi){
 			vettore dd=c->P()-dS;
 			float d=(float)dd.modulo();
-			//out<<" "<<d;
-			out<<d<<" ";
+			out<<" "<<d;
 		}
 		out<<std::endl;
 		out.close();
-	//}
-	/*
+	}
+	
 	if(j%10000==0){
 		std::ofstream out;
 		out.open("incl_"+m_inc, std::ofstream::app);
-		out<<float(j*m_dT/(365*24*3600));
+		out<<float(j)*m_dT/(365*24*3600);
 		for(auto c: m_corpi){
 			out<<" "<<c->incl();
 		}
 		out<<std::endl;
 		out.close();
 	}
-	*/
+	
+	//*
+	if(float(j)*m_dT/(365*24*3600) >= 499){
+	vettore dS=m_corpi[0]->P();
+	std::ofstream out;
+	out.open("val_err_"+m_inc, std::ofstream::app);
+	for(auto c: m_corpi){
+		vettore dd=c->P()-dS;
+		float d=(float)dd.modulo();
+		out<<d<<" ";
+	}
+	out<<std::endl;
+	out.close();
+	}//*/
+	
   	vettore L;
   	for(int i=0; i<m_corpi.size(); i++){
   		vettore dL=m_corpi[i]->LA();

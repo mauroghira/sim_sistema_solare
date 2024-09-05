@@ -18,14 +18,14 @@ cat $(ls -Art *.txt | tail -n 1) \n\
 
 #define RM "\
 #/bin/bash \n\
-rm *_dist_sole.txt *incl.txt \n\  
+rm *_dist_sole.txt *incl.txt \n\ 
 "
 //così non va bene perché sputtana tutto se faccio più sim insieme
 
 int main(int argc, char** argv){
 
 	if(argc!=6){
-		std::cerr << "Usage: configFile numeroAnni granularità mode outputfile\n"; 
+		std::cerr << "Usage: configFile numeroAnni granularità mode outputfile\n";
 		std::cerr << "   configFile: file di configurazione delle condizioni iniziali\n";
 		std::cerr << "   numeroAnni: anni di evoluzione\n";
 		std::cerr << "   granularità: tempo dT di evoluzione (secondi)\n";		
@@ -71,7 +71,7 @@ int main(int argc, char** argv){
 	s.savehist(outFile);
 	s.output(outFile);
 	
-	// Loop infinito per poter scegliere gli istogrammi 
+	// Loop infinito per poter scegliere gli istogrammi
 	std::string cmd;  // Comando
 	int val;          // Valore associato al comando
 	CLRSCREEN;
@@ -91,23 +91,23 @@ int main(int argc, char** argv){
 	    std::cout << "    quit 0      // Uscire dal programma          \n";
 	    std::cout << "______\n";
 	    std::cout << "prompt>";
-	    
+	   
 	    // Legge i valori
 	    std::cin >> cmd >> val;
 
 			// Parsing
 	    if(cmd=="quit"){ break;}
-	    else if(cmd=="log") { 
-	    	screen2->SetLogy(val); 
-	    	CLRSCREEN; 
-	    	continue; 
+	    else if(cmd=="log") {
+	    	screen2->SetLogy(val);
+	    	CLRSCREEN;
+	    	continue;
 	    }
-	    else if(cmd=="list"){ 
+	    else if(cmd=="list"){
 	    	CLRSCREEN;
 	    	s.PrintHistos();
 	    	continue;
 	    }
-	    else if(cmd=="out"){ 
+	    else if(cmd=="out"){
 	    	CLRSCREEN;
 	    	system(CAT);
 	    	continue;
@@ -121,19 +121,19 @@ int main(int argc, char** argv){
 	    else if(cmd=="evo") {
 	    	step+= nAnni*365*24*3600/ddt;
 	    	s.modT((float)val);
-	    	s.evo(mode, step);   
+	    	s.evo(mode, step);  
 			s.output(outFile);
 			nAnni=val;
-	    	CLRSCREEN; 
+	    	CLRSCREEN;
 	    	continue;
 	    }
 	    else if(cmd=="root"){
 	      std::cout << "\n\n\t\t --> Comando alla finestra di root\n";
-	      std::cout << "    \t\t     File->Quit per tornare al terminale\n";        
+	      std::cout << "    \t\t     File->Quit per tornare al terminale\n";       
 	      myApp.Run(kTRUE);
 	      CLRSCREEN;
 	      std::cout << "Uscito dalla finestra di root\n";
-	      continue; 
+	      continue;
 	    }
 	    else if(cmd=="sis"){
 			TH1I *h = s.getist(val);
@@ -143,12 +143,12 @@ int main(int argc, char** argv){
 			screen2->SetWindowSize(900, 900);
 			h->SetFillColor(41);
 			h->Draw();
-			screen2->Modified();    
+			screen2->Modified();   
 			screen2->Update();
 			CLRSCREEN;
 			continue;
 	    }
-	    
+	   
 	//altrimenti di default CERCA ISTOGRAMMA RELATIVO AD UN PIANETA
 		else{
 			//cmd = cmd.substr(0,3);
@@ -157,27 +157,27 @@ int main(int argc, char** argv){
 			if(a==-1){
 				TH1I *h = s.getThisHisto(cmd, val);
 				if(h==NULL){			
-					std::cerr << "Pianeta non riconosciuto\n"; 
+					std::cerr << "Pianeta non riconosciuto\n";
 					continue;				
 				}
 				screen2->Clear();
 				screen2->SetWindowSize(900, 900);
 				h->SetFillColor(41); //41
 				h->Draw();
-				screen2->Modified();    
+				screen2->Modified();   
 				screen2->Update();
 				CLRSCREEN;
 				continue;
 			}
 			else if(a==-2){			
-				std::cerr << "Pianeta non riconosciuto\n"; 
+				std::cerr << "Pianeta non riconosciuto\n";
 				continue;
 			}
 			else{			
 				//std::cout<<a<<std::endl;
 				TGraph *h2 = s.getThisGraph(cmd, val-a);
 				if(h2==NULL){
-					std::cerr << "Pianeta non riconosciuto\n"; 
+					std::cerr << "Pianeta non riconosciuto\n";
 					continue;				
 				}
 				screen2->Clear();
@@ -186,7 +186,7 @@ int main(int argc, char** argv){
 				//h2->GetYaxis()->SetTitle("dist");
 				//h->SetColor(1); //41*/
 				h2->Draw();
-				screen2->Modified();    
+				screen2->Modified();   
 				screen2->Update();
 				CLRSCREEN;		
 				continue;	
@@ -198,13 +198,13 @@ int main(int argc, char** argv){
 
 			h->SetFillColor(1); //41
 			h->Draw();
-			screen2->Modified();    
+			screen2->Modified();   
 			screen2->Update();
 			CLRSCREEN;
 		*/
 		
 	    }
-	    
+	   
 	  }
 	
 	return 0;

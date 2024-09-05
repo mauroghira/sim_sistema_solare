@@ -129,7 +129,7 @@ void sistema::evo(uint32_t mode, int st){
 
 	// Associo una ragionevole dimensione grafica al marker di ogni Corpo
 	float dim = 0.2*( log10( m_corpi[i]->MASS()) -20 );
-	if (dim <0) dim = .5; 
+	if (dim <0) dim = .5;
 	m->SetMarkerSize(dim);
 
 	m->Draw();             // Poniamo il marker sulla tela
@@ -140,7 +140,7 @@ void sistema::evo(uint32_t mode, int st){
 	if( p.modulo() > massimo) massimo = p.modulo();
 	}
 	*/
-  
+ 
   	/*grafica iniziale
 	for(int i=0; i < m_corpi.size(); i++)
 	{
@@ -217,12 +217,12 @@ void sistema::evodt(uint32_t mode, uint32_t j){
 	}	
 //	out<<std::endl;*/
 
-	//*dati in file v2, così più veloce perché apre solo 1 file, inoltre velocizza campionando ogni 1000
+//*dati in file v2, così più veloce perché apre solo 1 file, inoltre velocizza campionando ogni 1000
 	if(j%10000==0){
 		vettore dS=m_corpi[0]->P();
 		std::ofstream out;
 		out.open("dist_sole_"+m_inc, std::ofstream::app);
-		out<<j*m_dT/(365*24*3600);
+		out<<float(j)*m_dT/(365*24*3600);
 		for(auto c: m_corpi){
 			vettore dd=c->P()-dS;
 			float d=(float)dd.modulo();
@@ -235,7 +235,7 @@ void sistema::evodt(uint32_t mode, uint32_t j){
 	if(j%10000==0){
 		std::ofstream out;
 		out.open("incl_"+m_inc, std::ofstream::app);
-		out<<j*m_dT/(365*24*3600);
+		out<<float(j*m_dT/(365*24*3600));
 		for(auto c: m_corpi){
 			out<<" "<<c->incl();
 		}
@@ -243,6 +243,19 @@ void sistema::evodt(uint32_t mode, uint32_t j){
 		out.close();
 	}
 	
+	/*
+	vettore dS=m_corpi[0]->P();
+	std::ofstream out;
+	out.open("val_err_"+m_inc, std::ofstream::app);
+	out<<float(j*m_dT/(365*24*3600));
+	for(auto c: m_corpi){
+		vettore dd=c->P()-dS;
+		float d=(float)dd.modulo();
+		out<<d<<" ";
+	}
+	out<<std::endl;
+	out.close();
+	*/
   	vettore L;
   	for(int i=0; i<m_corpi.size(); i++){
   		vettore dL=m_corpi[i]->LA();
@@ -300,15 +313,15 @@ void sistema::PrintHistos(){
 }
 
 TH1I* sistema::getist(uint32_t i){
-	if( i >= m_ist.size() ) 
+	if( i >= m_ist.size() )
 	    	return NULL;            // Ritorna NULL se l'indice è fuori range
-  	return m_ist[i];   // 
+  	return m_ist[i];   //
 }
 
 //creare gli istogrammi dell'energia e del momento angolare totale
 void sistema::ins(){
   int numBins = 400;
-  std::string s; 
+  std::string s;
 
   // Histo 0
   s = "sistema: momento angolare (r x mv)";
@@ -364,7 +377,7 @@ void sistema::output(std::string file){
 	for(auto h: m_ist){
 	 	out<<h->GetName()<<" || "<<h->GetMean(1)<<" | "<<h->GetRMS(1)<<std::endl;		
 	}	
-	 
+	
 	out.close();
 }
 
@@ -406,7 +419,7 @@ void sistema::mkGraf(std::string pla){
 	  				for(int i=0; i<p; i++)
 	  					b+=" %*lg";
 	  				m_corpi[p]->fillgraf(m_inc, a+b+c);
-	  				std::cout << "creo grafici di "<<m_corpi[p]->NAME()<<"\n"; 
+	  				std::cout << "creo grafici di "<<m_corpi[p]->NAME()<<"\n";
 	  			}
 	  			else std::cout<<"grafici di "<<m_corpi[p]->NAME()<<" gia creati"<<std::endl;		
 	  			pla="";
@@ -431,4 +444,8 @@ void sistema::clean(){
 	out.close();
 	out.open("incl_"+m_inc);
 	out.close();
+	out.open("val_err_"+m_inc);
+	for(auto p: m_corpi) out<<p->NAME()<<" ";
+	out<<std::endl;
+	out.close();	
 }

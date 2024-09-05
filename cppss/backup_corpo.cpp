@@ -13,8 +13,8 @@
 
 std::ostream& operator<<(std::ostream& o, corpo& c)
 {
-  vettore p = c.P()/1.E3; 
-  vettore v = c.V()/1.E3; 
+  vettore p = c.P()/1.E3;
+  vettore v = c.V()/1.E3;
   o << std::setw(10) << c.NAME() << "\t" << p << " km\t" << v << " km/s";
   return o;
 }
@@ -36,7 +36,7 @@ void corpo::leggi(){
 	std::cout<<"inserire l'inclinazione del corpo: ";
 	std::cin>>m_teta;
 	m_L=m_pos*m_vel*m_massa;
-	m_Ek= 0.5*m_massa*m_vel.modulo()*m_vel.modulo(); 
+	m_Ek= 0.5*m_massa*m_vel.modulo()*m_vel.modulo();
 	m_Ep=0;	  //all'nizio la metto a zero, poi la modifico nel main quando ho aggiunto tutti i corpi del sistema
 	inizia();
 }
@@ -50,7 +50,7 @@ corpo::corpo(std::string n, double m, vettore r, vettore v, float Torb, float t)
 	m_app=r;
 	m_TT=Torb;
 	m_L=m_pos*m_vel*m_massa;
-	m_Ek= 0.5*m_massa*m_vel.modulo()*m_vel.modulo(); 
+	m_Ek= 0.5*m_massa*m_vel.modulo()*m_vel.modulo();
 	m_Ep=0;
   	inizia();	
 }
@@ -130,7 +130,7 @@ void corpo::muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode){
 			m_vel = m_vel + vv;
 			break;
 		}
-		case 4: 
+		case 4:
 		{  //runge-kutta ordine 2 eulero-richardson sballato
 			vettore a0=acc(cc);
 			vettore dp= m_vel*dt/2;
@@ -253,7 +253,7 @@ void corpo::muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode){
 			m_pos=p0+k1x+k2x;						
 			break;
 		}
-		default: 
+		default:
 			std::cout<<"invaild mode";
 			break;
 	}
@@ -332,14 +332,14 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 
 	// Riempimento degli istogrammi
 	m_histos[0]->Fill( dSole );                    // Dist dal Sole
-	m_histos[1]->Fill( m_pos.x(), m_pos.y() );           // Traiettoria   
+	m_histos[1]->Fill( m_pos.x(), m_pos.y() );           // Traiettoria  
 //	m_histos[2]->Fill( m_pos.modulo(), m_vel.modulo() ); // Vel vs dist
 	m_histos[2]->Fill( dSole , m_vel.modulo() ); 		// Vel vs dist dal sole
 	m_histos[3]->Fill(m_vel.modulo());                  // Modulo velocità
 	m_histos[4]->Fill( m_L.modulo() );                           // Momento angolare
 	m_histos[5]->Fill( e2 );                              // Eccentricità modo 2
 	m_histos[6]->Fill( m_teta );                              // inclinazione orbita
-	m_histos[8]->Fill( E );                           // Enercia solo sole  
+	m_histos[8]->Fill( E );                           // Enercia solo sole 
 	m_histos[9]->Fill( Emec );                           // Enercia meccanica
 	
 //	m_histos[8]->Fill( m_pos.modulo() );                 // Dist da orig
@@ -349,7 +349,7 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 //	m_histos[12]->Fill( e );                              // Eccentricità
 //	m_histos[7]->Fill( e3 );                              // Eccentricità modo 3
 
-//	m_graps[0]->AddPoint( j, dSole );   
+//	m_graps[0]->AddPoint( j, dSole );  
 	//std::cout<<m_pos<<std::endl;
 	
 	//raccoglo dati perielio
@@ -394,7 +394,7 @@ vettore corpo::acc(std::vector<corpo*> &cc){
 }
 
 TH1I* corpo::getisto(uint32_t index)
-{ 
+{
   //if( index >= m_histos.size()+m_graps.size() )
     //return NULL;            // Ritorna NULL se l'indice è fuori range
   if(index >= m_histos.size())
@@ -404,7 +404,7 @@ TH1I* corpo::getisto(uint32_t index)
 }
 
 TGraph* corpo::getgraf(uint32_t index)
-{ 
+{
   if( index >= m_graps.size() )
     return NULL;            // Ritorna NULL se l'indice è fuori range
   return m_graps[index];   // Altrimenti l'elemento a indice = index
@@ -415,14 +415,14 @@ void corpo::inizia(){
   std::cout << "Inizializzo gli istogrammi di " << m_nome << std:: endl;
   int numBins = 400;
   std::string s;
- 
+
   // Variabili utili per riempire gli istogrammi
   double d    = (double)m_pos.modulo();
   float v    = m_vel.modulo();
 
   // NB: le frazioni usate nei costruttori qui sotto servono per centrare
   //     l'istogramma rispetto al valore atteso - commento gli istogrammi inutili per simulazioni lunghe
-  
+ 
   // Histo 0
   s = m_nome + ": Distanza dal Sole";
   m_histos.push_back(
@@ -435,8 +435,8 @@ void corpo::inizia(){
                                                          numBins, -d*3/2, d*3/2) ) );
   else m_histos.push_back( reinterpret_cast<TH1I*>
                         ( new TH2I(s.c_str(), (s+";x [m];y [m]").c_str(), numBins, -1e10, 1e10,
-                                                         numBins, -5e11, 1e3) ) );  
-   
+                                                         numBins, -5e11, 1e3) ) ); 
+  
   // Histo 2
   s = m_nome + ": |vel| vs |dist dal Sole|";
   if(m_nome!="Sole") m_histos.push_back( reinterpret_cast<TH1I*>
@@ -444,24 +444,24 @@ void corpo::inizia(){
                                                          numBins, v*85/100, v*155/100) ) );
   else m_histos.push_back( reinterpret_cast<TH1I*>
                         ( new TH2I(s.c_str(), (s+";Distanza [m];|v| [m/s]").c_str(), numBins, 0, 5e9,
-                                                         numBins, 0, 5) ) );                                                
-                                                         
+                                                         numBins, 0, 5) ) );                                               
+                                                        
   // Histo 3
   s = m_nome + ": |V|";
-  if(m_nome=="Sole"){  
+  if(m_nome=="Sole"){ 
 	  m_histos.push_back(
 	    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";|v| [m/s];Conteggi").c_str(), numBins, 0, 5 ) ) );
   }
   else m_histos.push_back(
     reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";|v| [m/s];Conteggi").c_str(), numBins, v*4/5, v*8/5 ) ) );
-    
+   
   // Histo 4
   s = m_nome + ": momento angolare (r x mv)";
   double L_att=m_L.modulo();
   m_histos.push_back(
     reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";|L| [kg*m^2/s];Conteggi").c_str(), numBins, L_att*9/10, L_att*11/10) )
   );
-  
+ 
   // Histo 5
   s = m_nome + ": eccentricita' secondo modo"; //NB e' negativa!!!
   m_histos.push_back(
@@ -471,41 +471,41 @@ void corpo::inizia(){
   s = m_nome + ": inclinazione orbita"; //NB e' negativa!!!
   m_histos.push_back(
     reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";Inclinazione [gradi];Conteggi").c_str(), 2*numBins, -m_teta*3/2, m_teta*3/2 ) ) );
-  
+ 
   //Histo 7
   s = m_nome + ": precessione"; //NB e' negativa!!!
   m_histos.push_back(
-    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";Precessione [arcsec/anno];Conteggi").c_str(), numBins, 0, 60 ) ) );  
-    
-  // Histo 8    prima inizializzo soo l'istograma rispetto al sole, poi metto i lsto dopo aver aggiunto tutto 
-  s = m_nome + ": energia meccanica solo col sole"; 
-  if(m_nome!="Sole"){  
+    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";Precessione [arcsec/anno];Conteggi").c_str(), numBins, 0, 60 ) ) ); 
+   
+  // Histo 8    prima inizializzo soo l'istograma rispetto al sole, poi metto i lsto dopo aver aggiunto tutto
+  s = m_nome + ": energia meccanica solo col sole";
+  if(m_nome!="Sole"){ 
 	  double Epot=-G*1.98e30*m_massa/(double)m_pos.modulo();
-	  double E=m_Ek+Epot; 
+	  double E=m_Ek+Epot;
 	  m_histos.push_back(
 	    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";E [J];Conteggi").c_str(), numBins, E*51/50, E*49/50) ) );
-  }    
+  }   
   else{
 	  m_histos.push_back(
 	    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";E [J];Conteggi").c_str(), numBins, 0, 1e33 ) ) );
   } //per il sole rispetto a sé considero solo l'energia cineitca
-  
+ 
   //l'istogramma dell'enegia mecanica completa lo aggiubngo dopo che ho messo tutti i pianeti
-  
+ 
   /* grafico d/t
-  s = m_nome + ": distanza dal sole in fz del tempo(step)"; 
+  s = m_nome + ": distanza dal sole in fz del tempo(step)";
   m_graps.push_back(
     reinterpret_cast<TGraph*> ( new TGraph() ) );
     m_graps[0]->SetName(s.c_str());
     m_graps[0]->SetTitle(s.c_str());
-  
+ 
    /*
      // Histo 0
   s = m_nome + ": Distanza da (0,0)";
   m_histos.push_back(
     reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), s.c_str(), numBins, d*4/5, d*6/5) ) );
-    
-    
+   
+   
   // Histo 2
   s = m_nome + ": X";
   m_histos.push_back(
@@ -515,18 +515,18 @@ void corpo::inizia(){
   s = m_nome + ": Y";
   m_histos.push_back(
     reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), s.c_str(), numBins, -d*3/2, d*3/2) ) );
-    
+   
   // Histo 4
   s = m_nome + ": dist. pos. iniziale";
   m_histos.push_back(
     reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), s.c_str(), numBins, -d*0.01, 2.1*d) ) );
-   
+  
     // Histo 11
   s = m_nome + ": eccentricita'"; //NB e' negativa!!!
   m_histos.push_back(
     reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), s.c_str(), numBins, 0, 1.1 ) ) );
-    
-  // Histo 12 
+   
+  // Histo 12
   s = m_nome + ": eccentricita' terzo modo"; //NB e' negativa!!!
   m_histos.push_back(
     reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), s.c_str(), 2*numBins, 0, 0.25 ) ) );
@@ -546,7 +546,7 @@ void corpo::istEmec(std::vector<corpo*> cc){
 
 void corpo::fillgraf(std::string aa, std::string bb){
   /*/ grafico d/t
-	std::string s = m_nome + ": distanza dal sole in fz del tempo(step)"; 
+	std::string s = m_nome + ": distanza dal sole in fz del tempo(step)";
 	std::string file=m_nome+"_dist_sole.txt";
   	TGraph * lol = new TGraph((aa+file).c_str());
     lol->SetName(s.c_str());
@@ -556,7 +556,7 @@ void corpo::fillgraf(std::string aa, std::string bb){
     */
     	
     // grafico d/t
-	std::string s = m_nome + ": distanza dal sole in fz del tempo(anni)"; 
+	std::string s = m_nome + ": distanza dal sole in fz del tempo(anni)";
 	std::string file="dist_sole_"+aa;
   	TGraph * lol = new TGraph(file.c_str(), bb.c_str());
     lol->SetName(s.c_str());
@@ -566,7 +566,7 @@ void corpo::fillgraf(std::string aa, std::string bb){
     	reinterpret_cast<TGraph*> ( lol ) );
 
     //grafico inmc/t
-    s = m_nome + ": incli8nazione orbita in fz del tempo(anni)"; 
+    s = m_nome + ": incli8nazione orbita in fz del tempo(anni)";
 	file="incl_"+aa;
   	TGraph * gtg = new TGraph(file.c_str(), bb.c_str());
     gtg->SetName(s.c_str());
