@@ -1,0 +1,145 @@
+dati || media | dev std
+------------------------------
+Sole: Distanza dal Sole || 0 | 0	
+Sole: X vs Y || -6.82902e+07 | 2.92244e+07	
+ || -5.92674e+06 | 2.92244e+07
+Sole: |vel| vs |dist dal Sole| || 0 | 0	
+ || 2.44225 | 0
+Sole: |V| || 2.44225 | 1.49624	
+Sole: momento angolare (r x mv) || 1.72602e+34 | 1.52264e+34	
+Sole: eccentricita' secondo modo || 0 | 0	
+Sole: inclinazione orbita || 0 | 0	
+Sole: precessione || 0 | 0	
+Sole: energia meccanica solo col sole || 1.9684e+31 | 1.75761e+31	
+Sole: energia meccanica || -4.0695e+35 | 8.6795e+32	
+
+------------------------------
+Mercurio: Distanza dal Sole || 5.9546e+10 | 8.2511e+09	
+Mercurio: X vs Y || 1.88272e+10 | 4.05634e+10	
+ || 5.15197e+08 | 4.05634e+10
+Mercurio: |vel| vs |dist dal Sole| || 5.9546e+10 | 8.2511e+09	
+ || 46967.8 | 8.2511e+09
+Mercurio: |V| || 46967.8 | 6843.76	
+Mercurio: momento angolare (r x mv) || 8.95049e+38 | 6.07605e+35	
+Mercurio: eccentricita' secondo modo || 0.201897 | 3.66146e-05	
+Mercurio: inclinazione orbita || 1.56732 | 4.83121	
+Mercurio: precessione || 0.559148 | 0.0468943	
+Mercurio: energia meccanica solo col sole || -3.75221e+32 | 4.78493e+28	
+Mercurio: energia meccanica || -3.75288e+32 | 4.84853e+28	
+
+------------------------------
+Venere: Distanza dal Sole || 1.08671e+11 | 1.55551e+08	
+Venere: X vs Y || -6.55978e+09 | 7.82708e+10	
+ || 1.90261e+10 | 7.82708e+10
+Venere: |vel| vs |dist dal Sole| || 1.08671e+11 | 1.55551e+08	
+ || 34863.7 | 1.55551e+08
+Venere: |V| || 34863.7 | 50.3081	
+Venere: momento angolare (r x mv) || 1.84521e+40 | 7.44108e+36	
+Venere: eccentricita' secondo modo || 0.00128861 | 8.62998e-05	
+Venere: inclinazione orbita || -0.207836 | 2.45244	
+Venere: precessione || 0.486798 | 0.0541685	
+Venere: energia meccanica solo col sole || -2.95876e+33 | 4.9127e+29	
+Venere: energia meccanica || -2.95975e+33 | 5.16548e+29	
+
+------------------------------
+Terra: Distanza dal Sole || 1.50185e+11 | 1.34934e+09	
+Terra: X vs Y || 1.47696e+09 | 1.05706e+11	
+ || 3.30993e+07 | 1.05706e+11
+Terra: |vel| vs |dist dal Sole| || 1.50185e+11 | 1.34934e+09	
+ || 29654.3 | 1.34934e+09
+Terra: |V| || 29654.3 | 267.407	
+Terra: momento angolare (r x mv) || 2.65843e+40 | 1.07824e+37	
+Terra: eccentricita' secondo modo || 0.0126927 | 0.000460158	
+Terra: inclinazione orbita || 0 | 0	
+Terra: precessione || 0.15949 | 0	
+Terra: energia meccanica solo col sole || -2.62504e+33 | 1.51088e+30	
+Terra: energia meccanica || -2.62634e+33 | 1.51752e+30	
+
+------------------------------
+Luna: Distanza dal Sole || 1.50187e+11 | 1.3808e+09	
+Luna: X vs Y || 1.4791e+09 | 1.05709e+11	
+ || -5.33388e+07 | 1.05709e+11
+Luna: |vel| vs |dist dal Sole| || 1.50187e+11 | 1.3808e+09	
+ || 29658.4 | 1.3808e+09
+Luna: |V| || 29658.4 | 750.366	
+Luna: momento angolare (r x mv) || 3.2678e+38 | 7.10702e+36	
+Luna: eccentricita' secondo modo || 0.0515541 | 0.0140976	
+Luna: inclinazione orbita || -0.111986 | 3.50792	
+Luna: precessione || 0 | 0	
+Luna: energia meccanica solo col sole || -3.399e+31 | 2.52548e+29	
+Luna: energia meccanica || -3.40771e+31 | 2.55759e+29	
+
+------------------------------
+Marte: Distanza dal Sole || 2.28599e+11 | 1.48003e+10	
+Marte: X vs Y || 1.83449e+10 | 1.65718e+11	
+ || 1.36517e+11 | 1.65718e+11
+Marte: |vel| vs |dist dal Sole| || 2.28599e+11 | 1.48003e+10	
+ || 24098.4 | 1.48003e+10
+Marte: |V| || 24098.4 | 1562.2	
+Marte: momento angolare (r x mv) || 3.51557e+39 | 6.71789e+35	
+Marte: eccentricita' secondo modo || 0.0893141 | 0.00011769	
+Marte: inclinazione orbita || 0.0600885 | 1.30625	
+Marte: precessione || 0 | 0	
+Marte: energia meccanica solo col sole || -1.85264e+32 | 1.93559e+28	
+Marte: energia meccanica || -1.85386e+32 | 2.19122e+28	
+
+------------------------------
+Giove: Distanza dal Sole || 7.42749e+11 | 1.90602e+09	
+Giove: X vs Y || -7.01253e+11 | 3.47406e+10	
+ || -2.10623e+11 | 3.47406e+10
+Giove: |vel| vs |dist dal Sole| || 7.42749e+11 | 1.90602e+09	
+ || 13681.5 | 1.90602e+09
+Giove: |V| || 13681.5 | 34.1318	
+Giove: momento angolare (r x mv) || 1.93056e+43 | 3.36158e+38	
+Giove: eccentricita' secondo modo || 0.0461216 | 7.32154e-05	
+Giove: inclinazione orbita || -1.22768 | 0.0638465	
+Giove: precessione || 0 | 0	
+Giove: energia meccanica solo col sole || -1.60011e+35 | 2.09916e+31	
+Giove: energia meccanica || -1.60111e+35 | 1.77501e+31	
+
+------------------------------
+Saturno: Distanza dal Sole || 1.51393e+12 | 5.11951e+08	
+Saturno: X vs Y || -1.5035e+12 | 8.53931e+09	
+ || -1.42898e+11 | 8.53931e+09
+Saturno: |vel| vs |dist dal Sole| || 1.51393e+12 | 5.11951e+08	
+ || 9093.75 | 5.11951e+08
+Saturno: |V| || 9093.75 | 3.33656	
+Saturno: momento angolare (r x mv) || 7.83363e+42 | 2.68753e+38	
+Saturno: eccentricita' secondo modo || 0.0496015 | 2.57353e-05	
+Saturno: inclinazione orbita || -2.485 | 0.0132852	
+Saturno: precessione || 0.000171038 | 0.000364713	
+Saturno: energia meccanica solo col sole || -2.61091e+34 | 4.85146e+29	
+Saturno: energia meccanica || -2.62027e+34 | 3.65071e+30	
+
+------------------------------
+Urano: Distanza dal Sole || 2.74139e+12 | 8.42551e+07	
+Urano: X vs Y || -2.73811e+12 | 2.61219e+09	
+ || -1.12064e+11 | 2.61219e+09
+Urano: |vel| vs |dist dal Sole| || 2.74139e+12 | 8.42551e+07	
+ || 7109.71 | 8.42551e+07
+Urano: |V| || 7109.71 | 0.258975	
+Urano: momento angolare (r x mv) || 1.6918e+42 | 9.3995e+36	
+Urano: eccentricita' secondo modo || 0.0488614 | 5.12356e-06	
+Urano: inclinazione orbita || -0.799036 | 0.00123858	
+Urano: precessione || 0 | 0	
+Urano: energia meccanica solo col sole || -1.98778e+33 | 3.13089e+28	
+Urano: energia meccanica || -1.9962e+33 | 7.34717e+28	
+
+------------------------------
+Nettuno: Distanza dal Sole || 4.54565e+12 | 4.52706e+07	
+Nettuno: X vs Y || -4.5424e+12 | 9.4925e+08	
+ || -8.4674e+10 | 9.4925e+08
+Nettuno: |vel| vs |dist dal Sole| || 4.54565e+12 | 4.52706e+07	
+ || 5370.02 | 4.52706e+07
+Nettuno: |V| || 5370.02 | 0.0171423	
+Nettuno: momento angolare (r x mv) || 2.48986e+42 | 2.75863e+36	
+Nettuno: eccentricita' secondo modo || 0.00197914 | 2.68102e-05	
+Nettuno: inclinazione orbita || -1.79952 | 0.00105202	
+Nettuno: precessione || 1.74649e-05 | 5.79709e-05	
+Nettuno: energia meccanica solo col sole || -1.49274e+33 | 2.01218e+28	
+Nettuno: energia meccanica || -1.49772e+33 | 1.49984e+28	
+
+==============================
+dati generali
+sistema: momento angolare (r x mv) || 3.13693e+43 | 9.39906e+35
+sistema: energia meccanica || -1.95862e+35 | 2.10042e+29

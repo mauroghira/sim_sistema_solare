@@ -61,7 +61,7 @@ while True:
 		ss.simulazione(mode)
 	
 	elif cmd == "list":
-		print("boh") ########
+		print("boh") ######
 		
 	elif cmd == "out":
 		print("boh") ######
