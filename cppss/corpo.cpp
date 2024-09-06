@@ -92,9 +92,10 @@ void corpo::modE(std::vector<corpo*> cc){
   			vettore dd=cc[i]->P();
   			vettore d=m_pos-dd;
   			double D=(double)d.modulo();
-  			m_Ep+= -G * cc[i]->MASS() * m_massa /D;
+  			m_Ep+= cc[i]->MASS() /D;
   		}
   	}
+  	m_Ep *= -G * m_massa;
   	m_Ek=0.5*m_massa*m_vel.modulo()*m_vel.modulo();
   	//std::cout<<m_Ek<<", "<<m_Ep<<std::endl;
 }
@@ -105,7 +106,8 @@ vettore corpo::acc(std::vector<corpo*> &cc){
 	for(int i=0; i<cc.size(); i++){
 		if(cc[i]->m_nome!=m_nome){
 			vettore d=cc[i]->m_pos-m_pos;
-			if(d.modulo()!=0) k=G*cc[i]->m_massa/pow(d.modulo(), 3);
+			double rl2=pow((d*m_vel).modulo(),2);
+			if(d.modulo()!=0) k=G*cc[i]->m_massa/pow(d.modulo(), 3)*(1+BETA*rl2/pow(C*d.modulo(), 2));
 			vettore A=d*k;
 			a=a+A;
 		}

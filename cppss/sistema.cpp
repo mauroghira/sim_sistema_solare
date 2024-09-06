@@ -158,7 +158,7 @@ void sistema::evodt(uint32_t mode, uint64_t j){
 		out.close();
 	}
 	
-	//*
+	/*
 	if(float(j)*m_dT/(365*24*3600) >= 499){
 	vettore dS=m_corpi[0]->P();
 	std::ofstream out;
