@@ -92,10 +92,9 @@ void corpo::modE(std::vector<corpo*> cc){
   			vettore dd=cc[i]->P();
   			vettore d=m_pos-dd;
   			double D=(double)d.modulo();
-  			m_Ep+= cc[i]->MASS() /D;
+  			m_Ep+= -G * cc[i]->MASS() * m_massa /D;
   		}
   	}
-  	m_Ep *= -G * m_massa;
   	m_Ek=0.5*m_massa*m_vel.modulo()*m_vel.modulo();
   	//std::cout<<m_Ek<<", "<<m_Ep<<std::endl;
 }
@@ -106,8 +105,7 @@ vettore corpo::acc(std::vector<corpo*> &cc){
 	for(int i=0; i<cc.size(); i++){
 		if(cc[i]->m_nome!=m_nome){
 			vettore d=cc[i]->m_pos-m_pos;
-			double rl2=pow((d*m_vel).modulo(),2);
-			if(d.modulo()!=0) k=G*cc[i]->m_massa/pow(d.modulo(), 3)*(1+BETA*rl2/pow(C*d.modulo(), 2));
+			if(d.modulo()!=0) k=G*cc[i]->m_massa/pow(d.modulo(), 3);
 			vettore A=d*k;
 			a=a+A;
 		}
@@ -118,12 +116,9 @@ vettore corpo::acc(std::vector<corpo*> &cc){
 void corpo::muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode){
 	switch(mode){
 		case 0:
-		{   //eulero 0
-			vettore a=acc(cc);
-			vettore dv=a*dt;
-			m_vel=m_vel+dv;
-			vettore dp=m_vel*dt;
-			m_pos=m_pos+dp;
+		{   //eulero 0	
+			m_vel=m_vel + acc(cc)*dt;
+			m_pos= m_pos + m_vel*dt;
 			break;
 		}
 		case 1:
@@ -131,43 +126,36 @@ void corpo::muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode){
 			vettore v0=m_vel;
 			vettore a0=acc(cc);
 			vettore p0=m_pos;
-			vettore dp=v0*dt;
-			m_pos=m_pos+dp;
+			m_pos=m_pos+v0*dt;
 			vettore a2=acc(cc);
-			vettore vv=((a0 + a2)*0.5)*dt; //quì medi accelerazioe e velocità
-			m_vel = m_vel + vv;
-			vettore pp=((m_vel + v0)*0.5)*dt;
-			m_pos=p0+pp;
+			m_vel = m_vel + (a0 + a2)*0.5*dt;
+			m_pos= p0 + (m_vel + v0)*0.5*dt;
 			break;
 		}
 		case 2:
 		{  //velocity verlet
-			vettore v0=m_vel;
 			vettore a0=acc(cc);
-			vettore dp= v0*dt;
-			vettore dp2 = a0*dt*dt/2;
-			m_pos=m_pos+dp+dp2;
+			m_pos= m_pos + m_vel*dt + a0*dt*dt/2;
 			vettore a2=acc(cc);
-			vettore vv=((a0 + a2)*0.5)*dt;  //quì fai media tra acc iniziale e finale
-			m_vel = m_vel + vv;
+			m_vel = m_vel + (a0 + a2)*0.5*dt;
 			break;
 		}
 		case 3:
 		{  //runge-kutta ordine 4
 			//step 1
-			vettore k1v=acc(cc)*dt/2;
-			vettore k1x=m_vel*dt/2;
+			vettore k1v=acc(cc)*dt;
+			vettore k1x=m_vel*dt;
 			vettore p0=m_pos;
 			vettore v0=m_vel;
 			//step 2
-			m_pos=p0+k1x;
-			vettore k2v=acc(cc)*dt/2;
-			m_vel=v0+k1v;
-			vettore k2x=m_vel*dt/2;
+			m_pos=p0+k1x/2;
+			vettore k2v=acc(cc)*dt;
+			m_vel=v0+k1v/2;
+			vettore k2x=m_vel*dt;
 			//step 3
-			m_pos=p0+k2x;
+			m_pos=p0+k2x/2;
 			vettore k3v=acc(cc)*dt;
-			m_vel=v0+k2v;
+			m_vel=v0+k2v/2;
 			vettore k3x=m_vel*dt;
 			//step 4
 			m_pos=p0+k3x;
@@ -175,16 +163,8 @@ void corpo::muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode){
 			m_vel=v0+k3v;
 			vettore k4x=m_vel*dt;			
 			//finale
-			k1v=k1v/3;
-			k2v=k2v*4/6;
-			k3v=k3v/3;
-			k4v=k4v/6;
-			m_vel=v0+k1v+k2v+k3v+k4v;
-			k1x=k1x/3;
-			k2x=k2x*4/6;
-			k3x=k3x/3;
-			k4x=k4x/6;
-			m_pos=p0+k1x+k2x+k3x+k4x;
+			m_vel=v0+(k1v+k2v*2+k3v*2+k4v)/6;
+			m_pos=p0+(k1x+k2x*2+k3x*2+k4x)/6;
 		}
 		case 4:
 		{  //runge-kutta 2
@@ -199,37 +179,23 @@ void corpo::muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode){
 			m_vel=v0+k1v;
 			vettore k2x=m_vel*dt;
 			//finale
-			k1v=k1v/2;
-			k2v=k2v/2;
-			m_vel=v0+k1v+k2v;
-			k1x=k1x/2;
-			k2x=k2x/2	;
-			m_pos=p0+k1x+k2x;						
+			m_vel=v0+k1v/2+k2v/2;
+			m_pos=p0+k1x/2+k2x/2;						
 			break;
 		}
 		case 5:
 		{  //Yoshida 4th order
 			//step1
-			vettore dp=m_vel*dt*W1/2;
-			m_pos = m_pos+dp;
-			vettore a=acc(cc);
-			vettore dv= a*dt*W1;
-			m_vel=m_vel+dv;
+			m_pos= m_pos+ m_vel*dt*W1/2;
+			m_vel= m_vel+ acc(cc)*dt*W1;
 			//step2
-			dp = m_vel*dt*(W0+W1)/2;
-			m_pos= m_pos+dp;
-			a = acc(cc);
-			dv = a*dt*W0;
-			m_vel= m_vel+dv;
+			m_pos= m_pos+ m_vel*dt*(W0+W1)/2;
+			m_vel= m_vel+ acc(cc)*dt*W0;
 			//step 3
-			dp = m_vel*dt*(W0+W1)/2;
-			m_pos= m_pos+dp;
-			a = acc(cc);
-			dv = a*dt*W1;
-			m_vel= m_vel+dv;
+			m_pos= m_pos+ m_vel*dt*(W0+W1)/2;
+			m_vel= m_vel+ acc(cc)*dt*W1;
 			//step 4
-			dp = m_vel*dt*W1/2;
-			m_pos= m_pos+dp;	
+			m_pos= m_pos+ m_vel*dt*W1/2;	
 			break;
 		}
 		default: 

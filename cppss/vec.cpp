@@ -30,20 +30,20 @@ void vettore::sfToCar(){
 	m_x=m_x*sin(theta)*cos(phi);
 }
 
-vettore vettore::operator+(vettore &c){
+vettore vettore::operator+(const vettore &c){
 	vettore s(m_x+c.m_x, m_y+c.m_y, m_z+c.m_z);
 	return s;
 }
-vettore vettore::operator-(vettore &c){
+vettore vettore::operator-(const vettore &c){
 	vettore s(m_x-c.m_x, m_y-c.m_y, m_z-c.m_z);
 	return s;
 }
 
-vettore vettore::operator*(float k){
+vettore vettore::operator*(const float k){
 	vettore s(k*m_x, k*m_y, k*m_z);
 	return s;
 }
-vettore vettore::operator*(vettore &c){
+vettore vettore::operator*(const vettore &c){
 	float x, y, z;
 	x=m_y*c.m_z-m_z*c.m_y;
 	y=-m_x*c.m_z+m_z*c.m_x;
@@ -52,10 +52,10 @@ vettore vettore::operator*(vettore &c){
 	return s;
 }
 
-double  vettore::operator/(vettore &c){
+double  vettore::operator/(const vettore &c){
 	return m_x*c.m_x+m_y*c.m_y+m_z*c.m_z;
 }
-vettore vettore::operator/(float k){
+vettore vettore::operator/(const float k){
 	vettore s(m_x/k, m_y/k, m_z/k);
 	return s;
 }
@@ -96,7 +96,7 @@ void vettore::sferiche(){
 	std::cout<<"coordinate sferiche di c: R="<<m<<", phi="<<f<<", teta="<<t<<std::endl;
 }
 
-float vettore::angolo(vettore &c){
+float vettore::angolo(const vettore &c){
 	float d=operator/(c);
 	float a=modulo()*c.modulo();
 	return acos(d/a)*180/M_PI;

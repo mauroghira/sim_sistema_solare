@@ -57,7 +57,7 @@ void sistema::leggi(std::string config){
 			if(in.eof())break;
 			if(nome[0]!='#'){
 				vettore pp(r, p, t);
-				vettore vv(-v*sin(p*M_PI/180), v*cos(M_PI*p/180), 0);
+				vettore vv(0-v*sin(p*M_PI/180), v*cos(M_PI*p/180), 0);
 				if(nome!="Luna"){
 					pp.sfToCar();
 				}
@@ -245,7 +245,7 @@ void sistema::ins(){
   }
   double L_att=L.modulo();
   m_ist.push_back(
-    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";|L| [kg*m^2/s];Conteggi").c_str(), numBins, L_att*29999/30000, L_att*50001/50000) )   //va bene, devi aumentare pèerché strettissimo, ma funzioona
+    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";|L| [kg*m^2/s];Conteggi").c_str(), numBins, L_att*49999/50000, L_att*50001/50000) )   //va bene, devi aumentare pèerché strettissimo, ma funzioona
   );
 
   // Histo 1

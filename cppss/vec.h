@@ -11,12 +11,12 @@ class vettore{
 		vettore();
 		void leggi();
 		//~complessso();serve per ogggetti dinamici
-		vettore operator+(vettore &c);
-		double operator/(vettore &c); //prodotto scalare
-		vettore operator/(float k);
-		vettore operator*(float k);  //prodotto vettoriale
-		vettore operator*(vettore &c);
-		vettore operator-(vettore &c);
+		vettore operator+(const vettore &c);
+		double operator/(const vettore &c); //prodotto scalare
+		vettore operator/(const float k);
+		vettore operator*(const float k);  //prodotto vettoriale
+		vettore operator*(const vettore &c);
+		vettore operator-(const vettore &c);
 		float teta();
 		float phi();
 		double x() const;
@@ -24,11 +24,11 @@ class vettore{
 		double z() const;
 		void sferiche();
 		void cilindriche();
-		double modulo(){return sqrt(m_x*m_x+m_y*m_y+m_z*m_z);}
+		double modulo() const {return sqrt(m_x*m_x+m_y*m_y+m_z*m_z);}
 		friend std::ostream& operator<<(std::ostream &stream, const vettore c);
 		void sfToCar();
-		float angolo(vettore &c);
+		float angolo(const vettore &c);
 };
 std::ostream& operator<<(std::ostream &stream, const vettore c);
-//float angolo(vettore &b, vettore &c);
+//float angolo(const vettore &b, vettore &c);
 #endif

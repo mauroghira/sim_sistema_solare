@@ -62,8 +62,8 @@ class corpo{
 	vettore AP(){return m_app;}
 	vettore SAP(){return m_sap;}
 	vettore S0(){return m_s0;}
-	void modAPP(vettore a){m_app=a;}
-	void modSAP(vettore a){m_sap=a;}
+	void modAPP(const vettore a){m_app=a;}
+	void modSAP(const vettore a){m_sap=a;}
 	void precessione(float TTerra);
 	float period(){return m_TT;}
 	float incl(){return m_teta;}
