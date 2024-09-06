@@ -12,7 +12,7 @@
 const double G=6.67e-11;
 const float C=3e8;
 const float RS=2.95e3;
-const float BETA = 0;
+const float BETA = 3;
 const float W0 = - std::pow(2, 1/3)/(2-std::pow(2,1/3));
 const float W1 = 1/(2-std::pow(2,1/3));
 

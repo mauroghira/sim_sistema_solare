@@ -105,7 +105,8 @@ vettore corpo::acc(std::vector<corpo*> &cc){
 	for(int i=0; i<cc.size(); i++){
 		if(cc[i]->m_nome!=m_nome){
 			vettore d=cc[i]->m_pos-m_pos;
-			if(d.modulo()!=0) k=G*cc[i]->m_massa/pow(d.modulo(), 3);
+			double rl2=pow((d*m_vel).modulo(),2);
+			if(d.modulo()!=0) k=G*cc[i]->m_massa/pow(d.modulo(), 3)*(1+BETA*rl2/pow(C*d.modulo(), 2));
 			vettore A=d*k;
 			a=a+A;
 		}
