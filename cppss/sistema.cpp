@@ -125,6 +125,7 @@ void sistema::evo(uint32_t mode, int st){
 			
 	//per ora lo metto quì ma sarà poco efficiente
 	for(auto p: m_corpi) p->precessione(m_corpi[3]->period());
+	//for(auto p: m_corpi) p->precessione(365.26);
 	
 }
 void sistema::evodt(uint32_t mode, uint64_t j){
