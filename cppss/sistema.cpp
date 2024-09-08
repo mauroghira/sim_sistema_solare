@@ -158,8 +158,8 @@ void sistema::evodt(uint32_t mode, uint64_t j){
 		out.close();
 	}
 	
-	/*
-	if(float(j)*m_dT/(365*24*3600) >= 499){
+	//*
+	if(float(j)*m_dT/(365*24*3600) >= 4999){
 	vettore dS=m_corpi[0]->P();
 	std::ofstream out;
 	out.open("val_err_"+m_inc, std::ofstream::app);
@@ -245,7 +245,7 @@ void sistema::ins(){
   }
   double L_att=L.modulo();
   m_ist.push_back(
-    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";|L| [kg*m^2/s];Conteggi").c_str(), numBins, L_att*49999/50000, L_att*50001/50000) )   //va bene, devi aumentare pèerché strettissimo, ma funzioona
+    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";|L| [kg*m^2/s];Conteggi").c_str(), numBins, L_att*39999/40000, L_att*40001/40000) )   //va bene, devi aumentare pèerché strettissimo, ma funzioona
   );
 
   // Histo 1
@@ -255,7 +255,7 @@ void sistema::ins(){
   	Emec+=m_corpi[i]->ECIN()+m_corpi[i]->EPOT()/2;  //NON DEVO CONTARE L'EN POT DUE VOLTE
   std::cout<<"E0 "<<Emec<<std::endl;	
   m_ist.push_back(
-    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";E [J];Conteggi").c_str(), numBins, Emec*100001/100000, Emec*99999/100000) )
+    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";E [J];Conteggi").c_str(), numBins, Emec*90001/90000, Emec*89999/90000) )
   );
 }
 
