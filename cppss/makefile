@@ -23,11 +23,11 @@ ilMain.o: ilMain.cpp
 	$(CC) $(CFLAGS) $(CFL) ilMain.cpp $(LIB)
 graphs.o: graphs.cpp
 	$(CC) $(CFLAGS) $(CFL) graphs.cpp $(LIB)
-sistema.o: sistema.cpp
+sistema.o: sistema.cpp sistema.h
 	$(CC) $(CFLAGS) $(CFL) sistema.cpp $(LIB)
-corpo.o: corpo.cpp
+corpo.o: corpo.cpp corpo.h
 	$(CC) $(CFLAGS) $(CFL) corpo.cpp $(LIB)
-vec.o: vec.cpp
+vec.o: vec.cpp vec.h
 	$(CC) $(CFLAGS) vec.cpp
 	
 

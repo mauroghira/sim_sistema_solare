@@ -105,8 +105,17 @@ vettore corpo::acc(std::vector<corpo*> &cc){
 	for(int i=0; i<cc.size(); i++){
 		if(cc[i]->m_nome!=m_nome){
 			vettore d=cc[i]->m_pos-m_pos;
+			//* relatività con tutti i pianeti
 			double rl2=pow((d*m_vel).modulo(),2);
 			if(d.modulo()!=0) k=G*cc[i]->m_massa/pow(d.modulo(), 3)*(1+BETA*rl2/pow(C*d.modulo(), 2));
+			//*/
+			/* relatività solo col sole
+			if(d.modulo()!=0) k=G*cc[i]->m_massa/pow(d.modulo(), 3);
+			if(cc[i]->m_nome=="Sole"){ //correzione relativistica solo rispetto al sole
+				double rl2=pow((d*m_vel).modulo(),2);
+				k*=(1+BETA*rl2/pow(C*d.modulo(), 2));
+			}
+			//*/
 			vettore A=d*k;
 			a=a+A;
 		}
@@ -209,7 +218,7 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 	corpo *sole=cc[0];
 	corpo *terra=cc[3];
 		
-	//*
+	/*
 	if(m_nome=="Sole" && j<2){
 		//per sole m_sap non dovrebbe importare
 		m_app=vettore(0,0,0);
@@ -280,22 +289,22 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 
 	//raccoglo dati perielio
 	if(m_nome!="Sole"){
-		/*
+		//*
 		float d_cfr=(m_app-m_sap).modulo();
-		if(dSole<=d_cfr){
+		if(dSole<d_cfr){
 			m_app=m_pos;
 			m_sap=sp;
 		}
 		uint64_t Tstep = m_TT *24*3600 / dt ;
 		if((j+1)%Tstep == 0){
-			//if(m_nome=="Mercurio") std::cout<<m_app<<m_sap<<m_app-m_sap<<std::endl;
+			//if(m_nome=="Mercurio") std::cout<<(m_app-m_sap).modulo()<<std::endl;
 			m_peri.push_back(m_app-m_sap);
 			m_app=m_pos; //riinizializzo il vettore di confronto
 			m_sap=sp;
 		}
-		*/
+		//*/
 		//van bene ambo i modi - vantaggio di questo è che posso vedere le step a cui lo becco
-		//*
+		/*
 		float d_media=(m_pos0-m_s0).modulo();
 		float d_pre=(m_app-m_sap).modulo();
 		if(d_media<d_pre && d_media<dSole){
@@ -305,18 +314,19 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 				//std::cout<<j<<" "<<m_pos0-m_s0<<std::endl;
 			//}
 		}
-		
+		//*/
 	}
 }
 
 void corpo::precessione(float Tterra){
 	if(m_nome=="Sole")m_histos[7]->Fill(0);
 	else{
-		for(int i=1; i<m_peri.size(); i++){
-			//if(m_nome=="Mercurio") std::cout<<m_peri[i].angolo(m_peri[i-1])*Tterra/m_TT<<std::endl;
-			m_histos[7]->Fill(m_peri[i].angolo(m_peri[i-1])*Tterra/m_TT);
-		}
 		//if(m_nome=="Mercurio") for(auto p: m_peri) std::cout<<p<<std::endl;
+		for(int i=1; i<m_peri.size(); i++){
+			double alfa = m_peri[i].angolo(m_peri[i-1])*Tterra/m_TT;
+			if(m_nome=="Mercurio") std::cout<<alfa<<std::endl;
+			m_histos[7]->Fill(alfa*3600);
+		}
 	}
 }
 
@@ -402,7 +412,7 @@ void corpo::inizia(){
   //Histo 7
   s = m_nome + ": precessione"; //NB e' negativa!!!
   m_histos.push_back(
-    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";Precessione [arcsec/anno];Conteggi").c_str(), numBins, 0, 1 ) ) );  
+    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";Precessione [arcsec/anno];Conteggi").c_str(), numBins, 0, 1800 ) ) );  
     
   // Histo 8    prima inizializzo soo l'istograma rispetto al sole, poi metto i lsto dopo aver aggiunto tutto 
   s = m_nome + ": energia meccanica solo col sole"; 

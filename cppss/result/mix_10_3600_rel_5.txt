@@ -23,7 +23,7 @@ Mercurio: |V| || 47161.2 | 6827.53
 Mercurio: momento angolare (r x mv) || 8.9505e+38 | 3.39948e+37	
 Mercurio: eccentricita' secondo modo || 0.202389 | 0.000307729	
 Mercurio: inclinazione orbita || 1.43596 | 4.81887	
-Mercurio: precessione || 0.534868 | 0.0533239	
+Mercurio: precessione || 1926.17 | 189.112	
 Mercurio: energia meccanica solo col sole || -3.75218e+32 | 2.30028e+29	
 Mercurio: energia meccanica || -3.75283e+32 | 2.31973e+29	
 
@@ -37,7 +37,7 @@ Venere: |V| || 34858.3 | 61.7592
 Venere: momento angolare (r x mv) || 1.84566e+40 | 3.66383e+38	
 Venere: eccentricita' secondo modo || 0.00225293 | 0.000534327	
 Venere: inclinazione orbita || 0.0262064 | 2.40939	
-Venere: precessione || 0.445982 | 0.12184	
+Venere: precessione || 1397.3 | 802.631	
 Venere: energia meccanica solo col sole || -2.95887e+33 | 2.49295e+30	
 Venere: energia meccanica || -2.95981e+33 | 2.54668e+30	
 
@@ -50,8 +50,8 @@ Terra: |vel| vs |dist dal Sole| || 1.50185e+11 | 1.35066e+09
 Terra: |V| || 29655.7 | 278.625	
 Terra: momento angolare (r x mv) || 2.66003e+40 | 3.90492e+38	
 Terra: eccentricita' secondo modo || 0.0135065 | 0.000687061	
-Terra: inclinazione orbita || 0 | 0	
-Terra: precessione || 0.293067 | 0.232697	
+Terra: inclinazione orbita || -9.04602e-14 | 2.51181e-11	
+Terra: precessione || 1690.42 | 0	
 Terra: energia meccanica solo col sole || -2.62477e+33 | 2.94981e+30	
 Terra: energia meccanica || -2.62601e+33 | 3.0316e+30	
 
@@ -79,7 +79,7 @@ Marte: |V| || 23912.8 | 1523.56
 Marte: momento angolare (r x mv) || 3.51363e+39 | 3.44726e+37	
 Marte: eccentricita' secondo modo || 0.0903765 | 0.000652841	
 Marte: inclinazione orbita || 0.214649 | 1.26059	
-Marte: precessione || 0.074374 | 0	
+Marte: precessione || 132.179 | 105.72	
 Marte: energia meccanica solo col sole || -1.8531e+32 | 2.26762e+29	
 Marte: energia meccanica || -1.85437e+32 | 2.41908e+29	
 
@@ -93,7 +93,7 @@ Giove: |V| || 12847.4 | 468.562
 Giove: momento angolare (r x mv) || 1.92425e+43 | 5.25225e+40	
 Giove: eccentricita' secondo modo || 0.0469031 | 0.000973032	
 Giove: inclinazione orbita || 0.291357 | 0.841758	
-Giove: precessione || 0.00141023 | 0.00149361	
+Giove: precessione || 0 | 0	
 Giove: energia meccanica solo col sole || -1.60395e+35 | 2.23925e+32	
 Giove: energia meccanica || -1.60452e+35 | 2.1045e+32	
 
@@ -107,7 +107,7 @@ Saturno: |V| || 9379.71 | 238.904
 Saturno: momento angolare (r x mv) || 7.83564e+42 | 1.95116e+39	
 Saturno: eccentricita' secondo modo || 0.050629 | 0.000899533	
 Saturno: inclinazione orbita || -1.1769 | 1.11441	
-Saturno: precessione || 0.000171038 | 0.000364713	
+Saturno: precessione || 0 | 0	
 Saturno: energia meccanica solo col sole || -2.61734e+34 | 5.80546e+31	
 Saturno: energia meccanica || -2.62258e+34 | 4.40955e+31	
 
@@ -135,7 +135,7 @@ Nettuno: |V| || 5371.63 | 1.42449
 Nettuno: momento angolare (r x mv) || 2.49006e+42 | 1.63081e+38	
 Nettuno: eccentricita' secondo modo || 0.00309102 | 0.00073356	
 Nettuno: inclinazione orbita || -1.75869 | 0.0368948	
-Nettuno: precessione || 1.15267e-06 | 1.45672e-05	
+Nettuno: precessione || 0 | 0	
 Nettuno: energia meccanica solo col sole || -1.49358e+33 | 4.98073e+29	
 Nettuno: energia meccanica || -1.49768e+33 | 8.25187e+28	
 
