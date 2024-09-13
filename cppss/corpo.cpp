@@ -208,7 +208,7 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 	corpo *sole=cc[0];
 	corpo *terra=cc[3];
 		
-	//*
+	/*
 	if(m_nome=="Sole" && j<2){
 		//per sole m_sap non dovrebbe importare
 		m_app=vettore(0,0,0);
@@ -279,7 +279,7 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 
 	//raccoglo dati perielio
 	if(m_nome!="Sole"){
-		/*
+		//*
 		float d_cfr=(m_app-m_sap).modulo();
 		if(dSole<=d_cfr){
 			m_app=m_pos;
@@ -292,9 +292,9 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 			m_app=m_pos; //riinizializzo il vettore di confronto
 			m_sap=sp;
 		}
-		*/
+		//*/
 		//van bene ambo i modi - vantaggio di questo è che posso vedere le step a cui lo becco
-		//*
+		/*
 		float d_media=(m_pos0-m_s0).modulo();
 		float d_pre=(m_app-m_sap).modulo();
 		if(d_media<d_pre && d_media<dSole){
@@ -304,7 +304,7 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 				//std::cout<<j<<" "<<m_pos0-m_s0<<std::endl;
 			//}
 		}
-		
+		//*/
 	}
 }
 
@@ -313,7 +313,7 @@ void corpo::precessione(float Tterra){
 	else{
 		for(int i=1; i<m_peri.size(); i++){
 			//if(m_nome=="Mercurio") std::cout<<m_peri[i].angolo(m_peri[i-1])*Tterra/m_TT<<std::endl;
-			m_histos[7]->Fill(m_peri[i].angolo(m_peri[i-1])*Tterra/m_TT);
+			m_histos[7]->Fill(m_peri[i].angolo(m_peri[i-1])*3600*Tterra/m_TT);
 		}
 		//if(m_nome=="Mercurio") for(auto p: m_peri) std::cout<<p<<std::endl;
 	}
@@ -387,6 +387,7 @@ void corpo::inizia(){
   m_histos.push_back(
     reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";|L| [kg*m^2/s];Conteggi").c_str(), numBins, L_att*9/10, L_att*11/10) )
   );
+  m_histos[4]->GetXaxis()->SetNdivisions(4, 2, 0, kFALSE);
   
   // Histo 5
   s = m_nome + ": eccentricita' secondo modo"; //NB e' negativa!!!
@@ -401,7 +402,7 @@ void corpo::inizia(){
   //Histo 7
   s = m_nome + ": precessione"; //NB e' negativa!!!
   m_histos.push_back(
-    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";Precessione [arcsec/anno];Conteggi").c_str(), numBins, 0, 1 ) ) );  
+    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";Precessione [arcsec/anno];Conteggi").c_str(), numBins, 0, 2800) ) );  
     
   // Histo 8    prima inizializzo soo l'istograma rispetto al sole, poi metto i lsto dopo aver aggiunto tutto 
   s = m_nome + ": energia meccanica solo col sole"; 
@@ -415,6 +416,7 @@ void corpo::inizia(){
 	  m_histos.push_back(
 	    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";E [J];Conteggi").c_str(), numBins, 0, 1e33 ) ) );
   } //per il sole rispetto a sé considero solo l'energia cineitca
+  m_histos[8]->GetXaxis()->SetNdivisions(4, 2, 0, kFALSE);
   
   //l'istogramma dell'enegia mecanica completa lo aggiubngo dopo che ho messo tutti i pianeti
   
@@ -428,6 +430,7 @@ void corpo::istEmec(std::vector<corpo*> cc){
 	std::string s=m_nome + ": energia meccanica";
 	m_histos.push_back(
 	    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";E [J];Conteggi").c_str(), numBins, E*51/50, E*49/50) ) );
+	m_histos[9]->GetXaxis()->SetNdivisions(4, 2, 0, kFALSE);
 
   	//aggiungo quì inizializzazione di m_sap per la precessione
   	m_sap=cc[0]->P0();

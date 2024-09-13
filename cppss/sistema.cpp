@@ -245,7 +245,7 @@ void sistema::ins(){
   }
   double L_att=L.modulo();
   m_ist.push_back(
-    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";|L| [kg*m^2/s];Conteggi").c_str(), numBins, L_att*39999/40000, L_att*40001/40000) )   //va bene, devi aumentare pèerché strettissimo, ma funzioona
+    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";|L| [kg*m^2/s];Conteggi").c_str(), numBins, L_att*49999/50000, L_att*50001/50000) )   //va bene, devi aumentare pèerché strettissimo, ma funzioona
   );
 
   // Histo 1
@@ -257,6 +257,8 @@ void sistema::ins(){
   m_ist.push_back(
     reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";E [J];Conteggi").c_str(), numBins, Emec*90001/90000, Emec*89999/90000) )
   );
+  
+  for(auto h: m_ist) h->GetXaxis()->SetNdivisions(4, 2, 0, kFALSE);
 }
 
 int sistema::select(std::string p, int v){

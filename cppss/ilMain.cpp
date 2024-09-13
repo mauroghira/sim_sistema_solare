@@ -8,6 +8,8 @@
 #include <TApplication.h>
 #include<TCanvas.h>
 #include <TFile.h>
+#include<TStyle.h>
+#include<TLine.h>
 
 #define CLRSCREEN printf("\e[1;1H\e[2J");
 
@@ -15,6 +17,8 @@
 #/bin/bash \n\
 cat $(ls -Art result/*.txt | tail -n 1) \n\
 "
+
+void linee(TH1I *h);
 
 int main(int argc, char** argv){
 
@@ -109,6 +113,8 @@ int main(int argc, char** argv){
 	      continue; 
 	    }
 	    else if(cmd=="sis"){
+	      	gStyle->SetOptStat(111111);
+	      	gStyle->SetTextSize(0.01);
 			TH1I *h = s.getist(val);
 			if(h==NULL)
 			  		{ std::cerr << "Istogramma non trovato\n"; continue; }
@@ -116,6 +122,7 @@ int main(int argc, char** argv){
 			screen2->SetWindowSize(900, 900);
 			h->SetFillColor(41);
 			h->Draw();
+			linee(h);
 			screen2->Modified();    
 			screen2->Update();
 			CLRSCREEN;
@@ -128,6 +135,7 @@ int main(int argc, char** argv){
 			int a=s.select(cmd, val);
 			
 			if(a==-1){
+  				gStyle->SetOptStat(111111);
 				TH1I *h = s.getThisHisto(cmd, val);
 				if(h==NULL){			
 					std::cerr << "Pianeta non riconosciuto\n"; 
@@ -137,6 +145,7 @@ int main(int argc, char** argv){
 				screen2->SetWindowSize(900, 900);
 				h->SetFillColor(41); //41
 				h->Draw();
+				if(val==4 || val==8 || val==9) linee(h);
 				screen2->Modified();    
 				screen2->Update();
 				CLRSCREEN;
@@ -169,4 +178,29 @@ int main(int argc, char** argv){
 	  }
 	
 	return 0;
+}
+
+void linee(TH1I *h){
+	TLine *l= new TLine(h->GetMean(),0,h->GetMean(),h->GetMaximum());
+	l->SetLineColor(kRed);
+	l->SetLineWidth(3);
+	l->Draw();
+	TLine *l4= new TLine(h->GetMean()+h->GetRMS(),0,h->GetMean()+h->GetRMS(),h->GetMaximum());			
+	l4->SetLineColor(kBlue);
+	l4->SetLineStyle(kDashed);
+	l4->SetLineWidth(4);
+	l4->Draw();
+	TLine *l5= new TLine(h->GetMean()-h->GetRMS(),0,h->GetMean()-h->GetRMS(),h->GetMaximum());			
+	l5->SetLineColor(kBlue);
+	l5->SetLineStyle(kDashed);
+	l5->SetLineWidth(4);
+	l5->Draw();
+	TLine *l2= new TLine(h->GetMean()+3*h->GetRMS(),0,h->GetMean()+3*h->GetRMS(),h->GetMaximum());			
+	l2->SetLineStyle(kDashDotted);
+	l2->SetLineWidth(3);
+	l2->Draw();
+	TLine *l3= new TLine(h->GetMean()-3*h->GetRMS(),0,h->GetMean()-3*h->GetRMS(),h->GetMaximum());			
+	l3->SetLineStyle(kDashDotted);
+	l3->SetLineWidth(3);
+	l3->Draw();
 }
