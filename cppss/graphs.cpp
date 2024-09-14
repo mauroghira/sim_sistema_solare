@@ -83,6 +83,7 @@ int main(int argc, char** argv){
 			  		{ std::cerr << "Istogramma non trovato\n"; continue; }
 			screen2->Clear();
 			screen2->SetWindowSize(900, 900);
+			h->GetXaxis()->SetNdivisions(4, 2, 0, kFALSE);
 			h->SetFillColor(41);
 			h->Draw();
 			linee(h);
