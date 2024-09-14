@@ -19,6 +19,7 @@ cat $(ls -Art result/*.txt | tail -n 1) \n\
 "
 
 void linee(TH1I *h);
+void analitic();
 
 int main(int argc, char** argv){
 

@@ -117,14 +117,12 @@ void sistema::evo(uint32_t mode, int st){
 	unsigned long int n=nn*m_T;
 	for(uint64_t i=0; i<n; i++){
 		evodt(mode, i+st);
-		if((i+st)%(nn*5)==0){
+		if((i+st)%(nn*500)==0){
 			print();	//stampa ogni 5 ani
 			std::cout<<"anno "<<(i+st)/nn<<std::endl;
-		}
+		}	
 	}
-			
-	//per ora lo metto quì ma sarà poco efficiente
-	for(auto p: m_corpi) p->precessione(m_corpi[3]->period());
+	//m_corpi[1]->precessione();
 	
 }
 void sistema::evodt(uint32_t mode, uint64_t j){
@@ -158,7 +156,7 @@ void sistema::evodt(uint32_t mode, uint64_t j){
 		out.close();
 	}
 	
-	//*
+	/*
 	if(float(j)*m_dT/(365*24*3600) >= 4999){
 	vettore dS=m_corpi[0]->P();
 	std::ofstream out;

@@ -1,0 +1,33 @@
+dati || media | dev std
+------------------------------
+Sole: Distanza dal Sole || 0 | 0	
+Sole: X vs Y || 2444.52 | 2179.14	
+ || 250.446 | 2179.14
+Sole: |vel| vs |dist dal Sole| || 0 | 0	
+ || 0.00935803 | 0
+Sole: |V| || 0.00935803 | 0.00488462	
+Sole: momento angolare (r x mv) || 2.63297e+29 | 3.47441e+29	
+Sole: eccentricita' secondo modo || 0 | 0	
+Sole: inclinazione orbita || 0 | 0	
+Sole: precessione || 0 | 0	
+Sole: energia meccanica solo col sole || 0 | 0	
+Sole: energia meccanica || -3.4251e+32 | 2.03207e+30	
+
+------------------------------
+Marte: Distanza dal Sole || 2.29701e+11 | 1.44041e+10	
+Marte: X vs Y || 3.05999e+10 | 1.61377e+11	
+ || 5.52585e+09 | 1.61377e+11
+Marte: |vel| vs |dist dal Sole| || 2.48444e+11 | 6.7533e+08	
+ || 22043.5 | 6.7533e+08
+Marte: |V| || 23977.9 | 1516	
+Marte: momento angolare (r x mv) || 3.51491e+39 | 7.08024e+37	
+Marte: eccentricita' secondo modo || 0.0892108 | 6.10634e-07	
+Marte: inclinazione orbita || 0.160583 | 1.2664	
+Marte: precessione || 0 | 0	
+Marte: energia meccanica solo col sole || 0 | 0	
+Marte: energia meccanica || -1.85293e+32 | 3.92311e+26	
+
+==============================
+dati generali
+sistema: momento angolare (r x mv) || 3.51493e+39 | 2.05012e+34
+sistema: energia meccanica || -1.85294e+32 | 1.19512e+27

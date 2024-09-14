@@ -206,20 +206,6 @@ void corpo::muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode){
 
 void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uint64_t j){
 	corpo *sole=cc[0];
-	corpo *terra=cc[3];
-		
-	/*
-	if(m_nome=="Sole" && j<2){
-		//per sole m_sap non dovrebbe importare
-		m_app=vettore(0,0,0);
-	}
-	else{
-		m_app=m_pos0;
-		m_sap=m_s0;
-	}	
-	m_s0=sole->P0();
-	m_pos0=m_pos; //devo salvare la posizione che il corpo aveva prima dell'evoluzione, soprattutto per il sole, perché serve per il calcolo della precessione
-	//*/
 	
 	//sposto corpo
 	muovi(cc, dt, mode);
@@ -236,14 +222,6 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
   	//std::cout<<Ecin<<" "<<Epot<<" "<<Emec<<" ";
 	m_L=m_pos*m_vel*m_massa;
 	
-	//calcolo solo 'energia rispetto al sole, senza contare altri corpi, per valutare meglio l'eccentricità
-	double E=0;
-	if(m_nome=="Sole")E=m_Ek;
-	else{
-		double Epot=-G*sole->MASS()*m_massa/dSole;
-		E=m_Ek+Epot;
-	}
-	
   	double alfa = G * sole->MASS() * m_massa;
   	double mr=sole->MASS()*m_massa/(m_massa+sole->MASS());
   	double den = alfa * alfa * mr;
@@ -251,61 +229,24 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
   	vettore Ls=ds*m_vel*m_massa; //per calcolare l'eccentricità devo usare il momento angolare rispetto al sole, non rispetto all'origine
 	double h2  = Ls.modulo()*Ls.modulo();
 
-	double num2 = 2 * h2 * E;
+	double num2 = 2 * h2 * Emec;
 	double e2 = sqrt(1+num2/den);  //eccentricità2
 
 	//valuto inclinazione
-	vettore tp=terra->P();
-	vettore dtt=tp-sp;
-	vettore vt=terra->V();
-	vettore nt=dtt*vt;
-	if(m_nome!="Luna") m_teta=90-ds.angolo(nt);
-	else{
-		vettore lt=m_pos-tp;
-		m_teta=90-lt.angolo(nt);
-	}
+	vettore nt(0,0,1);
+	vettore lt=m_pos-sp;
+	m_teta=90-lt.angolo(nt);
 
 	// Riempimento degli istogrammi
 	m_histos[0]->Fill( dSole );                    // Dist dal Sole
-	m_histos[1]->Fill( m_pos.x(), m_pos.y() );           // Traiettoria   
+	m_histos[1]->Fill( m_pos.x(), m_pos.y());           // Traiettoria   
 	//m_histos[2]->Fill( m_pos.modulo(), m_vel.modulo() ); // Vel vs dist
 	m_histos[2]->Fill( dSole , m_vel.modulo() ); 		// Vel vs dist dal sole
 	m_histos[3]->Fill(m_vel.modulo());                  // Modulo velocità
 	m_histos[4]->Fill( m_L.modulo() );                           // Momento angolare
 	m_histos[5]->Fill( e2 );                              // Eccentricità modo 2
 	m_histos[6]->Fill( m_teta );                              // inclinazione orbita
-	m_histos[8]->Fill( E );                           // Enercia solo sole  
 	m_histos[9]->Fill( Emec );                           // Enercia meccanica
-
-	//raccoglo dati perielio
-	if(m_nome!="Sole"){
-		//*
-		float d_cfr=(m_app-m_sap).modulo();
-		if(dSole<=d_cfr){
-			m_app=m_pos;
-			m_sap=sp;
-		}
-		uint64_t Tstep = m_TT *24*3600 / dt ;
-		if((j+1)%Tstep == 0){
-			//if(m_nome=="Mercurio") std::cout<<m_app<<m_sap<<m_app-m_sap<<std::endl;
-			m_peri.push_back(m_app-m_sap);
-			m_app=m_pos; //riinizializzo il vettore di confronto
-			m_sap=sp;
-		}
-		//*/
-		//van bene ambo i modi - vantaggio di questo è che posso vedere le step a cui lo becco
-		/*
-		float d_media=(m_pos0-m_s0).modulo();
-		float d_pre=(m_app-m_sap).modulo();
-		if(d_media<d_pre && d_media<dSole){
-			m_peri.push_back(m_pos0-m_s0);
-			//if(m_nome=="Mercurio"){
-				//std::cout<<d_pre<<" "<<d_media<<" "<<dSole<<std::endl;
-				//std::cout<<j<<" "<<m_pos0-m_s0<<std::endl;
-			//}
-		}
-		//*/
-	}
 }
 
 void corpo::precessione(float Tterra){
@@ -366,8 +307,8 @@ void corpo::inizia(){
   // Histo 2
   s = m_nome + ": |vel| vs |dist dal Sole|";
   if(m_nome!="Sole") m_histos.push_back( reinterpret_cast<TH1I*>
-                        ( new TH2I(s.c_str(), (s+";Distanza [m];|v| [m/s]").c_str(), numBins, d*60/100, d*115/100,  //mod lim in base a dati
-                                                         numBins, v*85/100, v*155/100) ) );
+                        ( new TH2I(s.c_str(), (s+";Distanza [m];|v| [m/s]").c_str(), numBins, d*99/100, d*105/100,  //mod lim in base a dati
+                                                         numBins, v*99/100, v*101/100) ) );
   else m_histos.push_back( reinterpret_cast<TH1I*>
                         ( new TH2I(s.c_str(), (s+";Distanza [m];|v| [m/s]").c_str(), numBins, 0, 5e9,
                                                          numBins, 0, 5) ) );                                                

@@ -1,0 +1,33 @@
+dati || media | dev std
+------------------------------
+Sole: Distanza dal Sole || 0 | 0	
+Sole: X vs Y || 3552.77 | 3165.01	
+ || 249.506 | 3165.01
+Sole: |vel| vs |dist dal Sole| || 0 | 0	
+ || 0.10902 | 0
+Sole: |V| || 0.10902 | 0.0527948	
+Sole: momento angolare (r x mv) || 2.21351e+33 | 2.08942e+33	
+Sole: eccentricita' secondo modo || 0 | 0	
+Sole: inclinazione orbita || 0 | 0	
+Sole: precessione || 0 | 0	
+Sole: energia meccanica solo col sole || 0 | 0	
+Sole: energia meccanica || -5.91731e+33 | 8.22195e+30	
+
+------------------------------
+Venere: Distanza dal Sole || 1.08692e+11 | 1.51212e+08	
+Venere: X vs Y || 3.2718e+08 | 7.6721e+10	
+ || 1.07904e+10 | 7.6721e+10
+Venere: |vel| vs |dist dal Sole| || 1.08692e+11 | 1.51212e+08	
+ || 34857.6 | 1.51212e+08
+Venere: |V| || 34857.6 | 48.4268	
+Venere: momento angolare (r x mv) || 1.84506e+40 | 8.97163e+38	
+Venere: eccentricita' secondo modo || 0.00121357 | 1.72603e-05	
+Venere: inclinazione orbita || 0.00672305 | 2.40381	
+Venere: precessione || 0 | 0	
+Venere: energia meccanica solo col sole || 0 | 0	
+Venere: energia meccanica || -2.95867e+33 | 8.04205e+28	
+
+==============================
+dati generali
+sistema: momento angolare (r x mv) || 1.84506e+40 | 1.89818e+35
+sistema: energia meccanica || -2.95878e+33 | 9.97864e+27
