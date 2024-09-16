@@ -1,0 +1,7 @@
+{% extends 'default.puml' %}
+
+{% block preamble %}
+title Architettura del codice
+skinparam backgroundColor #EEEBDC
+skinparam handwritten true
+{% endblock %}

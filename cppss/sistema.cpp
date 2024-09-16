@@ -1,4 +1,4 @@
-	#include "vec.h"
+#include "vec.h"
 #include "corpo.h"
 #include<vector>
 #include<cstring>
@@ -128,9 +128,11 @@ void sistema::evo(uint32_t mode, int st){
 	
 }
 void sistema::evodt(uint32_t mode, uint64_t j){
-	for(int i=0; i<m_corpi.size(); i++){
+	for(int i=1; i<m_corpi.size(); i++){
 		m_corpi[i]->evolvidT(m_corpi, m_dT, mode, j);
 	}
+	m_corpi[0]->modE(m_corpi);
+  	m_corpi[0]->getisto(9)->Fill(m_corpi[0]->EMEC());                           // Enercia meccanica
 
 	//*dati in file v2, così più veloce perché apre solo 1 file, inoltre velocizza campionando ogni 1000
 	if(j%10000==0){
@@ -158,7 +160,7 @@ void sistema::evodt(uint32_t mode, uint64_t j){
 		out.close();
 	}
 	
-	//*
+	/*
 	if(float(j)*m_dT/(365*24*3600) >= 4999){
 	vettore dS=m_corpi[0]->P();
 	std::ofstream out;

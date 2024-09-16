@@ -1,0 +1,202 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class corpo {
+	+corpo()
+	+corpo(std::string n, double m, vettore r, vettore v, float Torb, float t)
+	+getgraf(uint32_t i) : TGraph*
+	+getisto(uint32_t i) : TH1I*
+	+ECIN() : double
+	+EMEC() : double
+	+EPOT() : double
+	+MASS() : double
+	#m_Ek : double
+	#m_Ep : double
+	#m_massa : double
+	+incl() : float
+	#m_TT : float
+	#m_teta : float
+	+period() : float
+	+NAME() : std::string
+	#m_nome : std::string
+	#m_graps : std::vector<TGraph*>
+	#m_histos : std::vector<TH1I*>
+	#m_peri : std::vector<vettore>
+	+numHistos() : uint32_t
+	+numgraf() : uint32_t
+	+AP() : vettore
+	+LA() : vettore
+	+P() : vettore
+	+P0() : vettore
+	+S0() : vettore
+	+SAP() : vettore
+	+V() : vettore
+	+acc(std::vector<corpo*>& cc) : vettore
+	#m_L : vettore
+	#m_app : vettore
+	#m_pos : vettore
+	#m_pos0 : vettore
+	#m_s0 : vettore
+	#m_sap : vettore
+	#m_vel : vettore
+	+ass(std::string n, double m, vettore r, vettore v, float Torb, float t) : void
+	+evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uint64_t j) : void
+	+fillgraf(std::string aa, std::string bb) : void
+	+inizia() : void
+	+istEmec(std::vector<corpo*> cc) : void
+	+leggi() : void
+	+modAPP(const vettore a) : void
+	+modE(std::vector<corpo*> cc) : void
+	+modSAP(const vettore a) : void
+	+muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode) : void
+	+precessione(float TTerra) : void
+}
+
+
+class sistema {
+	+sistema(float T, unsigned int dt, std::string config, std::string of)
+	+sistema()
+	+getThisGraph(std::string nomeCorpo, uint32_t indice) : TGraph*
+	+getThisHisto(std::string nomeCorpo, uint32_t indice) : TH1I*
+	+getist(uint32_t i) : TH1I*
+	-m_T : float
+	+select(std::string p, int v) : int
+	-m_inc : std::string
+	-m_ist : std::vector<TH1I*>
+	-m_corpi : std::vector<corpo*>
+	+numist() : uint32_t
+	-m_dT : unsigned int
+	+PrintHistos() : void
+	+add(corpo* c) : void
+	+clean() : void
+	+evo(uint32_t mode, int st) : void
+	+evodt(uint32_t mode, uint64_t j) : void
+	+input(std::string config, std::string of) : void
+	+ins() : void
+	+leggi(std::string config) : void
+	+mkGraf(std::string pla) : void
+	+modSTR(std::string out) : void
+	+modT(float s) : void
+	+output(std::string file) : void
+	+print() : void
+	+savehist(std::string out) : void
+}
+
+
+class vettore {
+	+vettore(double x, double y, double z)
+	+vettore()
+	-m_x : double
+	-m_y : double
+	-m_z : double
+	+modulo() : double {query}
+	+operator/(const vettore& c) : double
+	+x() : double {query}
+	+y() : double {query}
+	+z() : double {query}
+	+angolo(const vettore& c) : float
+	+phi() : float
+	+teta() : float
+	+operator<<(std::ostream& stream, const vettore c) : std :: ostream&
+	+operator*(const float k) : vettore
+	+operator*(const vettore& c) : vettore
+	+operator+(const vettore& c) : vettore
+	+operator-(const vettore& c) : vettore
+	+operator/(const float k) : vettore
+	+cilindriche() : void
+	+leggi() : void
+	+sfToCar() : void
+	+sferiche() : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+corpo "8" *-- vettore
+
+
+sistema o-- corpo
+
+
+
+
+
+
+/' Dependency relationships '/
+
+corpo <.. corpo
+
+
+corpo <.. corpo
+
+
+corpo <.. corpo
+
+
+corpo <.. corpo
+
+
+corpo <.. corpo
+
+
+corpo <.. sistema
+
+
+vettore <.. corpo
+
+
+vettore <.. corpo
+
+
+vettore <.. corpo
+
+
+vettore <.. corpo
+
+
+vettore <.. corpo
+
+
+vettore <.. corpo
+
+
+vettore <.. vettore
+
+
+vettore <.. vettore
+
+
+vettore <.. vettore
+
+
+vettore <.. vettore
+
+
+vettore <.. vettore
+
+
+vettore <.. vettore
+
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

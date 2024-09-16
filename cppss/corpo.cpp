@@ -208,7 +208,7 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 	corpo *sole=cc[0];
 	corpo *terra=cc[3];
 		
-	//*
+	/*
 	if(m_nome=="Sole" && j<2){
 		//per sole m_sap non dovrebbe importare
 		m_app=vettore(0,0,0);
@@ -248,8 +248,8 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
   	double mr=sole->MASS()*m_massa/(m_massa+sole->MASS());
   	double den = alfa * alfa * mr;
   	
-  	vettore Ls=ds*m_vel*m_massa; //per calcolare l'eccentricità devo usare il momento angolare rispetto al sole, non rispetto all'origine
-	double h2  = Ls.modulo()*Ls.modulo();
+  	//vettore Ls=ds*m_vel*m_massa; //per calcolare l'eccentricità devo usare il momento angolare rispetto al sole, non rispetto all'origine
+	double h2  = m_L.modulo()*m_L.modulo();
 
 	double num2 = 2 * h2 * E;
 	double e2 = sqrt(1+num2/den);  //eccentricità2
@@ -279,7 +279,7 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 
 	//raccoglo dati perielio
 	if(m_nome!="Sole"){
-		/*
+		//*
 		float d_cfr=(m_app-m_sap).modulo();
 		if(dSole<=d_cfr){
 			m_app=m_pos;
@@ -292,9 +292,9 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 			m_app=m_pos; //riinizializzo il vettore di confronto
 			m_sap=sp;
 		}
-		*/
+		//*/
 		//van bene ambo i modi - vantaggio di questo è che posso vedere le step a cui lo becco
-		//*
+		/*
 		float d_media=(m_pos0-m_s0).modulo();
 		float d_pre=(m_app-m_sap).modulo();
 		if(d_media<d_pre && d_media<dSole){
@@ -304,7 +304,7 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 				//std::cout<<j<<" "<<m_pos0-m_s0<<std::endl;
 			//}
 		}
-		
+		//*/
 	}
 }
 

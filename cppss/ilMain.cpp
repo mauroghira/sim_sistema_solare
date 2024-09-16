@@ -121,7 +121,7 @@ int main(int argc, char** argv){
 			screen2->SetWindowSize(900, 900);
 			h->SetFillColor(41);
 			h->Draw();
-			linee(h);
+			//linee(h);
 			screen2->Modified();    
 			screen2->Update();
 			CLRSCREEN;

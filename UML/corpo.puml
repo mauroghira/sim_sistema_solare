@@ -1,0 +1,79 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class corpo {
+	+corpo()
+	+corpo(std::string n, double m, vettore r, vettore v, float Torb, float t)
+	+getgraf(uint32_t i) : TGraph*
+	+getisto(uint32_t i) : TH1I*
+	+ECIN() : double
+	+EMEC() : double
+	+EPOT() : double
+	+MASS() : double
+	#m_Ek : double
+	#m_Ep : double
+	#m_massa : double
+	+incl() : float
+	#m_TT : float
+	#m_teta : float
+	+period() : float
+	+NAME() : std::string
+	#m_nome : std::string
+	#m_graps : std::vector<TGraph*>
+	#m_histos : std::vector<TH1I*>
+	#m_peri : std::vector<vettore>
+	+numHistos() : uint32_t
+	+numgraf() : uint32_t
+	+AP() : vettore
+	+LA() : vettore
+	+P() : vettore
+	+P0() : vettore
+	+S0() : vettore
+	+SAP() : vettore
+	+V() : vettore
+	+acc(std::vector<corpo*>& cc) : vettore
+	#m_L : vettore
+	#m_app : vettore
+	#m_pos : vettore
+	#m_pos0 : vettore
+	#m_s0 : vettore
+	#m_sap : vettore
+	#m_vel : vettore
+	+ass(std::string n, double m, vettore r, vettore v, float Torb, float t) : void
+	+evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uint64_t j) : void
+	+fillgraf(std::string aa, std::string bb) : void
+	+inizia() : void
+	+istEmec(std::vector<corpo*> cc) : void
+	+leggi() : void
+	+modAPP(vettore a) : void
+	+modE(std::vector<corpo*> cc) : void
+	+modSAP(vettore a) : void
+	+muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode) : void
+	+precessione(float TTerra) : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

@@ -1,0 +1,54 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class vettore {
+	+vettore(double x, double y, double z)
+	+vettore()
+	-m_x : double
+	-m_y : double
+	-m_z : double
+	+modulo() : double
+	+operator/(vettore& c) : double
+	+x() : double {query}
+	+y() : double {query}
+	+z() : double {query}
+	+angolo(vettore& c) : float
+	+phi() : float
+	+teta() : float
+	+operator<<(std::ostream& stream, const vettore c) : std :: ostream&
+	+operator*(float k) : vettore
+	+operator*(vettore& c) : vettore
+	+operator+(vettore& c) : vettore
+	+operator-(vettore& c) : vettore
+	+operator/(float k) : vettore
+	+cilindriche() : void
+	+leggi() : void
+	+sfToCar() : void
+	+sferiche() : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

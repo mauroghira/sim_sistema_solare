@@ -1,0 +1,57 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class sistema {
+	+sistema(float T, unsigned int dt, std::string config, std::string of)
+	+sistema()
+	+getThisGraph(std::string nomeCorpo, uint32_t indice) : TGraph*
+	+getThisHisto(std::string nomeCorpo, uint32_t indice) : TH1I*
+	+getist(uint32_t i) : TH1I*
+	-m_T : float
+	+select(std::string p, int v) : int
+	-m_inc : std::string
+	-m_ist : std::vector<TH1I*>
+	-m_corpi : std::vector<corpo*>
+	+numist() : uint32_t
+	-m_dT : unsigned int
+	+PrintHistos() : void
+	+add(corpo* c) : void
+	+clean() : void
+	+evo(uint32_t mode, int st) : void
+	+evodt(uint32_t mode, uint64_t j) : void
+	+input(std::string config, std::string of) : void
+	+ins() : void
+	+leggi(std::string config) : void
+	+mkGraf(std::string pla) : void
+	+modSTR(std::string out) : void
+	+modT(float s) : void
+	+output(std::string file) : void
+	+print() : void
+	+savehist(std::string out) : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml
