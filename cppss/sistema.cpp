@@ -3,6 +3,7 @@
 #include<vector>
 #include<cstring>
 #include<iostream>
+#include<iomanip>
 #include<cmath>
 #include "sistema.h"
 #include<fstream>
@@ -24,12 +25,12 @@ void sistema::input(std::string config, std::string of){
 	leggi(config);
 	ins();
 }
-sistema::sistema(float T, unsigned int dt, std::string config, std::string of){
+sistema::sistema(float T, unsigned int dt, std::string config, std::string of, int xx){
 	m_T=T;
 	m_dT=dt;
 	m_inc=of;
 	leggi(config);
-	ins();
+	ins(xx);
 }
 sistema::sistema(){
 	m_T=0;
@@ -111,12 +112,12 @@ void sistema::add(corpo* c){
 	m_corpi.push_back(c);
 }
 
-void sistema::evo(uint32_t mode, int st){
+void sistema::evo(uint32_t mode, int xx, int st){
 
 	unsigned long int nn=365*24*3600/m_dT;
 	unsigned long int n=nn*m_T;
 	for(uint64_t i=0; i<n; i++){
-		evodt(mode, i+st);
+		evodt(mode, i+st, xx);
 		if((i+st)%(nn*5)==0){
 			print();	//stampa ogni 5 ani
 			std::cout<<"anno "<<(i+st)/nn<<std::endl;
@@ -127,50 +128,12 @@ void sistema::evo(uint32_t mode, int st){
 	for(auto p: m_corpi) p->precessione(m_corpi[3]->period());
 	
 }
-void sistema::evodt(uint32_t mode, uint64_t j){
-	for(int i=0; i<m_corpi.size(); i++){
+void sistema::evodt(uint32_t mode, uint64_t j, int xx){
+	for(int i=1; i<m_corpi.size(); i++){
 		m_corpi[i]->evolvidT(m_corpi, m_dT, mode, j);
 	}
-
-	//*dati in file v2, così più veloce perché apre solo 1 file, inoltre velocizza campionando ogni 1000
-	if(j%10000==0){
-		vettore dS=m_corpi[0]->P();
-		std::ofstream out;
-		out.open("dist_sole_"+m_inc, std::ofstream::app);
-		out<<float(j)*m_dT/(365*24*3600);
-		for(auto c: m_corpi){
-			vettore dd=c->P()-dS;
-			float d=(float)dd.modulo();
-			out<<" "<<d;
-		}
-		out<<std::endl;
-		out.close();
-	}
-	
-	if(j%10000==0){
-		std::ofstream out;
-		out.open("incl_"+m_inc, std::ofstream::app);
-		out<<float(j)*m_dT/(365*24*3600);
-		for(auto c: m_corpi){
-			out<<" "<<c->incl();
-		}
-		out<<std::endl;
-		out.close();
-	}
-	
-	//*
-	if(float(j)*m_dT/(365*24*3600) >= 4999){
-	vettore dS=m_corpi[0]->P();
-	std::ofstream out;
-	out.open("val_err_"+m_inc, std::ofstream::app);
-	for(auto c: m_corpi){
-		vettore dd=c->P()-dS;
-		float d=(float)dd.modulo();
-		out<<d<<" ";
-	}
-	out<<std::endl;
-	out.close();
-	}//*/
+	m_corpi[0]->modE(m_corpi);
+  	m_corpi[0]->getisto(9)->Fill(m_corpi[0]->EMEC());      
 	
   	vettore L;
   	for(int i=0; i<m_corpi.size(); i++){
@@ -180,11 +143,34 @@ void sistema::evodt(uint32_t mode, uint64_t j){
   	double L_att=(double)L.modulo();
   	m_ist[0]->Fill(L_att);
 	
-	double Emec=0;
-  	for(int i=0; i<m_corpi.size(); i++)
-  		Emec+=m_corpi[i]->ECIN()+m_corpi[i]->EPOT()/2;
+	double Ek=0;
+  	double Ep=0;
+  	for(int i=0; i<m_corpi.size(); i++){
+  		Ek+=m_corpi[i]->ECIN();  		
+  		Ep+=m_corpi[i]->EPOT()/2;
+  	}
   	//std::cout<<Emec<<std::endl;
-  	m_ist[1]->Fill(Emec);
+  	m_ist[1]->Fill(Ek+Ep);
+  	m_ist[4]->Fill(Ep, Ek);
+  	m_ist[2]->Fill(Ek);
+   	m_ist[3]->Fill(Ep);
+  	m_ist[6]->Fill(Ep, Ep+Ek);
+  	m_ist[5]->Fill(Ek, Ep+Ek);
+  	
+	vettore dS=m_corpi[0]->P()-m_corpi[xx]->P();
+  	m_ist[7]->Fill(dS.modulo(), Ep+Ek);
+  	vettore v=m_corpi[xx]->V();
+  	m_ist[8]->Fill(v.modulo(), Ep+Ek);
+  	
+	std::ofstream out;
+	out.open("energy_"+m_inc, std::ofstream::app);
+	out<<float(j)*m_dT/(365*24*3600)<<" "<<std::setprecision(10)<<Ep/2<<" "<<-Ek<<" "<<Ep+Ek;
+	out<<std::endl;
+	out.close();
+	
+	out.open("dist_sole_"+m_inc, std::ofstream::app);
+	out<<float(j)*m_dT/(365*24*3600)<<" "<<dS.modulo()<<std::endl;
+	out.close();
 }
 
 void sistema::print(){
@@ -213,8 +199,8 @@ TGraph* sistema::getThisGraph(std::string nomeCorpo, uint32_t indice){
   	return NULL;
 }
 
-void sistema::PrintHistos(){
-	corpo *p = m_corpi[1];
+void sistema::PrintHistos(int xx){
+	corpo *p = m_corpi[xx];
   	std::cout << std::noshowpos;
   	for(int i=0; i<p->numHistos(); i++)
   		std::cout << "\t" << i << "\t-> " << p->getisto(i)->GetName() << std::endl;  //istogrammi di ogni corpo
@@ -226,13 +212,13 @@ void sistema::PrintHistos(){
 }
 
 TH1I* sistema::getist(uint32_t i){
-	if( i >= m_ist.size() ) 
-	    	return NULL;            // Ritorna NULL se l'indice è fuori range
+	if( i > m_ist.size() ) 
+	   	return NULL;            // Ritorna NULL se l'indice è fuori range
   	return m_ist[i];   // 
 }
 
 //creare gli istogrammi dell'energia e del momento angolare totale
-void sistema::ins(){
+void sistema::ins(int xx){
   int numBins = 400;
   std::string s; 
 
@@ -255,9 +241,61 @@ void sistema::ins(){
   	Emec+=m_corpi[i]->ECIN()+m_corpi[i]->EPOT()/2;  //NON DEVO CONTARE L'EN POT DUE VOLTE
   std::cout<<"E0 "<<Emec<<std::endl;	
   m_ist.push_back(
-    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";E [J];Conteggi").c_str(), numBins, Emec*90001/90000, Emec*89999/90000) )
+    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";E [J];Conteggi").c_str(), numBins, Emec*190001/190000, Emec*189999/190000) )
   );
+
+    double Ek=0;
+    double Ep=0;
+    for(auto p: m_corpi){
+    	Ek+=p->ECIN();
+		Ep+=p->EPOT()/2;
+    }
   
+  // Histo 2
+  s ="sistema: energia cinetica"; //NB e' negativa!!!
+  m_ist.push_back(
+    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";E [J];Conteggi").c_str(), numBins, Ek*4/5, Ek*26/25) )
+  );
+
+  // Histo 3
+  s ="sistema: energia potenziale"; //NB e' negativa!!!
+  m_ist.push_back(
+    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";E [J];Conteggi").c_str(), numBins, Ep*41/40, Ep*9/10) )
+  );  
+ 
+    // Histo 4
+  	s = "sistema: E_cinetica vs E_potenziale";
+  	m_ist.push_back( reinterpret_cast<TH1I*>
+                        ( new TH2I(s.c_str(), (s+";E_pot [J];E_cin [J]").c_str(), numBins, Ep*41/40, Ep*9/10,
+                                                         numBins, Ek*4/5, Ek*26/25) ) );
+  
+    // Histo 6
+  	s = "sistema: E_meccanica vs E_cinetica";
+  	m_ist.push_back( reinterpret_cast<TH1I*>
+                        ( new TH2I(s.c_str(), (s+";E_cin [J];E_mec [J]").c_str(), numBins, Ek*4/5, Ek*26/25,
+                        								numBins, Emec*190001/190000, Emec*189999/190000) ) );
+    // Histo 5
+  	s = "sistema: E_meccanica vs E_potenziale";
+  	m_ist.push_back( reinterpret_cast<TH1I*>
+                        ( new TH2I(s.c_str(), (s+";E_pot [J];E_mec [J]").c_str(), numBins, Ep*41/40, Ep*9/10,
+                                                         numBins, Emec*190001/190000, Emec*189999/190000) ) );
+
+	vettore dS=m_corpi[0]->P()-m_corpi[xx]->P();
+	double d=dS.modulo();
+    // Histo 7
+  	s = "E meccanica VS distanza di "+m_corpi[xx]->NAME()+" dal Sole";
+  	m_ist.push_back( reinterpret_cast<TH1I*>
+                        ( new TH2I(s.c_str(), (s+";distanza [m];E [J]").c_str(), numBins, d*99/100, d*115/100,
+                                                         numBins, Emec*190001/190000, Emec*189999/190000) ) );
+
+	vettore v=m_corpi[xx]->V();
+	d=v.modulo();
+    // Histo 7
+  	s = "E meccanica VS velocita' di "+m_corpi[xx]->NAME();
+  	m_ist.push_back( reinterpret_cast<TH1I*>
+                        ( new TH2I(s.c_str(), (s+";velocita' [m/s];E [J]").c_str(), numBins, d*85/100, d*101/100,
+                                                         numBins, Emec*190001/190000, Emec*189999/190000) ) );
+
   for(auto h: m_ist) h->GetXaxis()->SetNdivisions(4, 2, 0, kFALSE);
 }
 
@@ -312,47 +350,17 @@ void sistema::savehist(std::string out){
 	delete f;
 }
 
-void sistema::mkGraf(std::string pla){
+void sistema::mkGraf(int xx){
 	std::string a="%lg";
 	std::string c=" %lg";
-	std::string b="";
-	if (pla==""){
-		for(auto p: m_corpi){
-			if(p->numgraf()==0){
-				p->fillgraf(m_inc, a+b+c);
-			}
-			else std::cout<<"grafici di "<<p->NAME()<<" gia creati"<<std::endl;
-			b+=" %*lg";
-		}
-		std::cout<<"creo tutti i grafici"<<std::endl;
-	}
-	else{
-		pla = pla.substr(0,3); // Cerchiamo solo le prime 3 lettere
-  		for(int p=0; p<m_corpi.size(); p++)
-  			if (m_corpi[p]->NAME().find(pla)==0){
-  				if(m_corpi[p]->numgraf()==0){
-	  				for(int i=0; i<p; i++)
-	  					b+=" %*lg";
-	  				m_corpi[p]->fillgraf(m_inc, a+b+c);
-	  				std::cout << "creo grafici di "<<m_corpi[p]->NAME()<<"\n"; 
-	  			}
-	  			else std::cout<<"grafici di "<<m_corpi[p]->NAME()<<" gia creati"<<std::endl;		
-	  			pla="";
-	  			break;
-  			}
-		if(pla!=""){
-			std::cerr<<"Pianeta non riccnosciuto"<<std::endl;
-		}
-	}
+	if(m_corpi[xx]->numgraf()==0)
+		m_corpi[xx]->fillgraf(m_inc, a+c);
+	else std::cout<<"grafici di "<<m_corpi[xx]->NAME()<<" gia creati"<<std::endl;
 }
 
 void sistema::clean(){	
-	std::ofstream out("dist_sole_"+m_inc);
+	std::ofstream out("energy_"+m_inc);
 	out.close();
-	out.open("incl_"+m_inc);
+	out.open("dist_sole_"+m_inc);
 	out.close();
-	out.open("val_err_"+m_inc);
-	for(auto p: m_corpi) out<<p->NAME()<<" ";
-	out<<std::endl;
-	out.close();	
 }

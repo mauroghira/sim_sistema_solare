@@ -207,19 +207,6 @@ void corpo::muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode){
 void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uint64_t j){
 	corpo *sole=cc[0];
 	corpo *terra=cc[3];
-		
-	/*
-	if(m_nome=="Sole" && j<2){
-		//per sole m_sap non dovrebbe importare
-		m_app=vettore(0,0,0);
-	}
-	else{
-		m_app=m_pos0;
-		m_sap=m_s0;
-	}	
-	m_s0=sole->P0();
-	m_pos0=m_pos; //devo salvare la posizione che il corpo aveva prima dell'evoluzione, soprattutto per il sole, perché serve per il calcolo della precessione
-	//*/
 	
 	//sposto corpo
 	muovi(cc, dt, mode);
@@ -276,36 +263,6 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 	m_histos[6]->Fill( m_teta );                              // inclinazione orbita
 	m_histos[8]->Fill( E );                           // Enercia solo sole  
 	m_histos[9]->Fill( Emec );                           // Enercia meccanica
-
-	//raccoglo dati perielio
-	if(m_nome!="Sole"){
-		//*
-		float d_cfr=(m_app-m_sap).modulo();
-		if(dSole<=d_cfr){
-			m_app=m_pos;
-			m_sap=sp;
-		}
-		uint64_t Tstep = m_TT *24*3600 / dt ;
-		if((j+1)%Tstep == 0){
-			//if(m_nome=="Mercurio") std::cout<<m_app<<m_sap<<m_app-m_sap<<std::endl;
-			m_peri.push_back(m_app-m_sap);
-			m_app=m_pos; //riinizializzo il vettore di confronto
-			m_sap=sp;
-		}
-		//*/
-		//van bene ambo i modi - vantaggio di questo è che posso vedere le step a cui lo becco
-		/*
-		float d_media=(m_pos0-m_s0).modulo();
-		float d_pre=(m_app-m_sap).modulo();
-		if(d_media<d_pre && d_media<dSole){
-			m_peri.push_back(m_pos0-m_s0);
-			//if(m_nome=="Mercurio"){
-				//std::cout<<d_pre<<" "<<d_media<<" "<<dSole<<std::endl;
-				//std::cout<<j<<" "<<m_pos0-m_s0<<std::endl;
-			//}
-		}
-		//*/
-	}
 }
 
 void corpo::precessione(float Tterra){
@@ -448,14 +405,4 @@ void corpo::fillgraf(std::string aa, std::string bb){
     lol->SetTitle(s.c_str());
     m_graps.push_back(
     	reinterpret_cast<TGraph*> ( lol ) );
-
-    //grafico inmc/t
-    s = m_nome + ": inclinazione orbita in fz del tempo(anni)"; 
-	file="incl_"+aa;
-  	TGraph * gtg = new TGraph(file.c_str(), bb.c_str());
-    gtg->SetName(s.c_str());
-    s+=";Anni;Inclinazione [gradi]";
-    gtg->SetTitle(s.c_str());
-    m_graps.push_back(
-    	reinterpret_cast<TGraph*> ( gtg ) );
 }

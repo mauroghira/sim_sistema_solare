@@ -10,6 +10,7 @@
 #include <TFile.h>
 #include<TStyle.h>
 #include<TLine.h>
+#include<TMultiGraph.h>
 
 #define CLRSCREEN printf("\e[1;1H\e[2J");
 
@@ -19,33 +20,37 @@ cat $(ls -Art result/*.txt | tail -n 1) \n\
 "
 
 void linee(TH1I *h);
+void lin2D(TH1I *h);
+void Egraf(std::string outFile);
 
 int main(int argc, char** argv){
 
-	if(argc!=6){
-		std::cerr << "Usage: configFile numeroAnni granularità mode outputfile\n"; 
+	if(argc!=7){
+		std::cerr << "Usage: configFile numeroAnni granularità mode planet outputfile\n"; 
 		std::cerr << "   configFile: file di configurazione delle condizioni iniziali\n";
 		std::cerr << "   numeroAnni: anni di evoluzione\n";
 		std::cerr << "   granularità: tempo dT di evoluzione (secondi)\n";		
 		std::cerr << "   mode:       modalità di evoluzione\n";
 		std::cerr << "               0 = standard \n";
 		std::cerr << "               1 = con media dell'accelerazione \n";
+		std::cerr << "   planet: indice del pianeta scelto \n";
 		return 2;
 	}
 	std::string confFile = argv[1];
 	float nAnni = atof(argv[2]);
 	uint32_t ddt = atoi(argv[3]);
 	uint32_t mode  = atoi(argv[4]);
-	std::string outFile = argv[5];
+	std::string outFile = argv[6];
 	int step=0;
+	int xx=atoi(argv[5]);
 	
 	TApplication myApp("App", &argc, argv);
 	TCanvas *screen2 = new TCanvas("c1", "My Solar System", 0, 0, 900, 900);
 
-	sistema s(nAnni, ddt, confFile, outFile);
+	sistema s(nAnni, ddt, confFile, outFile, xx);
 	
 	s.clean();
-	s.evo(mode);
+	s.evo(mode, xx);
 	s.savehist(outFile);
 	s.output(outFile);
 	
@@ -61,7 +66,6 @@ int main(int argc, char** argv){
 	    std::cout << "  Esempi: \n";
 	    std::cout << "    Pianeta n   // cioè Pianeta indiceIstogramma (sis per info globali) \n";
 	    std::cout << "    list 0      // lista istogrammi disponibili  \n";
-	    std::cout << "    graf 0      // crea i grafici fz/tempo  \n";
 	    std::cout << "    out  0      // stampa dati istogrammi      \n";
 	    std::cout << "    log  0/1    // scala logaritmica si/no       \n";
 	    std::cout << "    evo  n      // evolvi per altri n anni       \n";
@@ -82,7 +86,7 @@ int main(int argc, char** argv){
 	    }
 	    else if(cmd=="list"){ 
 	    	CLRSCREEN;
-	    	s.PrintHistos();
+	    	s.PrintHistos(xx);
 	    	continue;
 	    }
 	    else if(cmd=="out"){ 
@@ -90,15 +94,10 @@ int main(int argc, char** argv){
 	    	system(CAT);
 	    	continue;
 	    }
-	    else if(cmd=="graf"){
-	    	CLRSCREEN;
-	    	s.mkGraf(); //creo grafici d/t
-	    	continue;
-	    }
 	    else if(cmd=="evo") {
 	    	step+= nAnni*365*24*3600/ddt;
 	    	s.modT((float)val);
-	    	s.evo(mode, step);   
+	    	s.evo(mode, xx, step);   
 			s.output(outFile);
 			nAnni=val;
 	    	CLRSCREEN; 
@@ -113,20 +112,34 @@ int main(int argc, char** argv){
 	      continue; 
 	    }
 	    else if(cmd=="sis"){
-	      	gStyle->SetOptStat(111111);
-	      	gStyle->SetTextSize(0.01);
-			TH1I *h = s.getist(val);
-			if(h==NULL)
-			  		{ std::cerr << "Istogramma non trovato\n"; continue; }
-			screen2->Clear();
-			screen2->SetWindowSize(900, 900);
-			h->SetFillColor(41);
-			h->Draw();
-			linee(h);
-			screen2->Modified();    
-			screen2->Update();
-			CLRSCREEN;
-			continue;
+	    	if(val==s.numist()){
+	      		gStyle->SetOptStat(111111);
+				screen2->Clear();
+				screen2->SetWindowSize(1600, 900);
+	      		Egraf(outFile);
+	      		screen2->BuildLegend(0.12, 0.1, 0.12, 0.1);	      		
+				screen2->Modified();    
+				screen2->Update();
+				CLRSCREEN;
+	      		continue;
+	    	}
+	    	else{
+			  	gStyle->SetOptStat(111111);
+			  	gStyle->SetTextSize(0.01);
+				TH1I *h = s.getist(val);
+				if(h==NULL)
+				  		{ std::cerr << "Istogramma non trovato\n"; continue; }
+				screen2->Clear();
+				screen2->SetWindowSize(900, 900);
+				h->SetFillColor(41);
+				h->Draw();
+				if(val<4) linee(h);
+				else lin2D(h);
+				screen2->Modified();    
+				screen2->Update();
+				CLRSCREEN;
+				continue;
+			}
 	    }
 	    
 	//altrimenti di default CERCA ISTOGRAMMA RELATIVO AD UN PIANETA
@@ -150,9 +163,10 @@ int main(int argc, char** argv){
 				screen2->Update();
 				CLRSCREEN;
 				continue;
-			}
-			else if(a==-2){			
-				std::cerr << "Pianeta non riconosciuto\n"; 
+			}			
+			else if(a==-2){
+				CLRSCREEN;
+				s.mkGraf(xx);
 				continue;
 			}
 			else{			
@@ -180,6 +194,39 @@ int main(int argc, char** argv){
 	return 0;
 }
 
+void Egraf(std::string outFile){
+	TMultiGraph *mg = new TMultiGraph();
+	std::string s = "Energie in fz del tempo(anni)";
+    mg->SetName(s.c_str());
+    s+=";Anni;Energia (J)";
+    mg->SetTitle(s.c_str());
+	
+	std::string file="energy_"+outFile;
+  	std::string a="%lg";
+	std::string c=" %lg";
+	std::string b="";
+  	
+  	TGraph *gr1 = new TGraph(file.c_str(), (a+b+c).c_str());
+  	gr1->SetTitle("E Pot/2");
+   	gr1->SetLineColor(kRed);
+   	gr1->SetFillStyle(kDashed);
+	
+	b+=" %*lg";
+  	TGraph *gr2 = new TGraph(file.c_str(), (a+b+c).c_str());
+  	gr2->SetTitle("-E Cin");
+   	gr2->SetLineColor(kBlue);
+   	gr2->SetFillStyle(kDashDotted);
+  	mg->Add(gr2);
+  	mg->Add(gr1);
+	
+	b+=" %*lg";
+  	TGraph *gr3 = new TGraph(file.c_str(), (a+b+c).c_str());
+  	gr3->SetTitle("E Mec");
+  	mg->Add(gr3);
+	
+	mg->Draw("AL");
+}
+
 void linee(TH1I *h){
 	TLine *l= new TLine(h->GetMean(),0,h->GetMean(),h->GetMaximum());
 	l->SetLineColor(kRed);
@@ -203,4 +250,47 @@ void linee(TH1I *h){
 	l3->SetLineStyle(kDashDotted);
 	l3->SetLineWidth(3);
 	l3->Draw();
+}
+void lin2D(TH1I *h){
+	double mx=h->GetMean(1);
+	double my=h->GetMean(2);
+	double lbx=h->GetXaxis()->GetBinLowEdge(1);
+	double lby=h->GetYaxis()->GetBinLowEdge(1);
+	double ubx=h->GetXaxis()->GetBinUpEdge(399);
+	double uby=h->GetYaxis()->GetBinUpEdge(399);
+	
+	TLine *l= new TLine(mx,lby,mx,uby);
+	l->SetLineColor(kRed);
+	l->SetLineWidth(3);
+	l->Draw();
+	TLine *l6= new TLine(lbx,my,ubx,my);
+	l6->SetLineColor(kRed);
+	l6->SetLineWidth(3);
+	l6->Draw();
+/*	
+	double rx=h->GetRMS(1);
+	double ry=h->GetRMS(2);
+	
+	TLine *l5= new TLine(mx+rx,lby,mx+rx,uby);
+	l5->SetLineColor(kBlue);
+	l5->SetLineStyle(kDashed);
+	l5->SetLineWidth(4);
+	l5->Draw();
+	TLine *l4= new TLine(mx-rx,lby,mx-rx,uby);
+	l4->SetLineColor(kBlue);
+	l4->SetLineStyle(kDashed);
+	l4->SetLineWidth(4);
+	l4->Draw();
+	
+	TLine *l3= new TLine(lbx,my+ry,ubx,my+ry);
+	l3->SetLineStyle(kDashDotted);
+	l3->SetLineColor(kBlue);
+	l3->SetLineWidth(3);
+	l3->Draw();
+	TLine *l2= new TLine(lbx,my-ry,ubx,my-ry);
+	l2->SetLineStyle(kDashDotted);
+	l2->SetLineColor(kBlue);
+	l2->SetLineWidth(3);
+	l2->Draw();
+*/
 }
