@@ -241,7 +241,7 @@ void sistema::ins(int xx){
   	Emec+=m_corpi[i]->ECIN()+m_corpi[i]->EPOT()/2;  //NON DEVO CONTARE L'EN POT DUE VOLTE
   std::cout<<"E0 "<<Emec<<std::endl;	
   m_ist.push_back(
-    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";E [J];Conteggi").c_str(), numBins, Emec*190001/190000, Emec*189999/190000) )
+    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";E [J];Conteggi").c_str(), numBins, Emec*90001/90000, Emec*189999/190000) )
   );
 
     double Ek=0;
