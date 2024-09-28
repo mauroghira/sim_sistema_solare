@@ -199,8 +199,8 @@ void Egraf(std::string outFile){
 	TMultiGraph *mg = new TMultiGraph();
 	std::string s = "Energia meccanica in fz del tempo(anni)";
     mg->SetName(s.c_str());
-    s+=";Anni;Energia (J)";
     mg->SetTitle(s.c_str());
+    s+=";Anni;Energia (J)";
 	
 	std::string file="energy_"+outFile;
   	std::string a="%lg";
@@ -222,15 +222,16 @@ void Egraf(std::string outFile){
 */	
 	b+=" %*lg";
   	TGraph *gr3 = new TGraph(file.c_str(), (a+b+c).c_str());
-  	gr3->SetTitle("E Mec");
-  	mg->Add(gr3);
+  	gr3->SetTitle(s.c_str());
+  	gr3->Draw();
+  	//mg->Add(gr3);
 	
-	mg->Draw("AL");
+	//mg->Draw("AL");
 	
 	TLine *l= new TLine(0,gr3->GetMean(2),500,gr3->GetMean(2));
 	l->SetLineColor(kRed);
 	l->SetLineWidth(3);
-	l->Draw();
+	//l->Draw();
 }
 
 void lin2D(TH1I *h){
