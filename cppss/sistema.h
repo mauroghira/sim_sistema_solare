@@ -38,5 +38,8 @@ class sistema{
 	void modSTR(std::string out){m_inc=out;}
 	void clean();
 	void savehist(std::string out);
+	std::vector<double> anal();
+	float tempo(){return m_T;}
+	std::vector<float> times(std::vector<float>* teta);
 };
 #endif

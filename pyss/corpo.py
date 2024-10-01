@@ -86,6 +86,8 @@ class CorpoCeleste:
 				r = np.linalg.norm(self.pos - p.pos)
 				self.Ep[step] += p.massa/r
 		self.Ep[step] *= -G*self.massa
+		
+		self.L[step] = self.massa * np.linalg.norm(np.cross(self.pos, self.vel))
 	
 	#####
 

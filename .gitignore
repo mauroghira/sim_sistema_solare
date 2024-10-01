@@ -4,3 +4,4 @@ cppss/incl_result/
 cppss/grafici/
 pyss/res/
 cppss/energy_result/ 
+pyss/*.png

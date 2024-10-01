@@ -10,24 +10,28 @@
 #include <TFile.h>
 #include<TStyle.h>
 #include<TLine.h>
+#include<vector>
 
 #define CLRSCREEN printf("\e[1;1H\e[2J");
 
 void linee(TH1I *h);
+void cfr(std::string outFile, sistema* ss);
 
 int main(int argc, char** argv){
 
-	if(argc!=3){
-		std::cerr << "Usage: configFile datafile\n"; 
+	if(argc!=4){
+		std::cerr << "Usage: configFile durata datafile\n"; 
 		return 1;
 	}
 	std::string confFile = argv[1];
-	std::string outFile = argv[2];
+	std::string outFile = argv[3];
+	float t=atof(argv[2]);
 	
 	TApplication myApp("App", &argc, argv);
 	TCanvas *screen2 = new TCanvas("c1", "My Solar System", 0, 0, 900, 900);
 	
 	sistema ss;
+	ss.modT(t);
 	ss.modSTR(outFile);
 	ss.leggi(confFile);
 	
@@ -41,9 +45,10 @@ int main(int argc, char** argv){
 	    std::cout << "Inserisci: stringa intero \n";
 	    std::cout << "  Esempi: \n";
 	    std::cout << "    Pianeta n   // cioè Pianeta indiceGrafico (max+1 per creare i grafici)\n";
-	    std::cout << "    sis 0/1  	  // cioè sistema indiceGrafico \n";
+	    std::cout << "    sis  n  	  // cioè sistema indiceGrafico \n";
 	    std::cout << "    list 0      // lista grafici disponibili  \n";
-	    std::cout << "    graf 0      // crea tutti i grafici  \n";	    
+	    std::cout << "    graf 0      // crea tutti i grafici  \n";	   
+	    std::cout << "    cfr 0       // confronto con la soluzione analitica  \n";	    
 	    std::cout << "    root 0      // per passare a root            \n";
 	    std::cout << "    quit 0      // Uscire dal programma          \n";
 	    std::cout << "______\n";
@@ -63,6 +68,16 @@ int main(int argc, char** argv){
 	    	CLRSCREEN;
 	    	ss.mkGraf(); //creo grafici d/t
 	    	//system(RM);
+	    	continue;
+	    }
+		else if(cmd=="cfr"){
+  			gStyle->SetOptStat(111111);
+			screen2->Clear();
+			screen2->SetWindowSize(1600, 900);
+	    	cfr(outFile, &ss);		
+			screen2->Modified();    
+			screen2->Update();
+			CLRSCREEN;
 	    	continue;
 	    }
 	    else if(cmd=="root"){
@@ -145,6 +160,52 @@ int main(int argc, char** argv){
 	
 	return 0;
 }
+void cfr(std::string outFile, sistema* ss){
+	std::vector<float> *teta;
+	for(int i=0; i<720*ss->tempo(); i++){
+		teta->push_back(i*M_PI/360);
+	}
+	//for(auto t: teta) std::cout<<t<<std::endl;
+	std::cout<<teta->size()<<std::endl;
+	/*
+	std::vector<float> *times=ss->times(teta);
+	for(auto t: *times) std::cout<<t<<std::endl;
+	std::cout<<times->size()<<std::endl;
+	
+	//std::vector<double> ana=ss.anal();
+	
+	/*
+	TMultiGraph *mg = new TMultiGraph();
+	std::string s = "Distanza dal sole in fz del tempo(anni)";
+    mg->SetName(s.c_str());
+    s+=";Anni;Distanza (m)";
+    mg->SetTitle(s.c_str());
+	
+	std::string file="dist_sole_"+outFile;
+  	std::string a="%lg %lg";
+  	
+  	TGraph *gr1 = new TGraph(file.c_str(), a.c_str());
+  	gr1->SetTitle("Sol numerica");
+   	gr1->SetLineColor(kRed);
+   	gr1->SetFillStyle(kDashed);
+
+  	TGraph *gr2 = new TGraph(ana);
+  	gr2->SetTitle("Sol analitica");
+   	gr2->SetLineColor(kBlue);
+   	gr2->SetFillStyle(kDashDotted);
+  	mg->Add(gr2);
+  	mg->Add(gr1);
+
+  	TGraph *gr3 = new TGraph());
+  	gr3->SetTitle("Differenza tra le due);
+  	
+  	mg->Add(gr3);
+	
+	mg->Draw("AL");
+	
+*/
+}
+
 void linee(TH1I *h){
 	TLine *l= new TLine(h->GetMean(),0,h->GetMean(),h->GetMaximum());
 	l->SetLineColor(kRed);

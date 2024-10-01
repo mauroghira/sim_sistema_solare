@@ -1,8 +1,12 @@
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+import pandas as pd
+from copy import copy
 from funzioni import *
 #from corpo import CorpoCeleste as cc
+
+G = 6.67408e-11    # m3 kg-1 s-2 (Costante di gravitazione)
 
 # Classe Sistema
 class sistema:
@@ -17,17 +21,17 @@ class sistema:
 		print("Durata:", steps, "step da ",  self.deltaT, "s, ",
 		      steps*self.deltaT//(3600*24*365), "anni" )
 		for p in self.pianeti:   # Preallocazione della memoria
-			p.allocate(steps-1)
+			p.allocate(1)
 			
-		self.ES = np.zeros(steps-1, dtype=float) #per i plot di E ed L totali
-		self.LS = np.zeros(steps-1, dtype=float)
+		self.ES = np.zeros(1, dtype=float) #per i plot di E ed L totali
+		self.LS = np.zeros(1, dtype=float)
 		self.file = outFile
 
 	####à
 	
 	def add(self, corpo):
 		self.pianeti.append(corpo)
-		self.pianeti[-1].allocate(self.steps-1)
+		self.pianeti[-1].allocate(1)
 		#print(angolo(corpo.pos, corpo.vel))
 
 	#####
@@ -44,6 +48,121 @@ class sistema:
 		self.ES = np.append(self.ES, np.zeros(dim-1))
 		self.LS = np.append(self.LS, np.zeros(dim-1))
 
+	#####
+	
+	def cfr(self):
+		m=[]
+		for p in self.pianeti:
+			m.append(p.massa)
+			p.modE(0, self.pianeti)
+			self.LS[0]+= p.L[0]
+			self.ES[0]+= p.Ek[0] + p.Ep[0]/2
+		mu=m[0]*m[1]/(m[0]+m[1])
+		K=G*m[0]*m[1]
+		
+		E0=self.ES[0]
+		L0=np.linalg.norm(self.LS[0])
+		
+		a=-K/(2*E0) #semiasse magiore
+		T=2*np.pi*math.sqrt(mu*a**3/K) #eriodo
+		e=math.sqrt(1+2*E0*L0*L0/(mu*K*K)); #eccentircita
+		BB=math.sqrt((1-e)/(1+e))
+		print(e, a*(1-e), a*(1+e), E0, L0)		
+		
+		dim=1440
+		teta=np.arange(1,2*dim+1)*np.pi/dim #angoli di un periodo orbitale per r
+		teta1=teta[:dim]
+		teta2=teta[-dim:]   #serparo gli array degli angoli per non avere tempi negativi
+		#print(teta, teta1, teta2)
+		psi1=2*np.arctan(BB*np.tan(teta1/2))
+		psi2=2*np.arctan(BB*np.tan(teta2/2))
+			
+		t1=(psi1-e*np.sin(psi1))*T/(2*np.pi)
+		t2=T+(psi2-e*np.sin(psi2))*T/(2*np.pi)
+		tempi=np.append(t1,t2) #array che raccoglie tempi relativi ad 1 periodo orbitale
+		#print(tempi/(3600*24*365.24), tempi.size)		
+		r=a*(1-e**2)/(1+e*np.cos(teta)) #distanze relative al primo periodo
+
+		r, tempi = self.taglio(r, tempi, T, dim)				
+		#self.stmp(r,tempi, "sol analitica")
+		
+		#seleziono dai dati raccolti il campione corrispondente ai tempi che ho generato
+		r_num=self.dati(tempi)
+		#self.stmp(r_num,tempi, "sol numerica")
+		
+		self.stmp(r_num,tempi, "differenza", r)
+		
+	#####
+	
+	def dati(self, tempi):
+		df = pd.read_csv(self.file, sep=' ', names=['sol', 'dist'], skiprows=0)
+		#print(df)
+		closest_indices = df.index.get_indexer(tempi/(365.26*24*3600), method='nearest')
+		cr = df.iloc[closest_indices]
+		#print(cr)
+		
+		d=cr['dist']
+		return d
+	
+	#####
+	
+	def taglio(self, r, tempi, T, dim):
+		r1=r[:dim]
+		r2=r[-dim:]
+		t1=tempi[:dim]
+		t2=tempi[-dim:]
+		
+		q=365.26*3600*24*self.steps #conto quante orbite faccio nella simulazione cxonsiderata (ha self.steps anni terestri)
+		n=q/T
+		
+		for i in range(2, int(n+1)*2): #così mi prende i valori fino alla fine del ciclo n+1, che poi taglierè
+			if i%2==0:
+				t0=tempi[-1]
+				tempi=np.append(tempi, t0+t1)
+				#print(tempi.size)
+				r=np.append(r,r1)
+
+			else:
+				t0=tempi[-1]-T/2
+				tempi=np.append(tempi, t0+t2)
+				#print(tempi.size+1)
+				r=np.append(r,r2)
+
+		if q%T!=0: #taglio i pezzi extra se non ho multiplo intero del periodo
+			tempi=tempi[:int(tempi.size*n/int(n+1))] #devo prendere la frazione del vettore contando che ho messo n+1 cicli
+			r=r[:int(n*r.size/int(n+1))]
+			print("taglio", tempi.size, r.size)
+		
+		return r, tempi
+	
+	#####
+	
+	def stmp(self, r, tempi, lab, d=np.zeros(2)):
+		tt=tempi/(3600*365.26*24)
+		if np.linalg.norm(d)!=0:
+			fig = plt.figure(figsize=(19,9))
+			plt.plot(tt, r, label = "sol numerica")
+			plt.plot(tt, d, label = "sol analitica")
+			plt.title("Distanza dal sole in fz del tempo")
+			plt.xlabel("tempo [anni]")
+			plt.ylabel("distanza [m]")
+			plt.legend()
+			plt.show()
+			r=r-d
+	
+		fig = plt.figure(figsize=(19,9))
+		plt.plot(tt, r, label = lab)
+		plt.title("Distanza dal sole in fz del tempo - "+lab)
+		plt.xlabel("tempo [anni]")
+		plt.ylabel("distanza [m]")
+		plt.legend()
+		plt.show()
+	
+	#####
+	
+	def tempi(self):
+		return 0
+	
 	#####
 
 	def simulazione(self, mode):
