@@ -1,0 +1,33 @@
+dati || media | dev std
+------------------------------
+Sole: Distanza dal Sole || 0 | 0	
+Sole: X vs Y || 1020.73 | 887.871	
+ || 259.4 | 887.871
+Sole: |vel| vs |dist dal Sole| || 0 | 0	
+ || 0.0117409 | 0
+Sole: |V| || 0.0117409 | 0.00464784	
+Sole: momento angolare (r x mv) || 6.50732e+25 | 8.67096e+25	
+Sole: eccentricita' secondo modo || 0 | 0	
+Sole: inclinazione orbita || 0 | 0	
+Sole: precessione || 0 | 0	
+Sole: energia meccanica solo col sole || 0 | 0	
+Sole: energia meccanica || -9.40996e+32 | 5.68645e+30	
+
+------------------------------
+Mercurio: Distanza dal Sole || 4.84897e+10 | 2.11257e+09	
+Mercurio: X vs Y || -1.40391e+10 | 3.91981e+10	
+ || 3.89066e+07 | 3.91981e+10
+Mercurio: |vel| vs |dist dal Sole| || 4.61883e+10 | 1.67733e+08	
+ || 58781.6 | 1.67733e+08
+Mercurio: |V| || 54166.7 | 3739.4	
+Mercurio: momento angolare (r x mv) || 8.95316e+38 | 1.99871e+35	
+Mercurio: eccentricita' secondo modo || 0.211647 | 3.57948e-07	
+Mercurio: inclinazione orbita || -1.47804 | 4.80732	
+Mercurio: precessione || 0 | 0	
+Mercurio: energia meccanica solo col sole || 0 | 0	
+Mercurio: energia meccanica || -3.73454e+32 | 0	
+
+==============================
+dati generali
+sistema: momento angolare (r x mv) || 8.95316e+38 | 0
+sistema: energia meccanica || -3.73454e+32 | 2.36709e+27

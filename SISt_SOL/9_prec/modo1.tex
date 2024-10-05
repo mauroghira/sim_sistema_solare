@@ -1,0 +1,20 @@
+\begin{lstlisting}[language=C++]
+    [...]
+    corpo sole*=cc[0];
+    vettore sp=sole->P();
+    float dSole=(m_pos-sp).modulo();
+    [...]
+    if(m_nome!="Sole"){
+        float d_cfr=(m_app-m_sap).modulo();
+        if(dSole<d_cfr){
+            m_app=m_pos;
+    	m_sap=sp;
+        }
+        uint64_t Tstep = m_TT *24*3600 / dt ;
+        if((j+1)%Tstep == 0){
+    	m_peri.push_back(m_app-m_sap);
+    	m_app=m_pos;
+    	m_sap=sp;
+        }
+    }
+\end{lstlisting}

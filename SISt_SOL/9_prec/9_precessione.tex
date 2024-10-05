@@ -1,0 +1,133 @@
+\section{Precessione}
+    \begin{frame}
+        \frametitle{Contenuti}
+        \transblindsvertical
+        \tableofcontents[currentsection]
+    \end{frame}
+    
+    \begin{frame}{Calcolo della precessione}
+        \begin{columns}
+            \column{.5\textwidth}
+                \begin{enumerate}
+                    \item Individuazione perielio
+                    \item Calcolare angolo con la posizione precedente del perielio - otteniamo $\frac{angolo}{periodo\ orbitale}$
+                    \item Iterare il procedimento
+                    \item Calcolare media e deviazione standard
+                    \item Convertire in $\frac{arcsec}{anno\ terrestre}$ per confrontare coi adti reali
+                \end{enumerate}
+            \column{.5\textwidth}
+                \centering
+                \includegraphics[width=.9\textwidth]{9_prec/precessione.png} \\
+                \vspace{3mm}
+                \includegraphics[width=.9\textwidth]{9_prec/mercurio.png}
+        \end{columns}
+    \end{frame}
+
+    \begin{frame}{Modifiche al codice}
+        \begin{block}{}
+        \begin{enumerate}
+            \item File di configurazione - aggiunta periodi rivoluzione pianeti
+            \item classe Corpo Celeste  -
+            \begin{enumerate}[a]
+                \item Aggiunta membri m\_TT e m\_peri
+                \item Modifiche a evolvidT()
+                \item Correzione relativistica al calcolo dell'accelerazione
+                \item Aggiunta funzione precessione() per l'analisi dei dati
+                \item Aggiunta altri membri e metodi di servizio 
+            \end{enumerate}
+        \end{enumerate}
+        \end{block}
+        \begin{equation}
+            \vec{a_i} = -\sum_{i\neq j}\frac{Gm_j}{r_{ij}^2}(1+\beta\frac{r_L^2}{r_{ij}^2})\frac{\vec r_{ij}}{r_{ij}}\,\,\,\,\,\,\,\,\forall i=1,\dots N
+        \end{equation}
+        \centering
+        Con $\beta=3$ e $\vec{r_L}=\frac{\vec{L}}{mc}=\frac{\vec{r_{ij}}\times\vec{v_j}}{c}$
+        %\input{9_prec/code3}            
+    \end{frame}
+
+    \begin{frame}{Modifiche a corpo::evolvidT( ... ) - v1}
+        \input{9_prec/modo1}
+    \end{frame}
+    \begin{frame}{Modifiche a corpo::evolvidT( ... ) - v2}
+        \input{9_prec/modo2}
+    \end{frame}
+
+    \begin{frame}{Risultati (Obiettivo $= 56 \frac{arcsec}{anno\ terrestre}$)}
+        Forte disaccordo coi dati reali:
+        \vspace{3mm}
+        \begin{columns}
+            \column{.4\textwidth}
+                \centering
+                Senza Relatività
+                \includegraphics[width=\textwidth, height=3cm]{9_prec/sballati/10_3600_nor_1.jpg}\\
+                \includegraphics[width=\textwidth, height=3cm]{9_prec/sballati/10_60_nor_1.jpg}
+            \column{.2\textwidth}
+                \centering
+                10a/3600s\\
+                \vspace{3cm}
+                10a/60s
+            \column{.4\textwidth}
+                \centering
+                Con Relatività
+                \includegraphics[width=.9\textwidth, height=3cm]{9_prec/sballati/10_3600_rel_1.jpg}\\
+                \includegraphics[width=.9\textwidth, height=3cm]{9_prec/sballati/10_60_rel_1.jpg}
+        \end{columns}
+    \end{frame}
+    \begin{frame}{Risultati (Obiettivo $= 56 \frac{arcsec}{anno\ terrestre}$)}
+        \begin{columns}
+            \column{.4\textwidth}
+                \centering
+                Senza Relatività
+                \includegraphics[width=\textwidth, height=3.25cm]{9_prec/sballati/100_3600_nor_1.jpg}\\
+                \includegraphics[width=\textwidth, height=3.25cm]{9_prec/sballati/100_600_nor_1.jpg}
+            \column{.2\textwidth}
+                \centering
+                100a/3600s\\
+                \vspace{3cm}
+                100a/600s
+            \column{.4\textwidth}
+                \centering
+                Con Relatività
+                \includegraphics[width=\textwidth, height=3.25cm]{9_prec/sballati/100_3600_rel_1.jpg}\\
+                \includegraphics[width=\textwidth, height=3.25cm]{9_prec/sballati/100_600_rel_1.jpg}
+        \end{columns}
+    \end{frame}
+    \begin{frame}{Risultati (Obiettivo $= 56 \frac{arcsec}{anno\ terrestre}$)}
+        \begin{columns}
+            \column{.4\textwidth}
+                \centering
+                Senza Relatività
+                \includegraphics[width=\textwidth, height=3.25cm]{9_prec/sballati/10_6_nor_1.jpg}\\
+                \includegraphics[width=\textwidth, height=3.25cm]{9_prec/sballati/500_3600_nor_1.jpg}
+            \column{.2\textwidth}
+                \centering
+                10a/6s
+                \vspace{3cm}
+                500a/3600s
+            \column{.4\textwidth}
+                \centering
+                Con Relatività
+                \includegraphics[width=\textwidth, height=3.25cm]{9_prec/sballati/10_6_rel_1.jpg}\\
+                \includegraphics[width=\textwidth, height=3.25cm]{9_prec/sballati/500_3600_rel_1.jpg}
+        \end{columns}
+    \end{frame}
+
+    \begin{frame}{Risultati (Obiettivo $= 56 \frac{arcsec}{anno\ terrestre}$)}
+        \begin{columns}
+            \column{.4\textwidth}
+                \centering
+                Con Relatività solo rispetto al sole
+                \includegraphics[width=\textwidth, height=3.25cm]{9_prec/sballati/10_3600_relB_1.jpg}\\
+                \includegraphics[width=\textwidth, height=3.25cm]{9_prec/sballati/100_600_relB_1.jpg}
+            \column{.2\textwidth}
+                \centering
+                10a/3600s\\
+                \vspace{3cm}
+                100a/600s
+            \column{.4\textwidth}
+                \centering
+                Con Relatività
+                \includegraphics[width=\textwidth, height=3.25cm]{9_prec/sballati/10_3600_rel_1.jpg}\\
+                \includegraphics[width=\textwidth, height=3.25cm]{9_prec/sballati/100_600_rel_1.jpg}
+        \end{columns}
+    \end{frame}

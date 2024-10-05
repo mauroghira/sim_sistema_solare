@@ -66,23 +66,23 @@ class sistema:
 		a=-K/(2*E0) #semiasse magiore
 		T=2*np.pi*math.sqrt(mu*a**3/K) #eriodo
 		e=math.sqrt(1+2*E0*L0*L0/(mu*K*K)); #eccentircita
-		BB=math.sqrt((1-e)/(1+e))
-		print(e, a*(1-e), a*(1+e), E0, L0)		
+		
+		#calcolo le velocità orbitali associate a afelio e perielio
+		rp=a*(1-e)
+		ra=a*(1+e)
+		vp=math.sqrt(2*(E0+K/rp)/mu)
+		va=math.sqrt(2*(E0+K/ra)/mu)
+		print(e, rp, vp, ra, va)
 		
 		dim=1440
 		teta=np.arange(1,2*dim+1)*np.pi/dim #angoli di un periodo orbitale per r
 		teta1=teta[:dim]
 		teta2=teta[-dim:]   #serparo gli array degli angoli per non avere tempi negativi
 		#print(teta, teta1, teta2)
-		psi1=2*np.arctan(BB*np.tan(teta1/2))
-		psi2=2*np.arctan(BB*np.tan(teta2/2))
 			
-		t1=(psi1-e*np.sin(psi1))*T/(2*np.pi)
-		t2=T+(psi2-e*np.sin(psi2))*T/(2*np.pi)
-		tempi=np.append(t1,t2) #array che raccoglie tempi relativi ad 1 periodo orbitale
-		#print(tempi/(3600*24*365.24), tempi.size)		
-		r=a*(1-e**2)/(1+e*np.cos(teta)) #distanze relative al primo periodo
+		tempi, teta = self.monto(teta1, teta2, e, T)	#scelgo come montare in base a afe o peri
 
+		r=a*(1-e**2)/(1+e*np.cos(teta)) #distanze relative al primo periodo
 		r, tempi = self.taglio(r, tempi, T, dim)				
 		#self.stmp(r,tempi, "sol analitica")
 		
@@ -94,9 +94,35 @@ class sistema:
 		
 	#####
 	
+	def monto(self, teta1, teta2, e, T):
+		BB=math.sqrt((1-e)/(1+e))	
+		psi1=2*np.arctan(BB*np.tan(teta1/2))
+		psi2=2*np.arctan(BB*np.tan(teta2/2))
+		
+		if self.file.find("afe") != -1: #se passo dati afelio devo montare i trempi e le distanze in modo inverso
+			t2=(psi1-e*np.sin(psi1))*T/(2*np.pi)+T/2
+			t1=T/2+(psi2-e*np.sin(psi2))*T/(2*np.pi)
+			tempi=np.append(t1,t2) #array che raccoglie tempi relativi ad 1 periodo orbitale
+			#print(tempi/(3600*24*365.24), tempi.size)		
+			teta=np.append(teta2,teta1) #scambio gli angoli per comodità
+		
+		else:
+			t1=(psi1-e*np.sin(psi1))*T/(2*np.pi)
+			t2=T+(psi2-e*np.sin(psi2))*T/(2*np.pi)
+			tempi=np.append(t1,t2) #array che raccoglie tempi relativi ad 1 periodo orbitale
+			#print(tempi/(3600*24*365.24), tempi.size)
+			teta=np.append(teta1,teta2) #scambio gli angoli per comodità
+		
+		return tempi, teta
+	
+	#####
+	
 	def dati(self, tempi):
 		df = pd.read_csv(self.file, sep=' ', names=['sol', 'dist'], skiprows=0)
+		#rimuovo i duplicati negli indici perché dan fastidio
+		df= df.reset_index().drop_duplicates(subset='index', keep='last').set_index('index')
 		#print(df)
+		#print(df.index)
 		closest_indices = df.index.get_indexer(tempi/(365.26*24*3600), method='nearest')
 		cr = df.iloc[closest_indices]
 		#print(cr)

@@ -1,0 +1,33 @@
+dati || media | dev std
+------------------------------
+Sole: Distanza dal Sole || 0 | 0	
+Sole: X vs Y || 28412.7 | 25409.4	
+ || 250.081 | 25409.4
+Sole: |vel| vs |dist dal Sole| || 0 | 0	
+ || 0.372458 | 0
+Sole: |V| || 0.372458 | 0.181973	
+Sole: momento angolare (r x mv) || 5.41516e+27 | 7.21745e+27	
+Sole: eccentricita' secondo modo || 0 | 0	
+Sole: inclinazione orbita || 0 | 0	
+Sole: precessione || 0 | 0	
+Sole: energia meccanica solo col sole || 0 | 0	
+Sole: energia meccanica || -3.84343e+33 | 2.31723e+31	
+
+------------------------------
+Urano: Distanza dal Sole || 2.88283e+12 | 8.52156e+10	
+Urano: X vs Y || 1.34791e+11 | 2.02397e+12	
+ || 1.82924e+10 | 2.02397e+12
+Urano: |vel| vs |dist dal Sole| || 2.99378e+12 | 8.6821e+09	
+ || 6512.19 | 8.6821e+09
+Urano: |V| || 6770.56 | 200.079	
+Urano: momento angolare (r x mv) || 1.69182e+42 | 1.10075e+39	
+Urano: eccentricita' secondo modo || 0.0415096 | 3.46619e-05	
+Urano: inclinazione orbita || 0.0207716 | 0.561768	
+Urano: precessione || 0 | 0	
+Urano: energia meccanica solo col sole || 0 | 0	
+Urano: energia meccanica || -1.98869e+33 | 1.22644e+29	
+
+==============================
+dati generali
+sistema: momento angolare (r x mv) || 1.69202e+42 | 0
+sistema: energia meccanica || -1.98852e+33 | 0

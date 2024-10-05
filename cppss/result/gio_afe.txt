@@ -1,0 +1,33 @@
+dati || media | dev std
+------------------------------
+Sole: Distanza dal Sole || 0 | 0	
+Sole: X vs Y || 51646.4 | 46120.1	
+ || 249.673 | 46120.1
+Sole: |vel| vs |dist dal Sole| || 0 | 0	
+ || 2.50543 | 0
+Sole: |V| || 2.50543 | 1.44401	
+Sole: momento angolare (r x mv) || 3.34811e+33 | 4.4624e+33	
+Sole: eccentricita' secondo modo || 0 | 0	
+Sole: inclinazione orbita || 0 | 0	
+Sole: precessione || 0 | 0	
+Sole: energia meccanica solo col sole || 0 | 0	
+Sole: energia meccanica || -3.09375e+35 | 1.84733e+33	
+
+------------------------------
+Giove: Distanza dal Sole || 7.82789e+11 | 2.43538e+10	
+Giove: X vs Y || 4.9477e+10 | 5.52398e+11	
+ || 9.76493e+10 | 5.52398e+11
+Giove: |vel| vs |dist dal Sole| || 8.13914e+11 | 2.38177e+09	
+ || 12482 | 2.38177e+09
+Giove: |V| || 12984 | 396.203	
+Giove: momento angolare (r x mv) || 1.9287e+43 | 9.54968e+41	
+Giove: eccentricita' secondo modo || 0.0293511 | 0.00109013	
+Giove: inclinazione orbita || 0.0523879 | 0.918607	
+Giove: precessione || 0 | 0	
+Giove: energia meccanica solo col sole || 0 | 0	
+Giove: energia meccanica || -1.6056e+35 | 2.17751e+32	
+
+==============================
+dati generali
+sistema: momento angolare (r x mv) || 1.93012e+43 | 5.6737e+37
+sistema: energia meccanica || -1.60265e+35 | 3.0652e+29

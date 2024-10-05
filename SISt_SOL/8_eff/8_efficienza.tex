@@ -1,0 +1,82 @@
+\section[Code II]{Questioni tecniche}
+    \begin{frame}
+        \frametitle{Contenuti}
+        \transblindsvertical
+        \tableofcontents[currentsection]
+    \end{frame}
+    
+    \begin{frame}{Efficienza}
+        \begin{exampleblock}{Gestione ROOT::TGraph}
+            \begin{enumerate}
+                \item Raccolta dati
+                \begin{enumerate}[a]
+                    \item Aggiunta punti ad ogni iterazione - analogo agli istogrammi
+                    \item Utilizzo di array
+                    \item Raccolta dati in file txt separati per ogni pianeta
+                    \item Raccolta dati in file txt unico
+                \end{enumerate}
+            \end{enumerate}
+            \vspace{3mm}}}
+            Problemi:
+            \begin{enumerate}[i]
+                \item Evitare crash del programma per eccessiva occpuazione di memoria (perdita dati simulaziuone)
+                \item Limitare il tempo di esecuzione
+            \end{enumerate}
+        \end{exampleblock}
+    \end{frame}
+    
+    \begin{frame}{Efficienza}
+        \begin{exampleblock}{Gestione ROOT::TGraph}
+            \begin{enumerate}
+                \item Raccolta dati
+            \end{enumerate}
+            \vspace{3mm}
+            Problemi:
+            \begin{enumerate}[i]
+                \item Evitare crash del programma per eccessiva occpuazione di memoria (perdita dati simulazione)
+                \item Limitare il tempo di esecuzione
+            \end{enumerate}
+            \vspace{3mm}
+            \textit{Soluzione migliore}:
+            \begin{itemize}
+                \item Raccolta dati in unico file con formattazione in colonne
+                \item Creazione e visualizzazione dei grafici opzionale
+                \item Campionamento dati
+                \item Salvataggio istogrammi in file esterno
+            \end{itemize}
+        \end{exampleblock}
+    \end{frame}
+
+    \begin{frame}{Efficienza}
+        \begin{exampleblock}{Gestione ROOT::TGraph}
+            \begin{enumerate}
+                \item Raccolta dati
+                \item Visualizzazione
+            \end{enumerate}
+            \vspace{3mm}
+            Problemi:
+            \begin{enumerate}[i]
+                \item Conflitto con ROOT::THI
+            \end{enumerate}
+            \vspace{3mm}
+            \textit{Soluzione}: Spostamento definizione del ROOT::TCanvas\\
+            \input{8_eff/codi}
+        \end{exampleblock}
+    \end{frame}
+
+    \begin{frame}{Python}
+        \begin{block}{Contro}
+            \begin{enumerate}
+                \item Dati salvati sempre in np.array $\Rightarrow$ Enorme consumo di memoria che aumenta col tempo - 43% di RAM per la simulazione "standard"
+                \item Creazione e plot di istogrammi e grafici richiede ancor più memoria che C++
+                \item Tempo di esecuzione enormemente più grande - 2.5 ore per la simulazione "standard"
+            \end{enumerate}          
+        \end{block}
+        \begin{block}{Pro}
+            \begin{enumerate}
+                \item Migioor resa grafica
+                \item Scrittura più agevole del codice e funzionalità aggiunbtive
+            \end{enumerate}
+        \end{block}
+        $\Rightarrow$ Utilizzato per analisi dati e confronto tra diverse simulazioni svolte con C++
+    \end{frame}

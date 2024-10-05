@@ -130,26 +130,28 @@ void sistema::evodt(uint32_t mode, uint64_t j){
 	for(int i=0; i<m_corpi.size(); i++){
 		m_corpi[i]->evolvidT(m_corpi, m_dT, mode, j);
 	}
-
-	vettore dS=m_corpi[0]->P();
 	std::ofstream out;
-	out.open("dist_sole_"+m_inc, std::ofstream::app);
-	out<<std::setprecision(10)<<float(j)*m_dT/(365*24*3600);
-	for(auto c: m_corpi){
-		vettore dd=c->P()-dS;
-		float d=(float)dd.modulo();
-		out<<" "<<d;
+
+	if(j%10000==0){
+		vettore dS=m_corpi[0]->P();
+		out.open("dist_sole_"+m_inc, std::ofstream::app);
+		out<<std::setprecision(15)<<float(j)*m_dT/(365*24*3600);
+		for(auto c: m_corpi){
+			vettore dd=c->P()-dS;
+			float d=(float)dd.modulo();
+			out<<" "<<d;
+		}
+		out<<std::endl;
+		out.close();
+
+		out.open("incl_"+m_inc, std::ofstream::app);
+		out<<float(j)*m_dT/(365*24*3600);
+		for(auto c: m_corpi){
+			out<<" "<<c->incl();
+		}
+		out<<std::endl;
+		out.close();
 	}
-	out<<std::endl;
-	out.close();
-	
-	out.open("incl_"+m_inc, std::ofstream::app);
-	out<<float(j)*m_dT/(365*24*3600);
-	for(auto c: m_corpi){
-		out<<" "<<c->incl();
-	}
-	out<<std::endl;
-	out.close();
 	
   	vettore L;
   	for(int i=0; i<m_corpi.size(); i++){

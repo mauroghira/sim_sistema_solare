@@ -1,0 +1,33 @@
+dati || media | dev std
+------------------------------
+Sole: Distanza dal Sole || 0 | 0	
+Sole: X vs Y || 4167.68 | 3721.8	
+ || 250.371 | 3721.8
+Sole: |vel| vs |dist dal Sole| || 0 | 0	
+ || 0.115441 | 0
+Sole: |V| || 0.115441 | 0.0547361	
+Sole: momento angolare (r x mv) || 3.27098e+29 | 4.35863e+29	
+Sole: eccentricita' secondo modo || 0 | 0	
+Sole: inclinazione orbita || 0 | 0	
+Sole: precessione || 0 | 0	
+Sole: energia meccanica solo col sole || 0 | 0	
+Sole: energia meccanica || -5.32079e+33 | 3.29984e+31	
+
+------------------------------
+Terra: Distanza dal Sole || 1.50433e+11 | 2.33126e+09	
+Terra: X vs Y || -4.93412e+09 | 1.0633e+11	
+ || 8.15473e+08 | 1.0633e+11
+Terra: |vel| vs |dist dal Sole| || 1.47622e+11 | 4.56413e+08	
+ || 30185.1 | 4.56413e+08
+Terra: |V| || 29629.4 | 459.456	
+Terra: momento angolare (r x mv) || 2.66002e+40 | 1.04024e+38	
+Terra: eccentricita' secondo modo || 0.0218611 | 2.55092e-06	
+Terra: inclinazione orbita || 0 | 0	
+Terra: precessione || 0 | 0	
+Terra: energia meccanica solo col sole || 0 | 0	
+Terra: energia meccanica || -2.62118e+33 | 1.13584e+28	
+
+==============================
+dati generali
+sistema: momento angolare (r x mv) || 2.66003e+40 | 1.21424e+33
+sistema: energia meccanica || -2.62116e+33 | 8.92892e+27

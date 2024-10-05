@@ -1,0 +1,14 @@
+\begin{lstlisting}[language=C++]
+//valuto inclinazione 
+corpo *terra=cc[3]; 
+vettore tp=terra->P(); 
+vettore dtt=tp-sp; 
+vettore vt=terra->V(); 
+vettore nt=dtt*vt; 
+if(m_nome!="Luna") 
+    m_teta=90-ds.angolo(nt); 
+else{ 
+    vettore lt=m_pos-tp; 
+    m_teta=90-lt.angolo(nt); 
+}
+\end{lstlisting}

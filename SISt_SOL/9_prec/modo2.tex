@@ -1,0 +1,20 @@
+\begin{lstlisting}[language=C++]
+    corpo sole*=cc[0];
+    if(m_nome=="Sole" && j<2){
+	m_app=vettore(0,0,0);
+    }
+    else{
+	m_app=m_pos0;
+	m_sap=m_s0;
+    }	
+    m_s0=sole->P0();
+    m_pos0=m_pos; [...]
+    vettore sp=sole->P();
+    float dSole=(m_pos-sp).modulo();
+    if(m_nome!="Sole"){
+	float d_media=(m_pos0-m_s0).modulo();
+	float d_pre=(m_app-m_sap).modulo();
+	if(d_media<d_pre && d_media<dSole)
+		m_peri.push_back(m_pos0-m_s0);
+    }
+\end{lstlisting}

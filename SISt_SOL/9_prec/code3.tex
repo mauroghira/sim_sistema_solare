@@ -1,0 +1,12 @@
+\begin{lstlisting}[language=C++]
+void corpo::precessione(float Tterra){
+    if(m_nome=="Sole")m_histos[7]->Fill(0);
+    else{
+        for(int i=1; i<m_peri.size(); i++){
+            m_histos[7]->Fill
+                (m_peri[i].angolo(m_peri[i-1])
+                    *Tterra/m_TT);
+        }
+    }
+}
+\end{lstlisting}

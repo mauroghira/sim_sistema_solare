@@ -1,0 +1,174 @@
+%\documentclass[Serif, 10pt, brown, handout]{beamer} % Disable overlays for handout format
+%\documentclass[Serif, 10pt, brown, handout, notes]{beamer} % Disable overlays for handout format and print notes
+\documentclass[Serif, 10pt, brown]{beamer}
+\usepackage{booktabs,xcolor}
+%\usepackage[svgnames,table]{xcolor}
+%\usepackage[tableposition=above]{caption}
+\usepackage{pifont}
+\newcommand*\CHECK{\ding{51}}
+\usepackage{array}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\usepackage{tabto}
+\usepackage{listings}
+\usepackage{xmpmulti}
+\usepackage{media9}
+%
+\usepackage{setspace,mathtools,amssymb,multirow,array,amsmath,tikz}
+\usepackage[normalsize]{subfigure}
+\usetikzlibrary{patterns}
+\usetikzlibrary{automata,positioning,decorations.pathreplacing,decorations}
+
+\usepackage{curves}
+\usepackage{wasysym}
+\usepackage{epsfig,epstopdf,graphicx}
+
+\curvewarnfalse
+%
+\newtheorem{proposition}{Proposition}
+\theoremstyle{example}
+\newtheorem{theoremh}{Theorem}
+\theoremstyle{plain}
+\renewcommand{\textfraction}{0.01}
+\renewcommand{\floatpagefraction}{0.99}
+\newcommand{\ul}{\underline}
+\newcounter{units}
+%
+\usepackage[round]{natbib}
+ \bibpunct[, ]{(}{)}{,}{a}{}{,}%
+ \def\bibfont{\small}%
+ \def\bibsep{\smallskipamount}%
+ \def\bibhang{24pt}%
+ \def\newblock{\ }%
+ \def\BIBand{and}%
+%
+\setbeamercovered{dynamic}
+% Logo
+\logo{\includegraphics[width=0.625in,keepaspectratio]{unipv.jpeg}}
+%
+% Setup
+\mode<presentation>
+	{
+\usetheme[right,currentsection, hideothersubsections]{UTD}
+			\useoutertheme{sidebar} \useinnertheme[shadow]{rounded}
+			\usecolortheme{whale} \usecolortheme{orchid}
+			\usefonttheme[onlymath]{serif}
+			\setbeamertemplate{footline}{\centerline{Slide \insertframenumber/\inserttotalframenumber}}
+	}
+%
+
+% Title
+\usebeamercolor[fg]{author in sidebar}
+\subtitle{Problem Solving in Fisica}
+\title[{Sistema Solare}]{\sc Simulazione Sistema Solare}
+\author[\ul{Mauro Ghirardi}]{{\bf Mauro Ghirardi}}
+\institute[UTD]{\sc\small Università degli Studi di Pavia}
+\date[UCI]{Giugno 2025}
+%%
+
+%Presentation
+\begin{document}
+\frame{\titlepage}
+%
+
+%Slides
+
+%TOC
+
+% Introduction
+\input{1_intro/intro}
+
+% code
+\section[Code]{Codice}
+    \begin{frame}
+        \frametitle{Contenuti}
+        \transblindsvertical
+        \tableofcontents[currentsection]
+    \end{frame}
+    
+    \begin{frame}{Architettura del codice}
+        \begin{figure}
+            \centering
+            \includegraphics[width=\textwidth, height=6cm]{tutto.png}
+            \label{fig:uml}
+        \end{figure}
+    \end{frame}
+    
+    \input{2_approx/approx}
+
+\section[Conserv]{Conservazione}
+    \begin{frame}
+        \frametitle{Contenuti}
+        \transblindsvertical
+        \tableofcontents[currentsection]
+    \end{frame}
+
+    \begin{frame}{Condizioni standarrd}
+        \begin{alertblock}{La simulazione di riferimento con cui verranno fatti i vari confronti nelle slides successive è definita da:}
+            \begin{enumerate}[a]
+                \item Metodo di Eulero modificato - rapido e stabile per tempi medio-lunghi
+                \item deltaT = 3600s - simulazioni rapide e stabili per tempi medio/lunghi
+                \item T = 500 anni - durata media che permette già di notare patologie interessanti
+                \item Configurazione iniziale mista - configurazione che dà risultati migliori, come vedremo in seguito
+                \item Orbite tridimensionali
+            \end{enumerate}
+            Con queste cxondizioni una simulazione in C++ richiede circa 2min e 30s e circa 400MB(4\%) di memoria.\\
+            Il tempo poi scala linearmente con il numero di step (determinate da T e deltaT).
+        \end{alertblock}
+    \end{frame}
+
+    \begin{frame}{2D vs 3D}
+        \begin{columns}
+            \column{.5\textwidth}
+                \centering
+                \includegraphics[width=5cm,height=3.75cm]{E2D.jpg}\\
+                \includegraphics[width=5cm,height=3.75cm]{4_energia/E_500_3600.jpg}
+                \label{cfr::E4T}              
+            \column{.5\textwidth}
+                \centering        
+                \includegraphics[width=5cm,height=3.75cm]{L2D.jpg}\\
+                \includegraphics[width=5cm,height=3.75cm]{3_Momento/L_500_3600.jpg}
+                \label{cfr::E6T}      
+        \end{columns}
+    \end{frame}
+
+    \input{3_Momento/Momento}
+    
+    \input{4_energia/energia}
+    
+    \input{5_distanza/distanza}
+    
+    \input{6_ecc/6_eccentricita}
+
+        \input{14_fisso/solefixso}
+    
+    \input{7_incli/7_inclinazione}
+
+\section[Valid]{Validazione}
+    \begin{frame}
+        \frametitle{Contenuti}
+        \transblindsvertical
+        \tableofcontents[currentsection]
+    \end{frame}
+    
+    \input{13_2cc/2corpi}
+
+    \input{13_2cc/analitica}
+
+\input{8_eff/8_efficienza}
+
+%\input{9_prec/9_precessione}
+
+%\section[Approx II]{Ordini Superiori}
+%    \begin{frame}
+%        \frametitle{Contenuti}
+%        \transblindsvertical
+%        \tableofcontents[currentsection]
+%    \end{frame}
+    
+%    \input{10_algo/10_ordini}
+
+%    \input{11_eff_pre/effetti}
+
+%    \input{12_cfr/confronti}
+
+\end{document}

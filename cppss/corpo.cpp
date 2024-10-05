@@ -222,6 +222,14 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
   	//std::cout<<Ecin<<" "<<Epot<<" "<<Emec<<" ";
 	m_L=m_pos*m_vel*m_massa;
 	
+	//calcolo solo 'energia rispetto al sole, senza contare altri corpi, per valutare meglio l'eccentricità
+	double E=0;
+	if(m_nome=="Sole")E=m_Ek;
+	else{
+		double Epot=-G*sole->MASS()*m_massa/dSole;
+		E=m_Ek+Epot;
+	}
+	
   	double alfa = G * sole->MASS() * m_massa;
   	double mr=sole->MASS()*m_massa/(m_massa+sole->MASS());
   	double den = alfa * alfa * mr;
@@ -229,8 +237,9 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
   	vettore Ls=ds*m_vel*m_massa; //per calcolare l'eccentricità devo usare il momento angolare rispetto al sole, non rispetto all'origine
 	double h2  = Ls.modulo()*Ls.modulo();
 
-	double num2 = 2 * h2 * Emec;
+	double num2 = 2 * h2 * E;
 	double e2 = sqrt(1+num2/den);  //eccentricità2
+	//if(m_nome=="Terra"|| m_nome=="Venere" || m_nome=="Nettuno") std::cout<<e2<<std::endl;;
 
 	//valuto inclinazione
 	vettore nt(0,0,1);

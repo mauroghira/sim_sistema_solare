@@ -1,0 +1,33 @@
+dati || media | dev std
+------------------------------
+Sole: Distanza dal Sole || 0 | 0	
+Sole: X vs Y || 42391.6 | 37896.2	
+ || 249.968 | 37896.2
+Sole: |vel| vs |dist dal Sole| || 0 | 0	
+ || 2.73123 | 0
+Sole: |V| || 2.73123 | 1.48293	
+Sole: momento angolare (r x mv) || 1.0162e+31 | 1.35441e+31	
+Sole: eccentricita' secondo modo || 0 | 0	
+Sole: inclinazione orbita || 0 | 0	
+Sole: precessione || 0 | 0	
+Sole: energia meccanica solo col sole || 0 | 0	
+Sole: energia meccanica || -5.00856e+34 | 2.98493e+32	
+
+------------------------------
+Saturno: Distanza dal Sole || 1.44085e+12 | 5.05153e+10	
+Saturno: X vs Y || 1.08213e+11 | 1.01586e+12	
+ || 2.06688e+11 | 1.01586e+12
+Saturno: |vel| vs |dist dal Sole| || 1.50567e+12 | 4.30188e+09	
+ || 9147.3 | 4.30188e+09
+Saturno: |V| || 9572.41 | 334.618	
+Saturno: momento angolare (r x mv) || 7.834e+42 | 3.92682e+41	
+Saturno: eccentricita' secondo modo || 0.0462542 | 0.000236812	
+Saturno: inclinazione orbita || 0.125351 | 1.76521	
+Saturno: precessione || 0 | 0	
+Saturno: energia meccanica solo col sole || 0 | 0	
+Saturno: energia meccanica || -2.61171e+34 | 1.06197e+31	
+
+==============================
+dati generali
+sistema: momento angolare (r x mv) || 7.83556e+42 | 1.27563e+37
+sistema: energia meccanica || -2.61028e+34 | 7.75592e+28

@@ -1,0 +1,33 @@
+dati || media | dev std
+------------------------------
+Sole: Distanza dal Sole || 0 | 0	
+Sole: X vs Y || 33995.7 | 30403.6	
+ || 250.011 | 30403.6
+Sole: |vel| vs |dist dal Sole| || 0 | 0	
+ || 0.352026 | 0
+Sole: |V| || 0.352026 | 0.172617	
+Sole: momento angolare (r x mv) || 7.79307e+26 | 1.03868e+27	
+Sole: eccentricita' secondo modo || 0 | 0	
+Sole: inclinazione orbita || 0 | 0	
+Sole: precessione || 0 | 0	
+Sole: energia meccanica solo col sole || 0 | 0	
+Sole: energia meccanica || -2.98537e+33 | 1.5722e+31	
+
+------------------------------
+Nettuno: Distanza dal Sole || 4.51215e+12 | 2.39239e+10	
+Nettuno: X vs Y || 6.47194e+10 | 3.19342e+12	
+ || 2.58292e+09 | 3.19342e+12
+Nettuno: |vel| vs |dist dal Sole| || 4.52864e+12 | 1.41639e+10	
+ || 5390.22 | 1.41639e+10
+Nettuno: |V| || 5409.88 | 28.4906	
+Nettuno: momento angolare (r x mv) || 2.48948e+42 | 9.76602e+38	
+Nettuno: eccentricita' secondo modo || 0.00184752 | 0.000168969	
+Nettuno: inclinazione orbita || 0.01898 | 1.27458	
+Nettuno: precessione || 0 | 0	
+Nettuno: energia meccanica solo col sole || 0 | 0	
+Nettuno: energia meccanica || -1.49287e+33 | 1.08913e+29	
+
+==============================
+dati generali
+sistema: momento angolare (r x mv) || 2.48986e+42 | 1.94832e+35
+sistema: energia meccanica || -1.49272e+33 | 3.29782e+27
