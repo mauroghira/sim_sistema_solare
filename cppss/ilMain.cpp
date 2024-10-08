@@ -262,7 +262,7 @@ void lin2D(TH1I *h){
 	TLine *l= new TLine(mx,lby,mx,uby);
 	l->SetLineColor(kRed);
 	l->SetLineWidth(3);
-	l->Draw();
+	//l->Draw();
 	TLine *l6= new TLine(lbx,my,ubx,my);
 	l6->SetLineColor(kRed);
 	l6->SetLineWidth(3);

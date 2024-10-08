@@ -23,7 +23,7 @@ Mercurio: |V| || 47161.1 | 6827.5
 Mercurio: momento angolare (r x mv) || 8.95051e+38 | 3.3994e+37	
 Mercurio: eccentricita' secondo modo || 0.202388 | 0.000307972	
 Mercurio: inclinazione orbita || 1.43593 | 4.81888	
-Mercurio: precessione || 1917.3 | 261.648	
+Mercurio: precessione || 0 | 0	
 Mercurio: energia meccanica solo col sole || -3.75218e+32 | 2.2905e+29	
 Mercurio: energia meccanica || -3.75283e+32 | 2.31003e+29	
 
@@ -37,7 +37,7 @@ Venere: |V| || 34858.2 | 61.7462
 Venere: momento angolare (r x mv) || 1.84566e+40 | 3.66383e+38	
 Venere: eccentricita' secondo modo || 0.00225232 | 0.000534438	
 Venere: inclinazione orbita || 0.0262019 | 2.40938	
-Venere: precessione || 1377.02 | 857.338	
+Venere: precessione || 0 | 0	
 Venere: energia meccanica solo col sole || -2.95887e+33 | 2.49293e+30	
 Venere: energia meccanica || -2.95981e+33 | 2.54666e+30	
 
@@ -51,7 +51,7 @@ Terra: |V| || 29655.7 | 278.576
 Terra: momento angolare (r x mv) || 2.66003e+40 | 3.90556e+38	
 Terra: eccentricita' secondo modo || 0.0135044 | 0.000688693	
 Terra: inclinazione orbita || 0 | 0	
-Terra: precessione || 551.64 | 0	
+Terra: precessione || 0 | 0	
 Terra: energia meccanica solo col sole || -2.62477e+33 | 2.9558e+30	
 Terra: energia meccanica || -2.626e+33 | 3.03739e+30	
 
@@ -79,7 +79,7 @@ Marte: |V| || 23912.8 | 1523.56
 Marte: momento angolare (r x mv) || 3.51363e+39 | 3.44726e+37	
 Marte: eccentricita' secondo modo || 0.0903765 | 0.000652838	
 Marte: inclinazione orbita || 0.214667 | 1.26058	
-Marte: precessione || 181.053 | 79.3086	
+Marte: precessione || 0 | 0	
 Marte: energia meccanica solo col sole || -1.8531e+32 | 2.26759e+29	
 Marte: energia meccanica || -1.85437e+32 | 2.41904e+29	
 
@@ -149,4 +149,4 @@ sistema: E_cinetica vs E_potenziale || -3.88169e+35 | 1.08668e+34
 sistema: E_meccanica vs E_cinetica || 1.92307e+35 | 1.08668e+34
 sistema: E_meccanica vs E_potenziale || -3.88169e+35 | 1.08668e+34
 E meccanica VS distanza di Giove dal Sole || 7.9154e+11 | 2.77705e+10
-E meccanica VS velocità di Giove || 12847.4 | 468.562
+E meccanica VS velocita' di Giove || 12847.4 | 468.562

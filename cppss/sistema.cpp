@@ -129,11 +129,11 @@ void sistema::evo(uint32_t mode, int xx, int st){
 	
 }
 void sistema::evodt(uint32_t mode, uint64_t j, int xx){
-	for(int i=1; i<m_corpi.size(); i++){
+	for(int i=0; i<m_corpi.size(); i++){
 		m_corpi[i]->evolvidT(m_corpi, m_dT, mode, j);
 	}
-	m_corpi[0]->modE(m_corpi);
-  	m_corpi[0]->getisto(9)->Fill(m_corpi[0]->EMEC());      
+	//m_corpi[0]->modE(m_corpi);
+  	//m_corpi[0]->getisto(9)->Fill(m_corpi[0]->EMEC());      
 	
   	vettore L;
   	for(int i=0; i<m_corpi.size(); i++){
