@@ -1,6 +1,6 @@
 for branch in $(git branch --format='%(refname:short)'); do
     git checkout $branch
-    git cherry-pick -X theirs 6561513
+    git cherry-pick -X theirs 737dd6d
     git add .
     git commit -m "ignors"
 done
