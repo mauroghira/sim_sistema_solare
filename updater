@@ -5,7 +5,7 @@ for branch in $(git branch --format='%(refname:short)'); do
 		git add .
 		git commit -m $2
 	fi
-	if [ $1 == "push" || $3 == "push" ]; then
+	if [ $1 == "push" ] || [ $3 == "push" ]; then
     	git push origin branch
     fi
 done
