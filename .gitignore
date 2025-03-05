@@ -6,4 +6,4 @@ pyss/res/
 pyss/*.png
 cppss/grafici
 pyss/belli/
-cppss/energy_result/
+cppss/energy_result/ 
