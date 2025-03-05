@@ -1,6 +1,11 @@
 for branch in $(git branch --format='%(refname:short)'); do
     git checkout $branch
-    git cherry-pick -X theirs 737dd6d
-    git add .
-    git commit -m "ignors"
+    if [$1!="push"]; then
+		git cherry-pick -X theirs $1
+		git add .
+		git commit -m $2
+	fi
+	if [$1=="push" || $3=="push"]; then
+    	git push origin branch
+    fi
 done
