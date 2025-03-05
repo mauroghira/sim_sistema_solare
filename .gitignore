@@ -3,4 +3,8 @@ cppss/dist_sole_result/
 cppss/incl_result/
 cppss/grafici/
 pyss/res/
+pyss/*.png
+cppss/grafici
+pyss/belli/
 cppss/energy_result/
+updater
