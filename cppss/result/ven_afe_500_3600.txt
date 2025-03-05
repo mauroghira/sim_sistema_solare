@@ -1,33 +1,33 @@
 dati || media | dev std
 ------------------------------
 Sole: Distanza dal Sole || 0 | 0	
-Sole: X vs Y || 4280.05 | 3817.41	
- || 250.612 | 3817.41
+Sole: X vs Y || 3552.77 | 3165.01	
+ || 249.506 | 3165.01
 Sole: |vel| vs |dist dal Sole| || 0 | 0	
- || 0.11291 | 0
-Sole: |V| || 0.11291 | 0.0551446	
-Sole: momento angolare (r x mv) || 3.94471e+32 | 4.82469e+32	
+ || 0.109033 | 0
+Sole: |V| || 0.109033 | 0.0527901	
+Sole: momento angolare (r x mv) || 2.03534e+33 | 2.04911e+33	
 Sole: eccentricita' secondo modo || 0 | 0	
 Sole: inclinazione orbita || 0 | 0	
 Sole: precessione || 0 | 0	
 Sole: energia meccanica solo col sole || 0 | 0	
-Sole: energia meccanica || -5.22515e+33 | 3.32081e+31	
+Sole: energia meccanica || -5.91757e+33 | 8.21967e+30	
 
 ------------------------------
-Terra: Distanza dal Sole || 1.50313e+11 | 1.2707e+09	
-Terra: X vs Y || 2.6755e+09 | 1.06269e+11	
- || 7.0053e+08 | 1.06269e+11
-Terra: |vel| vs |dist dal Sole| || 1.51568e+11 | 4.56853e+08	
- || 29394.1 | 4.56853e+08
-Terra: |V| || 29641.2 | 250.55	
-Terra: momento angolare (r x mv) || 2.65962e+40 | 1.00625e+38	
-Terra: eccentricita' secondo modo || 0.0118272 | 2.95384e-06	
-Terra: inclinazione orbita || 0 | 0	
-Terra: precessione || 0 | 0	
-Terra: energia meccanica solo col sole || 0 | 0	
-Terra: energia meccanica || -2.62283e+33 | 1.12178e+28	
+Venere: Distanza dal Sole || 1.08687e+11 | 1.51157e+08	
+Venere: X vs Y || 3.05685e+08 | 7.67137e+10	
+ || 6.80541e+08 | 7.67137e+10
+Venere: |vel| vs |dist dal Sole| || 1.08687e+11 | 1.51157e+08	
+ || 34858.3 | 1.51157e+08
+Venere: |V| || 34858.3 | 48.4191	
+Venere: momento angolare (r x mv) || 1.84505e+40 | 9.35231e+37	
+Venere: eccentricita' secondo modo || 0.0012133 | 1.72651e-05	
+Venere: inclinazione orbita || 0.00621466 | 2.40369	
+Venere: precessione || 0 | 0	
+Venere: energia meccanica solo col sole || 0 | 0	
+Venere: energia meccanica || -2.9588e+33 | 1.14844e+28	
 
 ==============================
 dati generali
-sistema: momento angolare (r x mv) || 2.65964e+40 | 3.49035e+34
-sistema: energia meccanica || -2.62281e+33 | 1.57611e+28
+sistema: momento angolare (r x mv) || 1.84507e+40 | 5.59251e+34
+sistema: energia meccanica || -2.95879e+33 | 6.83335e+27

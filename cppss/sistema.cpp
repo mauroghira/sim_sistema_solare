@@ -132,10 +132,10 @@ void sistema::evodt(uint32_t mode, uint64_t j){
 	}
 	std::ofstream out;
 
-	if(j%10000==0){
+	//if(j%10000==0){
 		vettore dS=m_corpi[0]->P();
 		out.open("dist_sole_"+m_inc, std::ofstream::app);
-		out<<std::setprecision(15)<<float(j)*m_dT/(365*24*3600);
+		out<<std::setprecision(10)<<float(j)*m_dT/(365*24*3600);
 		for(auto c: m_corpi){
 			vettore dd=c->P()-dS;
 			float d=(float)dd.modulo();
@@ -151,7 +151,7 @@ void sistema::evodt(uint32_t mode, uint64_t j){
 		}
 		out<<std::endl;
 		out.close();
-	}
+	//}
 	
   	vettore L;
   	for(int i=0; i<m_corpi.size(); i++){
