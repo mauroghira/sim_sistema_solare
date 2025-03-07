@@ -207,19 +207,6 @@ void corpo::muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode){
 void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uint64_t j){
 	corpo *sole=cc[0];
 	corpo *terra=cc[3];
-		
-	/*
-	if(m_nome=="Sole" && j<2){
-		//per sole m_sap non dovrebbe importare
-		m_app=vettore(0,0,0);
-	}
-	else{
-		m_app=m_pos0;
-		m_sap=m_s0;
-	}	
-	m_s0=sole->P0();
-	m_pos0=m_pos; //devo salvare la posizione che il corpo aveva prima dell'evoluzione, soprattutto per il sole, perché serve per il calcolo della precessione
-	//*/
 	
 	//sposto corpo
 	muovi(cc, dt, mode);
@@ -248,8 +235,8 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
   	double mr=sole->MASS()*m_massa/(m_massa+sole->MASS());
   	double den = alfa * alfa * mr;
   	
-  	//vettore Ls=ds*m_vel*m_massa; //per calcolare l'eccentricità devo usare il momento angolare rispetto al sole, non rispetto all'origine
-	double h2  = m_L.modulo()*m_L.modulo();
+  	vettore Ls=ds*m_vel*m_massa; //per calcolare l'eccentricità devo usare il momento angolare rispetto al sole, non rispetto all'origine
+	double h2  = Ls.modulo()*Ls.modulo();
 
 	double num2 = 2 * h2 * E;
 	double e2 = sqrt(1+num2/den);  //eccentricità2
@@ -277,35 +264,6 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 	m_histos[8]->Fill( E );                           // Enercia solo sole  
 	m_histos[9]->Fill( Emec );                           // Enercia meccanica
 
-	//raccoglo dati perielio
-	if(m_nome!="Sole"){
-		//*
-		float d_cfr=(m_app-m_sap).modulo();
-		if(dSole<=d_cfr){
-			m_app=m_pos;
-			m_sap=sp;
-		}
-		uint64_t Tstep = m_TT *24*3600 / dt ;
-		if((j+1)%Tstep == 0){
-			//if(m_nome=="Mercurio") std::cout<<m_app<<m_sap<<m_app-m_sap<<std::endl;
-			m_peri.push_back(m_app-m_sap);
-			m_app=m_pos; //riinizializzo il vettore di confronto
-			m_sap=sp;
-		}
-		//*/
-		//van bene ambo i modi - vantaggio di questo è che posso vedere le step a cui lo becco
-		/*
-		float d_media=(m_pos0-m_s0).modulo();
-		float d_pre=(m_app-m_sap).modulo();
-		if(d_media<d_pre && d_media<dSole){
-			m_peri.push_back(m_pos0-m_s0);
-			//if(m_nome=="Mercurio"){
-				//std::cout<<d_pre<<" "<<d_media<<" "<<dSole<<std::endl;
-				//std::cout<<j<<" "<<m_pos0-m_s0<<std::endl;
-			//}
-		}
-		//*/
-	}
 }
 
 void corpo::precessione(float Tterra){
