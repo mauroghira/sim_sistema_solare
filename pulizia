@@ -1,0 +1,7 @@
+git rm -r --cached pyss/*.png
+git rm -r --cached cpp/*result*
+git commit --amend -C HEAD
+git add .gitignore
+git add pulizia
+git commit -m "pulizia"
+git ls-tree -r -l HEAD | sort -k 4 -n | tail -30
