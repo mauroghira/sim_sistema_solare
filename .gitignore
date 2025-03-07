@@ -10,3 +10,10 @@ cppss/energy_result/
 updater
 pulizia
 cppss/result
+cppss/*.o
+cppss/SS
+cppss/graphs
+cppss/cc
+cppss/vettore
+cppss/sonda
+cppss/aa
