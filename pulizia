@@ -1,5 +1,5 @@
 git rm -r --cached pyss/*.png
-git rm -r --cached cpp/*result*
+git rm -r --cached cppss/*result*
 git commit --amend -C HEAD
 git add .gitignore
 git add pulizia
