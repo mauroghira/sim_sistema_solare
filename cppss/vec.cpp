@@ -96,9 +96,9 @@ void vettore::sferiche(){
 	std::cout<<"coordinate sferiche di c: R="<<m<<", phi="<<f<<", teta="<<t<<std::endl;
 }
 
-float vettore::angolo(const vettore &c){
-	float d=operator/(c);
-	float a=modulo()*c.modulo();
+double vettore::angolo(const vettore &c){
+	double d=operator/(c);
+	double a=modulo()*c.modulo();
 	return acos(d/a)*180/M_PI;
 }
 
