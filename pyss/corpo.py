@@ -187,6 +187,9 @@ class CorpoCeleste:
 		fig = plt.figure(figsize=(8,8))
 		st = "Media: "+str(self.L.mean())+"\n Dev Std: "+str(np.std(self.L))
 		plt.hist(self.L, bins=400, range=(self.L.mean()-np.std(self.L)*4, self.L.mean()+np.std(self.L)*4), label = st)
+		plt.axvline(x = self.L.mean(), color = 'red', linestyle = '--', alpha = 0.5, label="Media")
+		plt.axvline(x = self.L.mean()-np.std(self.L)*3, color = 'green', linestyle = 'dotted', alpha = 1)
+		plt.axvline(x = self.L.mean()+np.std(self.L)*3, color = 'green', linestyle = 'dotted', alpha = 1)
 		plt.title(self.nome+": momento angolare [kg*m^2/s]")
 		plt.xlabel("L [kg*m^2/s]")
 		plt.ylabel("Conteggi")
@@ -200,6 +203,9 @@ class CorpoCeleste:
 		E=self.Ek+self.Ep
 		st = "Media: "+str(E.mean())+"\n Dev Std: "+str(np.std(E))
 		plt.hist(E, bins=400, range=(E.mean()-np.std(E)*5, E.mean()+np.std(E)*5), label = st)
+		plt.axvline(x = E.mean(), color = 'red', linestyle = '--', alpha = 0.5, label="mMedia")
+		plt.axvline(x = E.mean()-np.std(E)*3, color = 'green', linestyle = 'dotted', alpha = 1)
+		plt.axvline(x = E.mean()+np.std(E)*3, color = 'green', linestyle = 'dotted', alpha = 1)
 		plt.title(self.nome+": energia meccanica [J]")
 		plt.xlabel("E [J]")
 		plt.ylabel("Conteggi")
@@ -215,6 +221,9 @@ class CorpoCeleste:
 		plt.hist(self.ecc, bins=400, range=(self.ecc.mean()-np.std(self.ecc)*5, self.ecc.mean()+np.std(self.ecc)*5), label = st)
 		"""else: 
 			plt.hist(self.ecc, bins=100, label = st)	"""
+		plt.axvline(x = self.ecc.mean(), color = 'red', linestyle = '--', alpha = 0.5, label="Media")
+		plt.axvline(x = self.ecc.mean()-np.std(self.ecc)*3, color = 'green', linestyle = 'dotted', alpha = 1)
+		plt.axvline(x = self.ecc.mean()+np.std(self.ecc)*3, color = 'green', linestyle = 'dotted', alpha = 1)
 		plt.title(self.nome+": eccentricita'")
 		plt.xlabel("e")
 		plt.ylabel("Conteggi")

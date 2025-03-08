@@ -125,6 +125,11 @@ class sistema:
 		fig = plt.figure(figsize=(8,8))
 		st = "Media: "+str(self.LS.mean())+"\n Dev Std: "+str(np.std(self.LS))
 		plt.hist(self.LS, bins=200, range=(self.LS.mean()-np.std(self.LS)*4, self.LS.mean()+np.std(self.LS)*4), label = st)
+		plt.axvline(x = self.LS.mean(), color = 'red', linestyle = '--', alpha = 0.5, label="media")
+		plt.axvline(x = self.LS.mean()-np.std(self.LS), color = 'green', linestyle = 'dotted', alpha = 1)
+		plt.axvline(x = self.LS.mean()+np.std(self.LS), color = 'green', linestyle = 'dotted', alpha = 1)
+		plt.axvline(x = self.LS.mean()-np.std(self.LS)*3, color = 'black', linestyle = 'dashdot', alpha = 1)
+		plt.axvline(x = self.LS.mean()+np.std(self.LS)*3, color = 'black', linestyle = 'dashdot', alpha = 1)
 		plt.title("Sistema: momento angolare totale [kg*m^2/s]")
 		plt.xlabel("L [kg*m^2/s]")
 		plt.ylabel("Conteggi")
@@ -137,6 +142,11 @@ class sistema:
 		fig = plt.figure(figsize=(8,8))
 		st = "Media: "+str(self.ES.mean())+"\n Dev Std: "+str(np.std(self.ES))
 		plt.hist(self.ES, bins=200, range=(self.ES.mean()-np.std(self.ES)*5, self.ES.mean()+np.std(self.ES)*5), label = st)
+		plt.axvline(x = self.ES.mean(), color = 'red', linestyle = '--', alpha = 0.5, label="Media")
+		plt.axvline(x = self.ES.mean()-np.std(self.ES), color = 'green', linestyle = 'dotted', alpha = 1)
+		plt.axvline(x = self.ES.mean()+np.std(self.ES), color = 'green', linestyle = 'dotted', alpha = 1)
+		plt.axvline(x = self.ES.mean()-np.std(self.ES)*3, color = 'black', linestyle = 'dashdot', alpha = 1)
+		plt.axvline(x = self.ES.mean()+np.std(self.ES)*3, color = 'black', linestyle = 'dashdot', alpha = 1)
 		plt.title("Sistema: energia meccanica totale [J]")
 		plt.xlabel("E [J]")
 		plt.ylabel("Conteggi")
@@ -146,8 +156,15 @@ class sistema:
 	#####
 	
 	def save(self, out):
-		print("g")
-	
+		for p in self.pianeti:
+			o = open("res/"+p.nome+"_"+out, 'w')  # 'w' means writing
+			for i in range(p.L.size):
+				o.write(str(p.L[i])+" "+str(p.Ek[i]+p.Ep[i])+" "+str(p.ecc[i])+" "+str(p.teta[i])+" "+str(p.DS[i])+" "+str(p.V[i])+str(p.Xs[i])+" "+str(p.Ys[i])+"\n")
+			o.close()
+		o = open("res/sistema_"+out, 'w')  # 'w' means writing	
+		for i in range(p.L.size):
+			o.write(str(self.LS[i])+" "+str(self.ES[i])+"\n")
+		o.close()
 	#####
 
 	def print(self):
