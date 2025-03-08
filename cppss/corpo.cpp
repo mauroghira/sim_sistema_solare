@@ -99,13 +99,39 @@ void corpo::modE(std::vector<corpo*> cc){
   	//std::cout<<m_Ek<<", "<<m_Ep<<std::endl;
 }
 
-vettore corpo::acc(std::vector<corpo*> &cc){
+vettore corpo::acc(std::vector<corpo*> &cc, uint32_t rel){
 	vettore a;
 	float k=0;
 	for(int i=0; i<cc.size(); i++){
 		if(cc[i]->m_nome!=m_nome){
 			vettore d=cc[i]->m_pos-m_pos;
-			if(d.modulo()!=0) k=G*cc[i]->m_massa/pow(d.modulo(), 3);
+			
+			switch(rel){
+				case 0:
+				{
+					//no relatività
+					if(d.modulo()!=0) k=G*cc[i]->m_massa/pow(d.modulo(), 3);
+					break;		
+				}
+				case 1:
+				{
+					//* relatività con tutti i pianeti
+					double rl2=pow((d*m_vel).modulo(),2);
+					if(d.modulo()!=0) k=G*cc[i]->m_massa/pow(d.modulo(), 3)*(1+BETA*rl2/pow(C*d.modulo(), 2));
+					break;
+				}
+				default:
+				{
+					//relatività solo sole
+					if(d.modulo()!=0) k=G*cc[i]->m_massa/pow(d.modulo(), 3);
+					if(cc[i]->m_nome=="Sole"){ //correzione relativistica solo rispetto al sole
+					   double rl2=pow((d*m_vel).modulo(),2);
+					   k*=(1+BETA*rl2/pow(C*d.modulo(), 2));
+					}
+					break;
+				}
+			}
+
 			vettore A=d*k;
 			a=a+A;
 		}
@@ -113,53 +139,53 @@ vettore corpo::acc(std::vector<corpo*> &cc){
 	return a;
 }
 
-void corpo::muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode){
+void corpo::muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uint32_t rel){
 	switch(mode){
 		case 0:
 		{   //eulero 0	
-			m_vel=m_vel + acc(cc)*dt;
+			m_vel=m_vel + acc(cc, rel)*dt;
 			m_pos= m_pos + m_vel*dt;
 			break;
 		}
 		case 1:
 		{  //eulero modificato
 			vettore v0=m_vel;
-			vettore a0=acc(cc);
+			vettore a0=acc(cc, rel);
 			vettore p0=m_pos;
 			m_pos=m_pos+v0*dt;
-			vettore a2=acc(cc);
+			vettore a2=acc(cc, rel);
 			m_vel = m_vel + (a0 + a2)*0.5*dt;
 			m_pos= p0 + (m_vel + v0)*0.5*dt;
 			break;
 		}
 		case 2:
 		{  //velocity verlet
-			vettore a0=acc(cc);
+			vettore a0=acc(cc, rel);
 			m_pos= m_pos + m_vel*dt + a0*dt*dt/2;
-			vettore a2=acc(cc);
+			vettore a2=acc(cc, rel);
 			m_vel = m_vel + (a0 + a2)*0.5*dt;
 			break;
 		}
 		case 3:
 		{  //runge-kutta ordine 4
 			//step 1
-			vettore k1v=acc(cc)*dt;
+			vettore k1v=acc(cc, rel)*dt;
 			vettore k1x=m_vel*dt;
 			vettore p0=m_pos;
 			vettore v0=m_vel;
 			//step 2
 			m_pos=p0+k1x/2;
-			vettore k2v=acc(cc)*dt;
+			vettore k2v=acc(cc, rel)*dt;
 			m_vel=v0+k1v/2;
 			vettore k2x=m_vel*dt;
 			//step 3
 			m_pos=p0+k2x/2;
-			vettore k3v=acc(cc)*dt;
+			vettore k3v=acc(cc,rel )*dt;
 			m_vel=v0+k2v/2;
 			vettore k3x=m_vel*dt;
 			//step 4
 			m_pos=p0+k3x;
-			vettore k4v=acc(cc)*dt;
+			vettore k4v=acc(cc, rel)*dt;
 			m_vel=v0+k3v;
 			vettore k4x=m_vel*dt;			
 			//finale
@@ -169,13 +195,13 @@ void corpo::muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode){
 		case 4:
 		{  //runge-kutta 2
 			//step 1
-			vettore k1v=acc(cc)*dt;
+			vettore k1v=acc(cc, rel)*dt;
 			vettore k1x=m_vel*dt;
 			vettore p0=m_pos;
 			vettore v0=m_vel;
 			//step 2
 			m_pos=p0+k1x;
-			vettore k2v=acc(cc)*dt;
+			vettore k2v=acc(cc, rel)*dt;
 			m_vel=v0+k1v;
 			vettore k2x=m_vel*dt;
 			//finale
@@ -187,13 +213,13 @@ void corpo::muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode){
 		{  //Yoshida 4th order
 			//step1
 			m_pos= m_pos+ m_vel*dt*W1/2;
-			m_vel= m_vel+ acc(cc)*dt*W1;
+			m_vel= m_vel+ acc(cc, rel)*dt*W1;
 			//step2
 			m_pos= m_pos+ m_vel*dt*(W0+W1)/2;
-			m_vel= m_vel+ acc(cc)*dt*W0;
+			m_vel= m_vel+ acc(cc, rel)*dt*W0;
 			//step 3
 			m_pos= m_pos+ m_vel*dt*(W0+W1)/2;
-			m_vel= m_vel+ acc(cc)*dt*W1;
+			m_vel= m_vel+ acc(cc, rel)*dt*W1;
 			//step 4
 			m_pos= m_pos+ m_vel*dt*W1/2;	
 			break;
@@ -204,10 +230,11 @@ void corpo::muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode){
 	}
 }
 
-void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uint64_t j){
+void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uint32_t rel, uint64_t j){
 	corpo *sole=cc[0];
 	corpo *terra=cc[3];
-		
+	
+	//pezzo che serve per la precessione
 	/*
 	if(m_nome=="Sole" && j<2){
 		//per sole m_sap non dovrebbe importare
@@ -222,7 +249,7 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 	//*/
 	
 	//sposto corpo
-	muovi(cc, dt, mode);
+	muovi(cc, dt, mode, rel);
 	
 	//seleziono sole per raccoliere dati rispetto a lui
 	vettore sp=sole->P();
@@ -248,8 +275,10 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
   	double mr=sole->MASS()*m_massa/(m_massa+sole->MASS());
   	double den = alfa * alfa * mr;
   	
-  	vettore Ls=ds*m_vel*m_massa; //per calcolare l'eccentricità devo usare il momento angolare rispetto al sole, non rispetto all'origine
-	double h2  = Ls.modulo()*Ls.modulo();
+	//quando sole fisso basterebbe usare il momento rispetto all'origine, eviti di calcolare Ls per efficienza ma vabbe
+	//double h2  = m_L.modulo()*m_L.modulo();
+  	vettore Ls=ds*m_vel*m_massa; //per calcolare l'eccentricità devo usare il momento angolare rispetto al sole, non rispetto all'origine - se sole fisso posso evitare
+	double h2  = Ls.modulo()*Ls.modulo();	
 
 	double num2 = 2 * h2 * E;
 	double e2 = sqrt(1+num2/den);  //eccentricità2
@@ -277,11 +306,11 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 	m_histos[8]->Fill( E );                           // Enercia solo sole  
 	m_histos[9]->Fill( Emec );                           // Enercia meccanica
 
-	//raccoglo dati perielio
+	//raccoglo dati perielio per precessione
 	if(m_nome!="Sole"){
 		//*
 		float d_cfr=(m_app-m_sap).modulo();
-		if(dSole<=d_cfr){
+		if(dSole<d_cfr){
 			m_app=m_pos;
 			m_sap=sp;
 		}

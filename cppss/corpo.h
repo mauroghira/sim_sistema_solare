@@ -41,8 +41,8 @@ class corpo{
 	corpo(std::string n, double m, vettore r, vettore v, float Torb, float t=0);
 	void leggi();
 	void ass(std::string n, double m, vettore r, vettore v, float Torb, float t=0);
-	virtual void evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uint64_t j);
-	void muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode);
+	virtual void evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uint32_t rel, uint64_t j);
+	void muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uint32_t rel);
 	double MASS(){return m_massa;}
 	vettore V(){return m_vel;}
 	vettore P(){return m_pos;}
@@ -50,7 +50,7 @@ class corpo{
 	TH1I* getisto(uint32_t i);
 	uint32_t numHistos(){return m_histos.size();}
 	void inizia(); //crea istogrammi
-	vettore acc(std::vector<corpo*> &cc);
+	vettore acc(std::vector<corpo*> &cc, uint32_t rel);
 	double ECIN(){return m_Ek;}
 	double EPOT(){return m_Ep;}
 	double EMEC(){return m_Ek+m_Ep;}

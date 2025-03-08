@@ -21,8 +21,8 @@ class sistema{
 	sistema();
 	void add(corpo* c);
 	void leggi(std::string config);  //leggere dati da file
-	void evodt(uint32_t mode, uint64_t j);
-	void evo(uint32_t mode, int st=0);
+	void evodt(uint32_t mode, uint32_t rel, uint64_t j);
+	void evo(uint32_t mode, uint32_t rel, int st=0);
 	void print();
 	TH1I* getThisHisto(std::string nomeCorpo, uint32_t indice);
 	void PrintHistos();

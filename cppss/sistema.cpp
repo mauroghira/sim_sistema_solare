@@ -111,12 +111,12 @@ void sistema::add(corpo* c){
 	m_corpi.push_back(c);
 }
 
-void sistema::evo(uint32_t mode, int st){
+void sistema::evo(uint32_t mode, uint32_t rel, int st){
 
 	unsigned long int nn=365*24*3600/m_dT;
 	unsigned long int n=nn*m_T;
 	for(uint64_t i=0; i<n; i++){
-		evodt(mode, i+st);
+		evodt(mode, rel, i+st);
 		if((i+st)%(nn*5)==0){
 			print();	//stampa ogni 5 ani
 			std::cout<<"anno "<<(i+st)/nn<<std::endl;
@@ -125,12 +125,16 @@ void sistema::evo(uint32_t mode, int st){
 			
 	//per ora lo metto quì ma sarà poco efficiente
 	for(auto p: m_corpi) p->precessione(m_corpi[3]->period());
+	//for(auto p: m_corpi) p->precessione(365.26);
 	
 }
-void sistema::evodt(uint32_t mode, uint64_t j){
+void sistema::evodt(uint32_t mode, uint32_t rel, uint64_t j){
+	//per SOLEFISSO metti i=1 e decommenta righe sotto
 	for(int i=0; i<m_corpi.size(); i++){
-		m_corpi[i]->evolvidT(m_corpi, m_dT, mode, j);
+		m_corpi[i]->evolvidT(m_corpi, m_dT, mode, rel, j);
 	}
+	//m_corpi[0]->modE(m_corpi);
+	//m_corpi[0]->getisto(9)->Fill(m_corpi[0]->EMEC()); 
 
 	//*dati in file v2, così più veloce perché apre solo 1 file, inoltre velocizza campionando ogni 1000
 	if(j%10000==0){

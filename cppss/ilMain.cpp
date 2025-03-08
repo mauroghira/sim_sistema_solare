@@ -30,12 +30,17 @@ int main(int argc, char** argv){
 		std::cerr << "   mode:       modalità di evoluzione\n";
 		std::cerr << "               0 = standard \n";
 		std::cerr << "               1 = con media dell'accelerazione \n";
+		std::cerr << "               n = ordini superiori \n";
+		std::cerr << "   relatività: 0 = no \n";
+		std::cerr << "               1 = per tutti i corpi \n";
+		std::cerr << "               n = solo col sole \n";		
 		return 2;
 	}
 	std::string confFile = argv[1];
 	float nAnni = atof(argv[2]);
 	uint32_t ddt = atoi(argv[3]);
 	uint32_t mode  = atoi(argv[4]);
+	uint32_t rel  = atoi(argv[5]);
 	std::string outFile = argv[5];
 	int step=0;
 	
@@ -45,7 +50,7 @@ int main(int argc, char** argv){
 	sistema s(nAnni, ddt, confFile, outFile);
 	
 	s.clean();
-	s.evo(mode);
+	s.evo(mode, rel);
 	s.savehist(outFile);
 	s.output(outFile);
 	
