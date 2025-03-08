@@ -12,6 +12,7 @@
 #include <time.h>
 #include <typeinfo>
 #include <TFile.h>
+#include<iomanip>
 
 void sistema::input(std::string config, std::string of){
 	do{
@@ -141,7 +142,7 @@ void sistema::evodt(uint32_t mode, uint32_t rel, uint64_t j){
 		vettore dS=m_corpi[0]->P();
 		std::ofstream out;
 		out.open("dist_sole_"+m_inc, std::ofstream::app);
-		out<<float(j)*m_dT/(365*24*3600);
+		out<<std::setprecision(10)<<float(j)*m_dT/(365*24*3600);
 		for(auto c: m_corpi){
 			vettore dd=c->P()-dS;
 			float d=(float)dd.modulo();
