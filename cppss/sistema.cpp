@@ -16,7 +16,7 @@
 
 void sistema::input(std::string config, std::string of){
 	do{
-	std::cout<<"tempo simulazione? (anni) ";
+	std::c<<"tempo simulazione? (anni) ";
 	std::cin>>m_T;
 	}while(m_T<=0);
 	std::cout<<"dT evoluzione? (secondi) ";
@@ -141,7 +141,7 @@ void sistema::evodt(uint32_t mode, uint32_t rel, uint64_t j){
 	if(j%10000==0){
 		vettore dS=m_corpi[0]->P();
 		std::ofstream out;
-		out.open("dist_sole_"+m_inc, std::ofstream::app);
+		out.open("ris2/dist_sole_"+m_inc, std::ofstream::app);
 		out<<std::setprecision(10)<<float(j)*m_dT/(365*24*3600);
 		for(auto c: m_corpi){
 			vettore dd=c->P()-dS;
@@ -154,7 +154,7 @@ void sistema::evodt(uint32_t mode, uint32_t rel, uint64_t j){
 	
 	if(j%10000==0){
 		std::ofstream out;
-		out.open("incl_"+m_inc, std::ofstream::app);
+		out.open("ris2/incl_"+m_inc, std::ofstream::app);
 		out<<float(j)*m_dT/(365*24*3600);
 		for(auto c: m_corpi){
 			out<<" "<<c->incl();
@@ -167,7 +167,7 @@ void sistema::evodt(uint32_t mode, uint32_t rel, uint64_t j){
 	if(float(j)*m_dT/(365*24*3600) >= 4999){
 	vettore dS=m_corpi[0]->P();
 	std::ofstream out;
-	out.open("val_err_"+m_inc, std::ofstream::app);
+	out.open("ris2/val_err_"+m_inc, std::ofstream::app);
 	for(auto c: m_corpi){
 		vettore dd=c->P()-dS;
 		float d=(float)dd.modulo();
@@ -302,7 +302,7 @@ void sistema::output(std::string file){
 }
 
 void sistema::savehist(std::string out){
-	std::string fx="histo"+out;
+	std::string fx="ris2/histo"+out;
 	TFile* f(TFile::Open(fx.c_str(), "recreate"));
 	for(auto P: m_corpi){
 		for(int i=0; i<P->numHistos(); i++){
@@ -352,11 +352,11 @@ void sistema::mkGraf(std::string pla){
 }
 
 void sistema::clean(){	
-	std::ofstream out("dist_sole_"+m_inc);
+	std::ofstream out("ris2/dist_sole_"+m_inc);
 	out.close();
-	out.open("incl_"+m_inc);
+	out.open("ris2/incl_"+m_inc);
 	out.close();
-	out.open("val_err_"+m_inc);
+	out.open("ris2/val_err_"+m_inc);
 	for(auto p: m_corpi) out<<p->NAME()<<" ";
 	out<<std::endl;
 	out.close();	
