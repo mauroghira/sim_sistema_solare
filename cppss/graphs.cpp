@@ -162,13 +162,14 @@ int main(int argc, char** argv){
 	return 0;
 }
 void cfr(std::string outFile, sistema* ss){
+	/*
 	std::vector<float> *teta;
 	for(int i=0; i<720*ss->tempo(); i++){
 		teta->push_back(i*M_PI/360);
 	}
 	//for(auto t: teta) std::cout<<t<<std::endl;
 	std::cout<<teta->size()<<std::endl;
-	/*
+	
 	std::vector<float> *times=ss->times(teta);
 	for(auto t: *times) std::cout<<t<<std::endl;
 	std::cout<<times->size()<<std::endl;

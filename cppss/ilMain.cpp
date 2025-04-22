@@ -23,7 +23,7 @@ void linee(TH1I *h);
 int main(int argc, char** argv){
 
 	if(argc!=7){
-		std::cerr << "Usage: configFile numeroAnni granularità mode outputfile\n"; 
+		std::cerr << "Usage: configFile numeroAnni granularità mode relatività outputfile\n"; 
 		std::cerr << "   configFile: file di configurazione delle condizioni iniziali\n";
 		std::cerr << "   numeroAnni: anni di evoluzione\n";
 		std::cerr << "   granularità: tempo dT di evoluzione (secondi)\n";		
