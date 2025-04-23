@@ -118,7 +118,7 @@ void sistema::evo(uint32_t mode, uint32_t rel, int st){
 	unsigned long int n=nn*m_T;
 	for(uint64_t i=0; i<n; i++){
 		evodt(mode, rel, i+st);
-		if((i+st)%(nn*5)==0){
+		if((i+st)%(nn*50)==0){
 			print();	//stampa ogni 5 ani
 			std::cout<<"anno "<<(i+st)/nn<<std::endl;
 		}
@@ -141,7 +141,7 @@ void sistema::evodt(uint32_t mode, uint32_t rel, uint64_t j){
 	if(j%10000==0){
 		vettore dS=m_corpi[0]->P();
 		std::ofstream out;
-		out.open("ris2/dist_sole_"+m_inc, std::ofstream::app);
+		out.open("dist_sole_"+m_inc, std::ofstream::app);
 		out<<std::setprecision(10)<<float(j)*m_dT/(365*24*3600);
 		for(auto c: m_corpi){
 			vettore dd=c->P()-dS;
@@ -154,7 +154,7 @@ void sistema::evodt(uint32_t mode, uint32_t rel, uint64_t j){
 	
 	if(j%10000==0){
 		std::ofstream out;
-		out.open("ris2/incl_"+m_inc, std::ofstream::app);
+		out.open("incl_"+m_inc, std::ofstream::app);
 		out<<float(j)*m_dT/(365*24*3600);
 		for(auto c: m_corpi){
 			out<<" "<<c->incl();
@@ -167,7 +167,7 @@ void sistema::evodt(uint32_t mode, uint32_t rel, uint64_t j){
 	if(float(j)*m_dT/(365*24*3600) >= 4999){
 	vettore dS=m_corpi[0]->P();
 	std::ofstream out;
-	out.open("ris2/val_err_"+m_inc, std::ofstream::app);
+	out.open("val_err_"+m_inc, std::ofstream::app);
 	for(auto c: m_corpi){
 		vettore dd=c->P()-dS;
 		float d=(float)dd.modulo();
@@ -302,7 +302,7 @@ void sistema::output(std::string file){
 }
 
 void sistema::savehist(std::string out){
-	std::string fx="ris2/histo_"+out;
+	std::string fx="histo"+out;
 	TFile* f(TFile::Open(fx.c_str(), "recreate"));
 	for(auto P: m_corpi){
 		for(int i=0; i<P->numHistos(); i++){
@@ -352,11 +352,11 @@ void sistema::mkGraf(std::string pla){
 }
 
 void sistema::clean(){	
-	std::ofstream out("ris2/dist_sole_"+m_inc);
+	std::ofstream out("dist_sole_"+m_inc);
 	out.close();
-	out.open("ris2/incl_"+m_inc);
+	out.open("incl_"+m_inc);
 	out.close();
-	out.open("ris2/val_err_"+m_inc);
+	out.open("val_err_"+m_inc);
 	for(auto p: m_corpi) out<<p->NAME()<<" ";
 	out<<std::endl;
 	out.close();	
