@@ -4,9 +4,10 @@ from funzioni import *
 import sys
 
 if len(sys.argv) != 4:
-	print("Usage: configFile numeroAnni outputfile")
+	print("Usage: configFile numeroAnni datafile")
 	print("   configFile: file di configurazione delle condizioni iniziali")
 	print("   numeroAnni: anni di evoluzione")
+	print("   datafile: file coi dati della distanza")
 	exit()
 		
 confFile = sys.argv[1]

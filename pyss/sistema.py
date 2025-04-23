@@ -8,6 +8,18 @@ from funzioni import *
 
 G = 6.67408e-11    # m3 kg-1 s-2 (Costante di gravitazione)
 
+SMALL_SIZE = 14
+MEDIUM_SIZE = 15
+BIGGER_SIZE = 20
+
+plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+
 # Classe Sistema
 class sistema:
 	"""Classe per la descrizione del sistema solare"""
@@ -166,21 +178,21 @@ class sistema:
 	def stmp(self, r, tempi, lab, d=np.zeros(2)):
 		tt=tempi/(3600*365.26*24)
 		if np.linalg.norm(d)!=0:
-			fig = plt.figure(figsize=(19,9))
+			fig = plt.figure(figsize=(15,5))
 			plt.plot(tt, r, label = "sol numerica")
 			plt.plot(tt, d, label = "sol analitica")
-			plt.title("Distanza dal sole in fz del tempo")
+			fig.suptitle("Distanza dal sole in fz del tempo")
 			plt.xlabel("tempo [anni]")
 			plt.ylabel("distanza [m]")
 			plt.legend()
 			plt.show()
 			r=r-d
 	
-		fig = plt.figure(figsize=(19,9))
-		plt.plot(tt, r, label = lab)
-		plt.title("Distanza dal sole in fz del tempo - "+lab)
-		plt.xlabel("tempo [anni]")
-		plt.ylabel("distanza [m]")
+		fig, ax = plt.subplots(1, figsize=(15,5))
+		ax.plot(tt, r, label = lab)
+		fig.suptitle("Distanza dal sole in fz del tempo - "+lab)
+		ax.set_xlabel("tempo [anni]")
+		ax.set_ylabel("distanza [m]")
 		plt.legend()
 		plt.show()
 	
@@ -304,7 +316,7 @@ class sistema:
 		for p in self.pianeti:
 			o = open("res/"+p.nome+"_"+out, 'w')  # 'w' means writing
 			for i in range(p.L.size):
-				o.write(str(p.L[i])+" "+str(p.Ek[i]+p.Ep[i])+" "+str(p.ecc[i])+" "+str(p.teta[i])+" "+str(p.DS[i])+" +str(p.V[i])+str(p.Xs[i])+" "+str(p.Ys[i])+"\n")
+				o.write(str(p.L[i])+" "+str(p.Ek[i]+p.Ep[i])+" "+str(p.ecc[i])+" "+str(p.teta[i])+" "+str(p.DS[i])+" "+str(p.V[i])+str(p.Xs[i])+" "+str(p.Ys[i])+"\n")
 			o.close()
 			o = open("res/sistema_"+out, 'w')  # 'w' means writing
 			for i in range(p.L.size):
