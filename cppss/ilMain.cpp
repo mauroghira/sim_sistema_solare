@@ -119,6 +119,7 @@ int main(int argc, char** argv){
 	    }
 	    else if(cmd=="sis"){
 	      	gStyle->SetOptStat(111111);
+			//gStyle->SetStatFontSize(0.1);
 	      	gStyle->SetTextSize(0.01);
 			TH1I *h = s.getist(val);
 			if(h==NULL)
@@ -141,6 +142,7 @@ int main(int argc, char** argv){
 			
 			if(a==-1){
   				gStyle->SetOptStat(111111);
+				gStyle->SetStatFontSize(0.1);
 				TH1I *h = s.getThisHisto(cmd, val);
 				if(h==NULL){			
 					std::cerr << "Pianeta non riconosciuto\n"; 
