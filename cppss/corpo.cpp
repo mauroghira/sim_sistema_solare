@@ -419,9 +419,9 @@ void corpo::inizia(){
   m_histos[4]->GetXaxis()->SetNdivisions(4, 2, 0, kFALSE);
   
   // Histo 5
-  s = m_nome + ": eccentricita' secondo modo"; //NB e' negativa!!!
+  s = m_nome + ": eccentricita'"; //NB e' negativa!!!
   m_histos.push_back(
-    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";Eccentricita';Conteggi").c_str(), 2*numBins, 0, 0.25 ) ) );
+    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";Eccentricita';Conteggi").c_str(), 2*numBins, 0, 0.25) ) );
 
   // Histo 6
   s = m_nome + ": inclinazione orbita"; //NB e' negativa!!!
