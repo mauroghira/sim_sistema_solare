@@ -76,13 +76,13 @@ def stampa(popt, pcov, R2, ndata):
 def Evst(mec, popt):
     serie=mec.name
     ndata = len(mec.index)
-    """confronto sullo stesso grafico
+    #"""confronto sullo stesso grafico
     plt.figure(figsize=(10,6))
     plt.title("Energia nel tempo")
     plt.xlabel("tempo [anni]")
     plt.ylabel("Energia [J]")
     plt.plot(mec.index, mec, label=serie)
-    plt.plot(mec.index, cos_func(mec.index, *popt), '-', label='Fit')
+    #plt.plot(mec.index, cos_func(mec.index, *popt), '-', label='Fit')
     plt.legend()
     plt.grid(True)
     plt.show()
@@ -99,6 +99,7 @@ def Evst(mec, popt):
         ax.label_outer()
     plt.legend()
     plt.show()
+    #"""
 
 #####
 
@@ -142,7 +143,7 @@ ene.set_index('0', inplace=True)
 ene.columns = ['Epot/2', '-Ecin', 'Emec']
 #dist.columns = ['ddd']
 #print(ene["Emec"].name)
-ene=ene.head(int(len(ene.index)/15))
+#ene=ene.head(int(len(ene.index)/15))
 
 #"""fit con sole in moto, tiene periodo giove ecc
 mec=ene["Emec"]
@@ -152,7 +153,7 @@ Evst(mec, popt)
 #plot dello scostamento dell'energia nel tempo dal valore iniziale
 delta(mec)
 #"""
-#"""fit e grafici energia cinetica e potenziale
+"""fit e grafici energia cinetica e potenziale
 mec=ene['-Ecin']
 popt, pcov, R2=fit_mobile(mec)
 stampa(popt, pcov, R2, len(mec.index))

@@ -122,11 +122,13 @@ class CorpoCeleste:
 		self.V[step] = np.linalg.norm(self.vel)	
 		
 		sole = planets[0]
-		terra = planets[3]
 		sp = sole.pos
 		ds=self.pos-sp
 		dSole=np.linalg.norm(ds)
-		
+		self.DS[step] = dSole
+
+		#"""
+		terra = planets[3]
 		E=0
 		if self.nome=="Sole":
 			E=self.Ek[step]
@@ -142,8 +144,7 @@ class CorpoCeleste:
 		num2 = 2 * h2 * E
 		
 		self.ecc[step] = math.sqrt(1+num2/den)  #eccentricità
-		self.DS[step] = dSole
-		
+
 		tp=terra.pos
 		dtt=tp-sp
 		vt=terra.vel
@@ -153,6 +154,7 @@ class CorpoCeleste:
 		elif self.nome == "Luna":
 			lt=self.pos-tp;
 			self.teta[step] = 90- angolo(lt, nt)
+		#"""
 		
 	####
 	
