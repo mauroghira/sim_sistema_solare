@@ -389,8 +389,8 @@ void corpo::inizia(){
                         ( new TH2I(s.c_str(), (s+";x [m];y [m]").c_str(), numBins, -d*3/2, d*3/2,
                                                          numBins, -d*3/2, d*3/2) ) );
   else m_histos.push_back( reinterpret_cast<TH1I*>
-                        ( new TH2I(s.c_str(), (s+";x [m];y [m]").c_str(), numBins, -1e10, 1e10,
-                                                         numBins, -5e11, 1e3) ) );  
+                        ( new TH2I(s.c_str(), (s+";x [m];y [m]").c_str(), numBins, -4e9, 1e9,
+                                                         numBins, -5.5e10, 1e8) ) );  
    
   // Histo 2
   s = m_nome + ": |vel| vs |dist dal Sole|";
