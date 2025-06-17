@@ -105,11 +105,11 @@ vettore corpo::acc(std::vector<corpo*> &cc){
 	for(int i=0; i<cc.size(); i++){
 		if(cc[i]->m_nome!=m_nome){
 			vettore d=cc[i]->m_pos-m_pos;
-			//* relatività con tutti i pianeti
+			/* relatività con tutti i pianeti
 			double rl2=pow((d*m_vel).modulo(),2);
 			if(d.modulo()!=0) k=G*cc[i]->m_massa/pow(d.modulo(), 3)*(1+BETA*rl2/pow(C*d.modulo(), 2));
 			//*/
-			/* relatività solo col sole
+			//* relatività solo col sole
 			if(d.modulo()!=0) k=G*cc[i]->m_massa/pow(d.modulo(), 3);
 			if(cc[i]->m_nome=="Sole"){ //correzione relativistica solo rispetto al sole
 				double rl2=pow((d*m_vel).modulo(),2);
@@ -175,6 +175,7 @@ void corpo::muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode){
 			//finale
 			m_vel=v0+(k1v+k2v*2+k3v*2+k4v)/6;
 			m_pos=p0+(k1x+k2x*2+k3x*2+k4x)/6;
+			break;
 		}
 		case 4:
 		{  //runge-kutta 2
@@ -304,7 +305,7 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 		}
 		//*/
 		//van bene ambo i modi - vantaggio di questo è che posso vedere le step a cui lo becco
-		/*
+		/* 
 		float d_media=(m_pos0-m_s0).modulo();
 		float d_pre=(m_app-m_sap).modulo();
 		if(d_media<d_pre && d_media<dSole){
