@@ -12,9 +12,9 @@
 const double G=6.67e-11;
 const float C=3e8;
 const float RS=2.95e3;
-const float BETA = 0;
-const float W0 = - std::pow(2, 1/3)/(2-std::pow(2,1/3));
-const float W1 = 1/(2-std::pow(2,1/3));
+const float BETA = 3;
+const double W0 = - std::pow(2, 1/3)/(2-std::pow(2,1/3));
+const double W1 = 1/(2-std::pow(2,1/3));
 
 class corpo{
     protected:
@@ -35,6 +35,7 @@ class corpo{
 	vettore m_app;
 	vettore m_sap;
 	vettore m_s0; //serve per la v2 del calolo della precessione, ma va anche l'altro
+	uint64_t m_t_peri;
 	
     public:
 	corpo();
@@ -66,6 +67,7 @@ class corpo{
 	void modSAP(const vettore a){m_sap=a;}
 	void precessione(float TTerra);
 	float period(){return m_TT;}
+	void mod_tp(u_int64_t s){m_t_peri=s;}
 	float incl(){return m_teta;}
 	TGraph* getgraf(uint32_t i);
 	uint32_t numgraf(){return m_graps.size();}

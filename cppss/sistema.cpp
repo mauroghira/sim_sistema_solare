@@ -117,6 +117,7 @@ void sistema::evo(uint32_t mode, uint32_t rel, int st){
 	unsigned long int nn=365*24*3600/m_dT;
 	unsigned long int n=nn*m_T;
 	for(uint64_t i=0; i<n; i++){
+		//for(auto p: m_corpi) p->mod_tp(p->period() *24*3600 / (2*m_dT));
 		evodt(mode, rel, i+st);
 		if((i+st)%(nn*50)==0){
 			print();	//stampa ogni 5 ani

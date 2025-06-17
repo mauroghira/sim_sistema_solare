@@ -33,6 +33,7 @@ void corpo::leggi(){
 	m_app=m_pos;
 	m_sap=vettore(0,0,0);
 	m_s0=vettore(0,0,0);
+	//m_t_peri=0; //serve per la precessione, inizializzo a zero
 	std::cout<<"inserire la velocita' iniziale del corpo: ";
 	m_vel.leggi();
 	std::cout<<"inserire l'inclinazione del corpo: ";
@@ -52,6 +53,7 @@ corpo::corpo(std::string n, double m, vettore r, vettore v, float Torb, float t)
 	m_app=r;
 	m_sap=vettore(0,0,0);
 	m_s0=vettore(0,0,0);
+	//m_t_peri=0; //serve per la precessione, inizializzo a zero
 	m_TT=Torb;
 	m_L=m_pos*m_vel*m_massa;
 	m_Ek= 0.5*m_massa*m_vel.modulo()*m_vel.modulo(); 
@@ -65,6 +67,7 @@ corpo::corpo(){
 	m_Ek=0;
 	m_Ep=0;
 	m_TT=0;
+	//m_t_peri=0;
 }
 
 void corpo::ass(std::string n, double m, vettore r, vettore v, float Torb, float t){
@@ -77,6 +80,7 @@ void corpo::ass(std::string n, double m, vettore r, vettore v, float Torb, float
 	m_app=r;
 	m_s0=vettore(0,0,0);
 	m_sap=vettore(0,0,0);
+	//m_t_peri=0;
 	m_TT=Torb;
 	m_L=m_pos*m_vel*m_massa;
 	m_Ek= 0.5*m_massa*m_vel.modulo()*m_vel.modulo();
@@ -191,6 +195,7 @@ void corpo::muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uint32
 			//finale
 			m_vel=v0+(k1v+k2v*2+k3v*2+k4v)/6;
 			m_pos=p0+(k1x+k2x*2+k3x*2+k4x)/6;
+			break;
 		}
 		case 4:
 		{  //runge-kutta 2
@@ -221,7 +226,7 @@ void corpo::muovi(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uint32
 			m_pos= m_pos+ m_vel*dt*(W0+W1)/2;
 			m_vel= m_vel+ acc(cc, rel)*dt*W1;
 			//step 4
-			m_pos= m_pos+ m_vel*dt*W1/2;	
+			m_pos= m_pos+ m_vel*dt*W1/2;
 			break;
 		}
 		default: 
@@ -308,13 +313,15 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 
 	//raccoglo dati perielio per precessione
 	if(m_nome!="Sole"){
+		uint64_t Tstep = m_TT *24*3600 / dt ;
+		
 		//*
 		float d_cfr=(m_app-m_sap).modulo();
 		if(dSole<d_cfr){
 			m_app=m_pos;
 			m_sap=sp;
 		}
-		uint64_t Tstep = m_TT *24*3600 / dt ;
+		
 		if((j+1)%Tstep == 0){
 			//if(m_nome=="Mercurio") std::cout<<m_app<<m_sap<<m_app-m_sap<<std::endl;
 			m_peri.push_back(m_app-m_sap);
@@ -326,7 +333,7 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 		/*
 		float d_media=(m_pos0-m_s0).modulo();
 		float d_pre=(m_app-m_sap).modulo();
-		if(d_media<d_pre && d_media<dSole){
+		if(d_media<d_pre && d_media<dSole && j-m_t_peri>0.8*Tstep && j-m_t_peri<Tstep*1.2){
 			m_peri.push_back(m_pos0-m_s0);
 			//if(m_nome=="Mercurio"){
 				//std::cout<<d_pre<<" "<<d_media<<" "<<dSole<<std::endl;
@@ -341,7 +348,7 @@ void corpo::precessione(float Tterra){
 	if(m_nome=="Sole")m_histos[7]->Fill(0);
 	else{
 		for(int i=1; i<m_peri.size(); i++){
-			//if(m_nome=="Mercurio") std::cout<<m_peri[i].angolo(m_peri[i-1])*Tterra/m_TT<<std::endl;
+			if(m_nome=="Mercurio") std::cout<<m_peri[i].angolo(m_peri[i-1])*Tterra/m_TT<<std::endl;
 			m_histos[7]->Fill(m_peri[i].angolo(m_peri[i-1])*3600*Tterra/m_TT);
 		}
 		//if(m_nome=="Mercurio") for(auto p: m_peri) std::cout<<p<<std::endl;
@@ -431,8 +438,8 @@ void corpo::inizia(){
   //Histo 7
   s = m_nome + ": precessione"; //NB e' negativa!!!
   m_histos.push_back(
-    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";Precessione [arcsec/anno];Conteggi").c_str(), numBins, 0, 2800) ) );  
-    
+    reinterpret_cast<TH1I*> ( new TH1I(s.c_str(), (s+";Precessione [arcsec/anno];Conteggi").c_str(), numBins, 0, 3000) ) );  
+
   // Histo 8    prima inizializzo soo l'istograma rispetto al sole, poi metto i lsto dopo aver aggiunto tutto 
   s = m_nome + ": energia meccanica solo col sole"; 
   if(m_nome!="Sole"){  
