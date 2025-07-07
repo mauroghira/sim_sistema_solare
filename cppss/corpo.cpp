@@ -255,38 +255,36 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 	
 	//sposto corpo
 	muovi(cc, dt, mode, rel);
+
+	//aggiorno l'energia e il momento
+	modE(cc);
+  	double Emec = m_Ek + m_Ep;
+	m_L=m_pos*m_vel*m_massa;
 	
 	//seleziono sole per raccoliere dati rispetto a lui
 	vettore sp=sole->P();
 	vettore ds=m_pos-sp;
 	double dSole=ds.modulo();
 	double d0=(m_pos-m_pos0).modulo();
+	vettore v_rel = m_vel - sole->V(); //velocità relativa al sole
 	
-	//aggiorno l'energia e il mojenot
-	modE(cc);
-  	double Emec = m_Ek + m_Ep;
-  	//std::cout<<Ecin<<" "<<Epot<<" "<<Emec<<" ";
-	m_L=m_pos*m_vel*m_massa;
-	
-	//calcolo solo 'energia rispetto al sole, senza contare altri corpi, per valutare meglio l'eccentricità
+	//calcolo l'energia del sistema ridotto a due corpi, per calcolare l'eccentricità trascurando l'interazione con gli altri pianeti
 	double E=0;
-	if(m_nome=="Sole")E=m_Ek;
-	else{
-		double Epot=-G*sole->MASS()*m_massa/dSole;
-		E=m_Ek+Epot;
-	}
-	
   	double alfa = G * sole->MASS() * m_massa;
   	double mr=sole->MASS()*m_massa/(m_massa+sole->MASS());
   	double den = alfa * alfa * mr;
   	
-	//quando sole fisso basterebbe usare il momento rispetto all'origine, eviti di calcolare Ls per efficienza ma vabbe
-	//double h2  = m_L.modulo()*m_L.modulo();
-  	vettore Ls=ds*m_vel*m_massa; //per calcolare l'eccentricità devo usare il momento angolare rispetto al sole, non rispetto all'origine - se sole fisso posso evitare
-	double h2  = Ls.modulo()*Ls.modulo();	
+	if(m_nome=="Sole")E=m_Ek;
+	else{
+		double Epot=-alfa/dSole;
+		double Ek_rid = 0.5 * mr * v_rel.modulo() * v_rel.modulo();
+		E=Ek_rid+Epot;
+	}
 
+  	vettore Ls = ds*v_rel*mr; //mom angolare del sistema ridotto
+	double h2  = Ls.modulo()*Ls.modulo();
 	double num2 = 2 * h2 * E;
-	double e2 = sqrt(1+num2/den);  //eccentricità2
+	double ecc = sqrt(1+num2/den);  //eddccentricità2
 
 	//valuto inclinazione
 	vettore tp=terra->P();
@@ -306,7 +304,7 @@ void corpo::evolvidT(std::vector<corpo*> cc, unsigned int dt, uint32_t mode, uin
 	m_histos[2]->Fill( dSole , m_vel.modulo() ); 		// Vel vs dist dal sole
 	m_histos[3]->Fill(m_vel.modulo());                  // Modulo velocità
 	m_histos[4]->Fill( m_L.modulo() );                           // Momento angolare
-	m_histos[5]->Fill( e2 );                              // Eccentricità modo 2
+	m_histos[5]->Fill( ecc );                              // Eccentricità modo 2
 	m_histos[6]->Fill( m_teta );                              // inclinazione orbita
 	m_histos[8]->Fill( E );                           // Enercia solo sole  
 	m_histos[9]->Fill( Emec );                           // Enercia meccanica
