@@ -19,25 +19,29 @@ cat $(ls -Art result/*.txt | tail -n 1) \n\
 "
 
 void linee(TH1I *h);
-void analitic();
 
 int main(int argc, char** argv){
 
-	if(argc!=6){
-		std::cerr << "Usage: configFile numeroAnni granularità mode outputfile\n"; 
+	if(argc!=7){
+		std::cerr << "Usage: configFile numeroAnni granularità mode relatività outputfile\n"; 
 		std::cerr << "   configFile: file di configurazione delle condizioni iniziali\n";
 		std::cerr << "   numeroAnni: anni di evoluzione\n";
 		std::cerr << "   granularità: tempo dT di evoluzione (secondi)\n";		
 		std::cerr << "   mode:       modalità di evoluzione\n";
 		std::cerr << "               0 = standard \n";
 		std::cerr << "               1 = con media dell'accelerazione \n";
+		std::cerr << "               n = ordini superiori \n";
+		std::cerr << "   relatività: 0 = no \n";
+		std::cerr << "               1 = per tutti i corpi \n";
+		std::cerr << "               n = solo col sole \n";		
 		return 2;
 	}
 	std::string confFile = argv[1];
 	float nAnni = atof(argv[2]);
 	uint32_t ddt = atoi(argv[3]);
 	uint32_t mode  = atoi(argv[4]);
-	std::string outFile = argv[5];
+	uint32_t rel  = atoi(argv[5]);
+	std::string outFile = argv[6];
 	int step=0;
 	
 	TApplication myApp("App", &argc, argv);
@@ -46,7 +50,7 @@ int main(int argc, char** argv){
 	sistema s(nAnni, ddt, confFile, outFile);
 	
 	s.clean();
-	s.evo(mode);
+	s.evo(mode, rel);
 	s.savehist(outFile);
 	s.output(outFile);
 	
@@ -115,6 +119,7 @@ int main(int argc, char** argv){
 	    }
 	    else if(cmd=="sis"){
 	      	gStyle->SetOptStat(111111);
+			//gStyle->SetStatFontSize(0.1);
 	      	gStyle->SetTextSize(0.01);
 			TH1I *h = s.getist(val);
 			if(h==NULL)
@@ -137,6 +142,7 @@ int main(int argc, char** argv){
 			
 			if(a==-1){
   				gStyle->SetOptStat(111111);
+				//gStyle->SetStatFontSize(0.1);
 				TH1I *h = s.getThisHisto(cmd, val);
 				if(h==NULL){			
 					std::cerr << "Pianeta non riconosciuto\n"; 

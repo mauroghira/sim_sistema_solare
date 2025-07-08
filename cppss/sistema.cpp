@@ -112,28 +112,36 @@ void sistema::add(corpo* c){
 	m_corpi.push_back(c);
 }
 
-void sistema::evo(uint32_t mode, int st){
+void sistema::evo(uint32_t mode, uint32_t rel, int st){
 
 	unsigned long int nn=365*24*3600/m_dT;
 	unsigned long int n=nn*m_T;
 	for(uint64_t i=0; i<n; i++){
-		evodt(mode, i+st);
+		//for(auto p: m_corpi) p->mod_tp(p->period() *24*3600 / (2*m_dT));
+		evodt(mode, rel, i+st);
 		if((i+st)%(nn*50)==0){
 			print();	//stampa ogni 5 ani
 			std::cout<<"anno "<<(i+st)/nn<<std::endl;
-		}	
+		}
 	}
-	//m_corpi[1]->precessione();
+			
+	//per ora lo metto quì ma sarà poco efficiente
+	for(auto p: m_corpi) p->precessione(m_corpi[3]->period());
+	//for(auto p: m_corpi) p->precessione(365.26);
 	
 }
-void sistema::evodt(uint32_t mode, uint64_t j){
+void sistema::evodt(uint32_t mode, uint32_t rel, uint64_t j){
+	//per SOLEFISSO metti i=1 e decommenta righe sotto
 	for(int i=0; i<m_corpi.size(); i++){
-		m_corpi[i]->evolvidT(m_corpi, m_dT, mode, j);
+		m_corpi[i]->evolvidT(m_corpi, m_dT, mode, rel, j);
 	}
-	std::ofstream out;
+	//m_corpi[0]->modE(m_corpi);
+	//m_corpi[0]->getisto(9)->Fill(m_corpi[0]->EMEC()); 
 
-	//if(j%10000==0){
+	//*dati in file v2, così più veloce perché apre solo 1 file, inoltre velocizza campionando ogni 1000
+	if(j%10000==0){
 		vettore dS=m_corpi[0]->P();
+		std::ofstream out;
 		out.open("dist_sole_"+m_inc, std::ofstream::app);
 		out<<std::setprecision(10)<<float(j)*m_dT/(365*24*3600);
 		for(auto c: m_corpi){
@@ -143,7 +151,10 @@ void sistema::evodt(uint32_t mode, uint64_t j){
 		}
 		out<<std::endl;
 		out.close();
-
+	}
+	
+	if(j%10000==0){
+		std::ofstream out;
 		out.open("incl_"+m_inc, std::ofstream::app);
 		out<<float(j)*m_dT/(365*24*3600);
 		for(auto c: m_corpi){
@@ -151,7 +162,21 @@ void sistema::evodt(uint32_t mode, uint64_t j){
 		}
 		out<<std::endl;
 		out.close();
-	//}
+	}
+	
+	//*
+	if(float(j)*m_dT/(365*24*3600) >= 4999){
+	vettore dS=m_corpi[0]->P();
+	std::ofstream out;
+	out.open("val_err_"+m_inc, std::ofstream::app);
+	for(auto c: m_corpi){
+		vettore dd=c->P()-dS;
+		float d=(float)dd.modulo();
+		out<<d<<" ";
+	}
+	out<<std::endl;
+	out.close();
+	}//*/
 	
   	vettore L;
   	for(int i=0; i<m_corpi.size(); i++){
@@ -166,44 +191,6 @@ void sistema::evodt(uint32_t mode, uint64_t j){
   		Emec+=m_corpi[i]->ECIN()+m_corpi[i]->EPOT()/2;
   	//std::cout<<Emec<<std::endl;
   	m_ist[1]->Fill(Emec);
-}
-
-std::vector<float> sistema::times(std::vector<float>* teta){
-	double m1=m_corpi[0]->MASS();
-	double m2=m_corpi[2]->MASS();
-	double mu=m1*m2/(m1+m2);
-	double K=G*m1*m2;
-	std::cout<<K<<std::endl;
-	
-	double E0=0;
-	vettore L(0,0,0);
-	for(auto p: m_corpi){
-  		vettore dL=p->LA();
-  		std::cout<<dL<<std::endl;
-  		L=L+dL;
-  		std::cout<<L<<std::endl;
-  		E0+=p->ECIN()+p->EPOT()/2;  		
-	}
-	double L0=L.modulo();
-	
-	double AA=sqrt(-8*pow(E0,3)/(mu*K*K));
-	double e=sqrt(1+2*E0*L0*L0/(mu*K*K));
-	std::cout<<e;
-	
-	std::vector<float> tempi;
-	
-	return tempi;
-}
-
-std::vector<double> sistema::anal(){
-	double E0=0;
-	vettore L0;
-	for(auto p: m_corpi){
-  		vettore dL=p->LA();
-  		L0=L0+dL;
-  		E0+=p->ECIN()+p->EPOT()/2;  		
-	}
-	
 }
 
 void sistema::print(){
@@ -370,6 +357,8 @@ void sistema::clean(){
 	out.close();
 	out.open("incl_"+m_inc);
 	out.close();
+	out.open("val_err_"+m_inc);
+	for(auto p: m_corpi) out<<p->NAME()<<" ";
 	out<<std::endl;
 	out.close();	
 }

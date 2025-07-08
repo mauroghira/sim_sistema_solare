@@ -74,7 +74,8 @@ int main(int argc, char** argv){
   			gStyle->SetOptStat(111111);
 			screen2->Clear();
 			screen2->SetWindowSize(1600, 900);
-	    	cfr(outFile, &ss);		
+	    	cfr(outFile, &ss);
+			//gStyle->SetStatFontSize(0.5);	
 			screen2->Modified();    
 			screen2->Update();
 			CLRSCREEN;
@@ -98,6 +99,8 @@ int main(int argc, char** argv){
 			  		{ std::cerr << "Istogramma non trovato\n"; continue; }
 			screen2->Clear();
 			screen2->SetWindowSize(900, 900);
+			//gStyle->SetStatFontSize(0.5);
+			h->GetXaxis()->SetNdivisions(4, 2, 0, kFALSE);
 			h->SetFillColor(41);
 			h->Draw();
 			linee(h);
@@ -125,6 +128,7 @@ int main(int argc, char** argv){
 				}
 				screen2->Clear();
 				screen2->SetWindowSize(900, 900);
+				//gStyle->SetStatFontSize(0.5);
 				h->SetFillColor(41); //41
 				h->Draw();
 				if(val==4 || val==8 || val==9) linee(h);
@@ -161,13 +165,14 @@ int main(int argc, char** argv){
 	return 0;
 }
 void cfr(std::string outFile, sistema* ss){
+	/*
 	std::vector<float> *teta;
 	for(int i=0; i<720*ss->tempo(); i++){
 		teta->push_back(i*M_PI/360);
 	}
 	//for(auto t: teta) std::cout<<t<<std::endl;
 	std::cout<<teta->size()<<std::endl;
-	/*
+	
 	std::vector<float> *times=ss->times(teta);
 	for(auto t: *times) std::cout<<t<<std::endl;
 	std::cout<<times->size()<<std::endl;
